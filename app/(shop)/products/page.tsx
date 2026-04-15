@@ -5,6 +5,7 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { ProductFilters } from "@/components/product/ProductFilters";
 import { SortDropdown } from "@/components/product/SortDropdown";
 import { ProductPagination } from "@/components/product/ProductPagination";
+import { MOCK_PRODUCTS, MOCK_CATEGORIES } from "@/lib/mock/data";
 
 export const metadata: Metadata = {
   title: "Tất cả sản phẩm | Home Interior",
@@ -56,7 +57,12 @@ export default async function ProductsPage({
           name: c.attributes.name,
           slug: c.attributes.slug,
         }))
-      : [];
+      : MOCK_CATEGORIES.map((c) => ({
+          name: c.attributes.name,
+          slug: c.attributes.slug,
+        }));
+
+  const displayProducts = products.length > 0 ? products : MOCK_PRODUCTS;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -73,28 +79,17 @@ export default async function ProductsPage({
             <p className="text-sm text-muted-foreground">
               {pagination?.total != null
                 ? `${pagination.total} sản phẩm`
-                : "Đang tải..."}
+                : `${displayProducts.length} sản phẩm`}
             </p>
             <SortDropdown />
           </div>
 
           {/* Grid */}
-          {products.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center py-20 text-center">
-              <p className="text-muted-foreground text-lg">
-                Không tìm thấy sản phẩm nào
-              </p>
-              <p className="text-sm text-muted-foreground mt-2">
-                Hãy thử thay đổi bộ lọc hoặc từ khóa tìm kiếm
-              </p>
-            </div>
-          )}
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+            {displayProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
 
           {/* Pagination */}
           {pagination && (

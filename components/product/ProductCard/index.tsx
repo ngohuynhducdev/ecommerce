@@ -18,8 +18,11 @@ export function ProductCard({ product }: ProductCardProps) {
   const [wishlist, setWishlist] = useAtom(wishlistAtom);
   const { addItem } = useCart();
 
-  const imageUrl = p.images?.data?.[0]?.attributes?.url
-    ? `${process.env.NEXT_PUBLIC_STRAPI_URL}${p.images.data[0].attributes.url}`
+  const rawUrl = p.images?.data?.[0]?.attributes?.url ?? "";
+  const imageUrl = rawUrl
+    ? rawUrl.startsWith("http")
+      ? rawUrl
+      : `${process.env.NEXT_PUBLIC_STRAPI_URL}${rawUrl}`
     : null;
   const imageAlt = p.images?.data?.[0]?.attributes?.alternativeText ?? p.name;
 

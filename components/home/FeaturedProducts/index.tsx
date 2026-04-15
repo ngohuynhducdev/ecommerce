@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getFeaturedProducts } from "@/lib/api/products";
 import { ProductCard } from "@/components/product/ProductCard";
+import { MOCK_PRODUCTS } from "@/lib/mock/data";
 
 export async function FeaturedProducts() {
   let products: Awaited<ReturnType<typeof getFeaturedProducts>>["data"] = [];
@@ -8,8 +9,13 @@ export async function FeaturedProducts() {
     const res = await getFeaturedProducts();
     products = res.data ?? [];
   } catch {
-    // Strapi not available
+    // Strapi not available — use mock data
   }
+
+  const displayProducts =
+    products.length > 0
+      ? products
+      : MOCK_PRODUCTS.filter((p) => p.attributes.isFeatured);
 
   return (
     <section className="py-16 bg-warm-50">
@@ -31,28 +37,13 @@ export async function FeaturedProducts() {
           </Link>
         </div>
 
-        {products.length > 0 ? (
+        {displayProducts.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {products.map((product) => (
+            {displayProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div
-                key={i}
-                className="rounded-2xl overflow-hidden bg-white shadow-sm"
-              >
-                <div className="aspect-square bg-warm-200 animate-pulse" />
-                <div className="p-3 space-y-2">
-                  <div className="h-4 bg-warm-200 rounded animate-pulse" />
-                  <div className="h-4 bg-warm-200 rounded w-2/3 animate-pulse" />
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        ) : null}
 
         <div className="mt-8 text-center sm:hidden">
           <Link

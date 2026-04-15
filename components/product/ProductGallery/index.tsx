@@ -26,7 +26,8 @@ export function ProductGallery({ images, strapiUrl }: ProductGalleryProps) {
   }
 
   const current = images[selected];
-  const src = `${strapiUrl}${current.attributes.url}`;
+  const rawUrl = current.attributes.url;
+  const src = rawUrl.startsWith("http") ? rawUrl : `${strapiUrl}${rawUrl}`;
 
   function prev() {
     setSelected((s) => (s - 1 + images.length) % images.length);
@@ -92,7 +93,11 @@ export function ProductGallery({ images, strapiUrl }: ProductGalleryProps) {
               }`}
             >
               <Image
-                src={`${strapiUrl}${img.attributes.url}`}
+                src={
+                  img.attributes.url.startsWith("http")
+                    ? img.attributes.url
+                    : `${strapiUrl}${img.attributes.url}`
+                }
                 alt={img.attributes.alternativeText || `Ảnh ${i + 1}`}
                 fill
                 sizes="64px"

@@ -12,6 +12,10 @@ const remotePatterns: Array<{
     port: "1337",
     pathname: "/uploads/**",
   },
+  {
+    protocol: "https",
+    hostname: "images.unsplash.com",
+  },
 ];
 
 const productionHostname = process.env.STRAPI_PRODUCTION_HOSTNAME;

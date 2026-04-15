@@ -6,6 +6,7 @@ import { ProductGallery } from "@/components/product/ProductGallery";
 import { ProductActions } from "@/components/product/ProductActions";
 import { ProductCard } from "@/components/product/ProductCard";
 import { buildProductJsonLd } from "@/lib/utils/jsonLd";
+import { MOCK_PRODUCTS } from "@/lib/mock/data";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -33,10 +34,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export async function generateStaticParams() {
   try {
     const res = await getProducts({ pageSize: 100 });
-    return (res.data ?? []).map((p) => ({ slug: p.attributes.slug }));
+    const slugs = (res.data ?? []).map((p) => ({ slug: p.attributes.slug }));
+    if (slugs.length > 0) return slugs;
   } catch {
-    return [];
+    // Strapi not available — use mock slugs
   }
+  return MOCK_PRODUCTS.map((p) => ({ slug: p.attributes.slug }));
 }
 
 export default async function ProductDetailPage({ params }: Props) {
@@ -48,7 +51,12 @@ export default async function ProductDetailPage({ params }: Props) {
   try {
     product = await getProductBySlug(slug);
   } catch {
-    notFound();
+    // fall through to mock lookup
+  }
+
+  // Fallback to mock data when Strapi is not available
+  if (!product) {
+    product = MOCK_PRODUCTS.find((p) => p.attributes.slug === slug) ?? null;
   }
 
   if (!product) notFound();
@@ -68,6 +76,14 @@ export default async function ProductDetailPage({ params }: Props) {
     } catch {
       // ignore
     }
+  }
+  // Fallback to mock related products from same category
+  if (relatedProducts.length === 0) {
+    relatedProducts = MOCK_PRODUCTS.filter(
+      (p) =>
+        p.id !== product!.id &&
+        p.attributes.category?.data?.attributes?.slug === categorySlug,
+    ).slice(0, 4);
   }
 
   const jsonLd = buildProductJsonLd(product, strapiUrl);
