@@ -1,26 +1,146 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand palette — warm home interior */
+  --background: #faf9f7;
+  --foreground: #2c2825;
+
+  /* Warm neutrals */
+  --color-warm-50: #faf9f7;
+  --color-warm-100: #f2ede6;
+  --color-warm-200: #e8dfd5;
+  --color-warm-300: #d9cbbe;
+  --color-warm-400: #c4b09e;
+  --color-warm-500: #a8917a;
+  --color-warm-600: #8b7355;
+  --color-warm-700: #6e5a40;
+  --color-warm-800: #4a3c2a;
+  --color-warm-900: #2c2318;
+
+  /* Earth accent tones */
+  --color-earth-50: #fdf6ee;
+  --color-earth-100: #fbe8d0;
+  --color-earth-200: #f5cc9e;
+  --color-earth-300: #edaa65;
+  --color-earth-400: #e48c3a;
+  --color-earth-500: #c96f1f;
+  --color-earth-600: #a75718;
+  --color-earth-700: #804015;
+  --color-earth-800: #5e2f12;
+  --color-earth-900: #3d1e0c;
+
+  /* Sage green accent */
+  --color-sage-50: #f4f7f2;
+  --color-sage-100: #e4ede0;
+  --color-sage-200: #c7d9bf;
+  --color-sage-300: #a1be95;
+  --color-sage-400: #789f6a;
+  --color-sage-500: #577f4a;
+  --color-sage-600: #42623a;
+  --color-sage-700: #334c2c;
+  --color-sage-800: #243620;
+  --color-sage-900: #172216;
+
+  /* shadcn/ui CSS variables */
+  --radius: 0.5rem;
+  --card: #ffffff;
+  --card-foreground: #2c2825;
+  --popover: #ffffff;
+  --popover-foreground: #2c2825;
+  --primary: #2c2825;
+  --primary-foreground: #faf9f7;
+  --secondary: #f2ede6;
+  --secondary-foreground: #2c2825;
+  --muted: #f2ede6;
+  --muted-foreground: #8b7355;
+  --accent: #f2ede6;
+  --accent-foreground: #2c2825;
+  --destructive: #c0392b;
+  --destructive-foreground: #faf9f7;
+  --border: #e8dfd5;
+  --input: #e8dfd5;
+  --ring: #a8917a;
+
+  /* Order status colors */
+  --status-pending: #f59e0b;
+  --status-processing: #3b82f6;
+  --status-shipped: #6366f1;
+  --status-delivered: #22c55e;
+  --status-cancelled: #ef4444;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  /* Warm neutrals */
+  --color-warm-50: var(--color-warm-50);
+  --color-warm-100: var(--color-warm-100);
+  --color-warm-200: var(--color-warm-200);
+  --color-warm-300: var(--color-warm-300);
+  --color-warm-400: var(--color-warm-400);
+  --color-warm-500: var(--color-warm-500);
+  --color-warm-600: var(--color-warm-600);
+  --color-warm-700: var(--color-warm-700);
+  --color-warm-800: var(--color-warm-800);
+  --color-warm-900: var(--color-warm-900);
+
+  /* Earth tones */
+  --color-earth-50: var(--color-earth-50);
+  --color-earth-100: var(--color-earth-100);
+  --color-earth-200: var(--color-earth-200);
+  --color-earth-300: var(--color-earth-300);
+  --color-earth-400: var(--color-earth-400);
+  --color-earth-500: var(--color-earth-500);
+  --color-earth-600: var(--color-earth-600);
+  --color-earth-700: var(--color-earth-700);
+  --color-earth-800: var(--color-earth-800);
+  --color-earth-900: var(--color-earth-900);
+
+  /* Sage green */
+  --color-sage-50: var(--color-sage-50);
+  --color-sage-100: var(--color-sage-100);
+  --color-sage-200: var(--color-sage-200);
+  --color-sage-300: var(--color-sage-300);
+  --color-sage-400: var(--color-sage-400);
+  --color-sage-500: var(--color-sage-500);
+  --color-sage-600: var(--color-sage-600);
+  --color-sage-700: var(--color-sage-700);
+  --color-sage-800: var(--color-sage-800);
+  --color-sage-900: var(--color-sage-900);
+
+  /* shadcn tokens */
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius: var(--radius);
+
+  /* Typography */
+  --font-serif: "Playfair Display", "Georgia", serif;
+  --font-sans: var(--font-geist-sans), "Inter", system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: var(--border);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
 }
