@@ -4,6 +4,8 @@ import "./globals.css";
 
 import { AnnouncementBar } from "@/features/shared/components/announcement-bar";
 import { Navbar } from "@/features/shared/components/navbar";
+import { BottomNav } from "@/features/shared/components/bottom-nav";
+import { CartFlyout } from "@/features/cart/components/cart-flyout";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -30,7 +32,13 @@ export default function RootLayout({
           <Navbar />
         </div>
 
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 pb-16 lg:pb-0">{children}</main>
+
+        {/* Fixed bottom nav — mobile only */}
+        <BottomNav />
+
+        {/* Global cart flyout — rendered once, controlled by cartOpenAtom */}
+        <CartFlyout />
       </body>
     </html>
   );
