@@ -7,6 +7,7 @@ import { Navbar } from "@/features/shared/components/navbar";
 import { BottomNav } from "@/features/shared/components/bottom-nav";
 import { CartFlyout } from "@/features/cart/components/cart-flyout";
 import { Footer } from "@/features/shared/components/footer";
+import { Toaster } from "@/components/ui/sonner";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -42,6 +43,8 @@ export default function RootLayout({
 
         {/* Global cart flyout — rendered once, controlled by cartOpenAtom */}
         <CartFlyout />
+
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );
