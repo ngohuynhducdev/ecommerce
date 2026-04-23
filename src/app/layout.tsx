@@ -6,6 +6,7 @@ import { AnnouncementBar } from "@/features/shared/components/announcement-bar";
 import { Navbar } from "@/features/shared/components/navbar";
 import { BottomNav } from "@/features/shared/components/bottom-nav";
 import { CartFlyout } from "@/features/cart/components/cart-flyout";
+import { Footer } from "@/features/shared/components/footer";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -33,6 +34,8 @@ export default function RootLayout({
         </div>
 
         <main className="flex-1 pb-16 lg:pb-0">{children}</main>
+
+        <Footer />
 
         {/* Fixed bottom nav — mobile only */}
         <BottomNav />
