@@ -10,6 +10,8 @@ export interface ProductFilters {
   maxPrice?: number;
   sort?: "price-asc" | "price-desc" | "rating" | "newest";
   color?: string;
+  material?: string;
+  minRating?: number;
 }
 
 function applyFilters(products: Product[], filters: ProductFilters): Product[] {
@@ -29,6 +31,16 @@ function applyFilters(products: Product[], filters: ProductFilters): Product[] {
     result = result.filter((p) =>
       p.variants.some((v) => v.value.toLowerCase().includes(color))
     );
+  }
+  if (filters.material) {
+    const m = filters.material.toLowerCase();
+    result = result.filter((p) => {
+      const haystack = `${p.tags.join(" ")} ${p.description}`.toLowerCase();
+      return haystack.includes(m);
+    });
+  }
+  if (filters.minRating !== undefined) {
+    result = result.filter((p) => p.rating >= filters.minRating!);
   }
 
   switch (filters.sort) {
