@@ -1,9 +1,36 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getFeaturedProducts } from "@/lib/api/products";
+import { getFeaturedProducts, getProducts } from "@/lib/api/products";
+
 import { getCategories } from "@/lib/api/categories";
 import { CategoryCard } from "@/features/products/components/category-card";
+import { OurProducts } from "@/features/products/components/our-products";
+import { NewsletterSection } from "@/features/shared/components/newsletter-section";
 import { formatPrice } from "@/lib/utils";
+
+const mockBlogPosts = [
+  {
+    id: "blog-1",
+    slug: "scandinavian-design-tips",
+    title: "10 Scandinavian Design Tips for a Minimalist Home",
+    date: "April 12, 2024",
+    cover: "https://picsum.photos/seed/blog-scandi/800/450",
+  },
+  {
+    id: "blog-2",
+    slug: "choosing-sofa",
+    title: "How to Choose the Perfect Sofa for Your Living Room",
+    date: "March 28, 2024",
+    cover: "https://picsum.photos/seed/blog-sofa/800/450",
+  },
+  {
+    id: "blog-3",
+    slug: "home-office-setup",
+    title: "Building a Productive and Elegant Home Office Setup",
+    date: "March 10, 2024",
+    cover: "https://picsum.photos/seed/blog-office/800/450",
+  },
+];
 
 function TruckIcon() {
   return (
@@ -68,8 +95,9 @@ const features = [
 ];
 
 export default async function HomePage() {
-  const [featuredProducts, categories] = await Promise.all([
+  const [featuredProducts, allProducts, categories] = await Promise.all([
     getFeaturedProducts(),
+    getProducts(),
     getCategories(),
   ]);
 
@@ -168,6 +196,68 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* ── Our Products ── */}
+      <OurProducts products={allProducts} />
+
+      {/* ── Room Inspiration Banner ── */}
+      <section className="relative h-[500px] overflow-hidden mx-8 lg:mx-20 rounded-2xl">
+        <Image
+          src="https://picsum.photos/seed/room-inspiration/1400/500"
+          alt="Room inspiration"
+          fill
+          sizes="(max-width: 1024px) calc(100vw - 4rem), calc(100vw - 10rem)"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute bottom-10 left-10 text-white">
+          <p className="text-xs uppercase tracking-widest mb-2">
+            INSPIRING FURNITURE SETS
+          </p>
+          <h2 className="text-3xl font-bold max-w-xs leading-snug">
+            50+ Beautiful Rooms Inspiration
+          </h2>
+          <Link
+            href="/shop"
+            className="inline-block mt-4 underline text-sm hover:no-underline"
+          >
+            Explore More →
+          </Link>
+        </div>
+      </section>
+
+      {/* ── Blog Preview ── */}
+      <section className="py-20 px-8 lg:px-20">
+        <div className="flex justify-between items-center">
+          <h2 className="text-3xl font-semibold text-[#1C1C1C]">Our Blog</h2>
+          <Link href="/blog" className="text-sm text-[#1C1C1C] hover:underline">
+            View All →
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
+          {mockBlogPosts.map((post) => (
+            <Link key={post.id} href={`/blog/${post.slug}`} className="group block">
+              <div className="relative aspect-video rounded-lg overflow-hidden">
+                <Image
+                  src={post.cover}
+                  alt={post.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <p className="text-xs text-[#807D7E] mt-3">{post.date}</p>
+              <p className="font-medium text-lg mt-1 line-clamp-2 group-hover:text-[#B88E2F] transition-colors">
+                {post.title}
+              </p>
+              <p className="text-sm text-[#1C1C1C] mt-2 hover:underline">Read More →</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Newsletter ── */}
+      <NewsletterSection />
     </div>
   );
 }
