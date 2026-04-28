@@ -33,8 +33,11 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${product.name} — 3legant`,
+    title: product.name,
     description: product.description,
+    openGraph: {
+      images: [product.images[0]],
+    },
   };
 }
 

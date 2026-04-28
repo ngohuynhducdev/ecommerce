@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Breadcrumb } from "@/features/shared/components/breadcrumb";
@@ -5,6 +6,26 @@ import { BlogCard } from "@/features/blog/components/blog-card";
 import { TableOfContents } from "@/features/blog/components/table-of-contents";
 import { ShareButtons } from "@/features/blog/components/share-buttons";
 import { getPostBySlug, getPosts } from "@/lib/api/blog";
+
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  const posts = await getPosts();
+  return posts.map((p) => ({ slug: p.slug }));
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
+  if (!post) return { title: "Post Not Found" };
+  return {
+    title: post.title,
+    description: post.excerpt,
+    openGraph: {
+      images: [post.coverImage],
+    },
+  };
+}
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString("en-US", {
@@ -41,7 +62,7 @@ export default async function BlogPostPage({ params }: Props) {
       />
 
       {/* Cover image */}
-      <div className="relative w-full h-[480px] rounded-2xl overflow-hidden">
+      <div className="relative w-full h-120 rounded-2xl overflow-hidden">
         <Image
           src={post.coverImage}
           alt={post.title}

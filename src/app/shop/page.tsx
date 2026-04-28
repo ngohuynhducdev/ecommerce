@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
 import { getProducts, type ProductFilters } from "@/lib/api/products";
+
+export const metadata: Metadata = {
+  title: "Shop",
+  description: "Browse our full collection of modern, minimalist furniture.",
+};
+
+export const revalidate = 3600;
 import { getCategories } from "@/lib/api/categories";
 import { Breadcrumb } from "@/features/shared/components/breadcrumb";
 import { SortSelect } from "@/features/products/components/sort-select";

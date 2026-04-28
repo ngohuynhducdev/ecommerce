@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { MapPin, Phone, Clock } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description: "Get in touch with the 3legant team. We’re here to help with any questions.",
+};
 import { ContactForm } from "@/features/contact/components/contact-form";
 
 const INFO_CARDS = [
@@ -54,7 +60,7 @@ export default function ContactPage() {
         </div>
 
         {/* Map placeholder */}
-        <div className="mt-10 lg:mt-0 bg-[#F3F5F7] min-h-[400px] rounded-2xl flex flex-col items-center justify-center">
+        <div className="mt-10 lg:mt-0 bg-[#F3F5F7] min-h-100 rounded-2xl flex flex-col items-center justify-center">
           <MapPin size={48} className="text-[#807D7E]" />
           <p className="text-[#807D7E] mt-3 font-medium">Our Location</p>
           <p className="text-[#807D7E] text-sm mt-1">123 Furniture Lane, New York, NY</p>
