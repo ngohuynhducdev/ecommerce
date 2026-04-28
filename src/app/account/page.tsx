@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Check, X, Eye, EyeOff } from "lucide-react";
@@ -67,14 +67,14 @@ function PersonalInfoCard() {
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     formState: { errors },
   } = useForm<ProfileData>({ resolver: zodResolver(profileSchema) });
 
-  const firstName = watch("firstName") ?? "";
-  const lastName = watch("lastName") ?? "";
+  const firstName = useWatch({ control, name: "firstName" }) ?? "";
+  const lastName = useWatch({ control, name: "lastName" }) ?? "";
 
-  const onSubmit = (_data: ProfileData) => {
+  const onSubmit = () => {
     toast.success("Profile updated successfully!");
   };
 
@@ -149,12 +149,12 @@ function ChangePasswordCard() {
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     reset,
     formState: { errors },
   } = useForm<PasswordData>({ resolver: zodResolver(passwordSchema) });
 
-  const newPwd = watch("newPassword") ?? "";
+  const newPwd = useWatch({ control, name: "newPassword" }) ?? "";
 
   const requirements = [
     { label: "8+ characters", met: newPwd.length >= 8 },
@@ -163,7 +163,7 @@ function ChangePasswordCard() {
     { label: "Symbol", met: /[^A-Za-z0-9]/.test(newPwd) },
   ];
 
-  const onSubmit = (_data: PasswordData) => {
+  const onSubmit = () => {
     toast.success("Password updated successfully!");
     reset();
   };

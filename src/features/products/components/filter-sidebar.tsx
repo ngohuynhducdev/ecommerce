@@ -70,11 +70,21 @@ export function FilterSidebar({ categories, currentFilters }: FilterSidebarProps
   const [maxPrice, setMaxPrice] = useState(
     currentFilters.maxPrice?.toString() ?? ""
   );
+  const [prevMinPrice, setPrevMinPrice] = useState<number | undefined>(
+    currentFilters.minPrice
+  );
+  const [prevMaxPrice, setPrevMaxPrice] = useState<number | undefined>(
+    currentFilters.maxPrice
+  );
 
-  useEffect(() => {
+  if (prevMinPrice !== currentFilters.minPrice) {
+    setPrevMinPrice(currentFilters.minPrice);
     setMinPrice(currentFilters.minPrice?.toString() ?? "");
+  }
+  if (prevMaxPrice !== currentFilters.maxPrice) {
+    setPrevMaxPrice(currentFilters.maxPrice);
     setMaxPrice(currentFilters.maxPrice?.toString() ?? "");
-  }, [currentFilters.minPrice, currentFilters.maxPrice]);
+  }
 
   const pushParams = useCallback(
     (updater: (p: URLSearchParams) => void) => {

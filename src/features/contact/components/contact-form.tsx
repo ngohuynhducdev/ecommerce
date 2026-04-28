@@ -41,7 +41,7 @@ export function ContactForm() {
     formState: { errors, isSubmitting },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
-  const onSubmit = async (_data: FormData) => {
+  const onSubmit = async () => {
     await new Promise((r) => setTimeout(r, 600));
     toast.success("Message sent! We'll get back to you soon.");
     reset();
