@@ -16,8 +16,15 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "3legant — Furniture Store",
-  description: "Minimalist furniture for modern living",
+  title: {
+    template: "%s | 3legant",
+    default: "3legant — Furniture Store",
+  },
+  description: "Simply Unique / Simply Better. Discover modern furniture.",
+  openGraph: {
+    type: "website",
+    images: ["/og-image.jpg"],
+  },
 };
 
 export default function RootLayout({
@@ -34,7 +41,7 @@ export default function RootLayout({
           <Navbar />
         </div>
 
-        <main className="flex-1 pb-16 lg:pb-0">{children}</main>
+        <main className="flex-1 pb-16 lg:pb-0 animate-fade-in">{children}</main>
 
         <Footer />
 

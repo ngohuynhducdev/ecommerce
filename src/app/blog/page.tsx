@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Blog",
+  description: "Interior design tips, furniture guides, and home inspiration from 3legant.",
+};
+
+export const revalidate = 3600;
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Breadcrumb } from "@/features/shared/components/breadcrumb";
