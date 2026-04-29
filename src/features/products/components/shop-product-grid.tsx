@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ProductCard } from "@/features/products/components/product-card";
 import type { Product } from "@/features/products/types";
 
@@ -13,10 +13,12 @@ interface ShopProductGridProps {
 
 export function ShopProductGrid({ products }: ShopProductGridProps) {
   const [visible, setVisible] = useState(INITIAL_COUNT);
+  const [prevProducts, setPrevProducts] = useState<Product[]>(products);
 
-  useEffect(() => {
+  if (prevProducts !== products) {
+    setPrevProducts(products);
     setVisible(INITIAL_COUNT);
-  }, [products]);
+  }
 
   if (products.length === 0) {
     return (

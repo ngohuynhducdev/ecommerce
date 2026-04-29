@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAtomValue, useSetAtom } from "jotai";
 import { House, Grid2X2, Heart, ShoppingCart } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 import { cartCountAtom, cartOpenAtom } from "@/features/cart/atoms";
 import { wishlistCountAtom } from "@/features/wishlist/atoms";
@@ -23,8 +23,11 @@ export function BottomNav() {
   const wishlistCount = useAtomValue(wishlistCountAtom);
   const setCartOpen = useSetAtom(cartOpenAtom);
 
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   const tabs: NavTab[] = [
     {

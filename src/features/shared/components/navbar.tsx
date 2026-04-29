@@ -11,7 +11,7 @@ import {
   ChevronRight,
   X,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState, useSyncExternalStore } from "react";
 
 import { cartCountAtom, cartOpenAtom } from "@/features/cart/atoms";
 import { wishlistCountAtom } from "@/features/wishlist/atoms";
@@ -58,8 +58,11 @@ export function Navbar() {
   const setCartOpen = useSetAtom(cartOpenAtom);
   const [mobileMenuOpen, setMobileMenuOpen] = useAtom(mobileMenuOpenAtom);
 
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   const [megaOpen, setMegaOpen] = useState(false);
   const hideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);

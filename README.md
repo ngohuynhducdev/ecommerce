@@ -1,36 +1,127 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 3legant Furniture Store
+
+A full-featured e-commerce storefront for a minimalist furniture brand, built with Next.js 16 App Router. Based on the [3legant Figma community design](https://www.figma.com/design/4wdIrC2NdJVK6VVFuWxtX7/).
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 (App Router, Turbopack) |
+| Language | TypeScript (strict mode) |
+| Styling | Tailwind CSS v4 + shadcn/ui |
+| State | Jotai + `atomWithStorage` (persisted to localStorage) |
+| Forms | React Hook Form + Zod |
+| Auth | NextAuth v5 (Credentials + Google OAuth ready) |
+| CMS | Strapi v5 (toggled via `NEXT_PUBLIC_USE_STRAPI`) |
+| Font | Poppins (Google Fonts) |
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
-npm run dev
-# or
+# Install dependencies
+yarn install
+
+# Start the development server
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a `.env.local` file in the project root:
 
-## Learn More
+```env
+# Auth (required)
+AUTH_SECRET=your-secret-here
 
-To learn more about Next.js, take a look at the following resources:
+# Strapi CMS (optional — defaults to mock data)
+NEXT_PUBLIC_USE_STRAPI=false
+NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
+STRAPI_API_TOKEN=
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Google OAuth (optional)
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Generate `AUTH_SECRET` with:
 
-## Deploy on Vercel
+```bash
+openssl rand -hex 32
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/                  # Next.js App Router pages
+│   ├── page.tsx          # Homepage
+│   ├── shop/             # Shop listing + product detail
+│   ├── cart/             # Cart page
+│   ├── checkout/         # Multi-step checkout (3 steps)
+│   ├── order-success/    # Order confirmation
+│   ├── account/          # Profile, orders, wishlist (protected)
+│   ├── auth/             # Sign in / Sign up
+│   ├── blog/             # Blog listing + post detail
+│   └── contact/          # Contact page
+├── features/
+│   ├── products/         # ProductCard, ImageGallery, FilterSidebar, types, mock data
+│   ├── cart/             # CartFlyout, atoms
+│   ├── wishlist/         # atoms
+│   ├── checkout/         # multi-step form, atoms
+│   ├── blog/             # BlogCard, TableOfContents, ShareButtons, mock data
+│   ├── contact/          # ContactForm
+│   ├── account/          # AccountSidebar, WishlistCard
+│   └── shared/           # Navbar, Footer, Breadcrumb, AnnouncementBar
+└── lib/
+    ├── api/              # products.ts, categories.ts, blog.ts (Strapi-ready)
+    └── utils.ts          # cn(), formatPrice(), generateOrderId()
+```
+
+## Features
+
+- **Shop** — product grid with filter sidebar (category, price range, color, material, rating), URL-param filters, sort, load more
+- **Product Detail** — image gallery with thumbnails, variant selector, quantity picker, Add to Cart, wishlist toggle, related products, tabbed reviews
+- **Cart** — quantity controls, coupon codes (`SAVE10`, `FURNITURE20`), order summary, persistent via localStorage
+- **Checkout** — 3-step flow: shipping → payment → review → animated order success page
+- **Auth** — NextAuth v5 with mock credentials (any email + password ≥ 6 chars); protected `/account` routes via middleware
+- **Account** — profile editor, order history with status filters, wishlist management
+- **Blog** — featured post, article grid, full post with scroll-tracked table of contents, social share, related posts
+- **Contact** — info cards, validated contact form, map placeholder
+- **SEO** — `generateMetadata` on every page, `og:image` for product and blog pages, `generateStaticParams` for static generation
+- **Performance** — `revalidate = 3600` on listing pages, skeleton loading states, fade-in page transitions
+- **Error handling** — global 404 / error pages, product-specific not-found
+
+## Coupon Codes
+
+| Code | Discount |
+|---|---|
+| `SAVE10` | 10% off |
+| `FURNITURE20` | 20% off |
+
+## Strapi CMS Integration
+
+All data functions in `src/lib/api/` check `NEXT_PUBLIC_USE_STRAPI`:
+
+- `false` (default) — returns mock data, no network calls
+- `true` — fetches from Strapi REST API at `NEXT_PUBLIC_STRAPI_URL`
+
+Switching to Strapi requires zero UI changes.
+
+## Screenshots
+
+> _Add screenshots here_
+
+## Deploy
+
+### Vercel (recommended)
+
+Push to GitHub and import the repository at [vercel.com](https://vercel.com). Add the environment variables from `.env.local` in the Vercel project settings.
+
+### Self-hosted
+
+```bash
+yarn build
+yarn start
+```

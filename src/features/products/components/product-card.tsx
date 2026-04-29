@@ -70,7 +70,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const [cartItems, setCartItems] = useAtom(cartItemsAtom);
+  const setCartItems = useSetAtom(cartItemsAtom);
   const setCartOpen = useSetAtom(cartOpenAtom);
   const [wishlist, setWishlist] = useAtom(wishlistAtom);
 
