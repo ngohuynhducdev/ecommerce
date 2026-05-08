@@ -141,22 +141,26 @@ export async function getProducts(
   filters: ProductFilters = {}
 ): Promise<Product[]> {
   if (USE_STRAPI) {
-    const params = new URLSearchParams();
-    params.set("populate", "images,category");
-    if (filters.sort) params.set("sort", SORT_MAP[filters.sort]);
-    if (filters.category)
-      params.set("filters[category][slug][$eq]", filters.category);
-    if (filters.minPrice !== undefined)
-      params.set("filters[price][$gte]", String(filters.minPrice));
-    if (filters.maxPrice !== undefined)
-      params.set("filters[price][$lte]", String(filters.maxPrice));
+    try {
+      const params = new URLSearchParams();
+      params.set("populate", "images,category");
+      if (filters.sort) params.set("sort", SORT_MAP[filters.sort]);
+      if (filters.category)
+        params.set("filters[category][slug][$eq]", filters.category);
+      if (filters.minPrice !== undefined)
+        params.set("filters[price][$gte]", String(filters.minPrice));
+      if (filters.maxPrice !== undefined)
+        params.set("filters[price][$lte]", String(filters.maxPrice));
 
-    const res = await fetch(`${STRAPI_URL}/api/products?${params}`, {
-      headers: strapiHeaders,
-    });
-    if (!res.ok) throw new Error("Failed to fetch products from Strapi");
-    const json = (await res.json()) as { data: StrapiProductItem[] };
-    return json.data.map(mapStrapiProduct);
+      const res = await fetch(`${STRAPI_URL}/api/products?${params}`, {
+        headers: strapiHeaders,
+      });
+      if (!res.ok) return applyFilters(mockProducts, filters);
+      const json = (await res.json()) as { data: StrapiProductItem[] };
+      return json.data.map(mapStrapiProduct);
+    } catch {
+      return applyFilters(mockProducts, filters);
+    }
   }
 
   return applyFilters(mockProducts, filters);
@@ -166,16 +170,20 @@ export async function getProductBySlug(
   slug: string
 ): Promise<Product | null> {
   if (USE_STRAPI) {
-    const params = new URLSearchParams();
-    params.set("filters[slug][$eq]", slug);
-    params.set("populate", "*");
+    try {
+      const params = new URLSearchParams();
+      params.set("filters[slug][$eq]", slug);
+      params.set("populate", "*");
 
-    const res = await fetch(`${STRAPI_URL}/api/products?${params}`, {
-      headers: strapiHeaders,
-    });
-    if (!res.ok) throw new Error("Failed to fetch product from Strapi");
-    const json = (await res.json()) as { data: StrapiProductItem[] };
-    return json.data[0] ? mapStrapiProduct(json.data[0]) : null;
+      const res = await fetch(`${STRAPI_URL}/api/products?${params}`, {
+        headers: strapiHeaders,
+      });
+      if (!res.ok) return mockProducts.find((p) => p.slug === slug) ?? null;
+      const json = (await res.json()) as { data: StrapiProductItem[] };
+      return json.data[0] ? mapStrapiProduct(json.data[0]) : null;
+    } catch {
+      return mockProducts.find((p) => p.slug === slug) ?? null;
+    }
   }
 
   return mockProducts.find((p) => p.slug === slug) ?? null;
@@ -183,18 +191,21 @@ export async function getProductBySlug(
 
 export async function getFeaturedProducts(): Promise<Product[]> {
   if (USE_STRAPI) {
-    const params = new URLSearchParams();
-    params.set("filters[isFeatured][$eq]", "true");
-    params.set("populate", "images,category");
-    params.set("pagination[limit]", "8");
+    try {
+      const params = new URLSearchParams();
+      params.set("filters[isFeatured][$eq]", "true");
+      params.set("populate", "images,category");
+      params.set("pagination[limit]", "8");
 
-    const res = await fetch(`${STRAPI_URL}/api/products?${params}`, {
-      headers: strapiHeaders,
-    });
-    if (!res.ok)
-      throw new Error("Failed to fetch featured products from Strapi");
-    const json = (await res.json()) as { data: StrapiProductItem[] };
-    return json.data.map(mapStrapiProduct);
+      const res = await fetch(`${STRAPI_URL}/api/products?${params}`, {
+        headers: strapiHeaders,
+      });
+      if (!res.ok) return mockProducts.filter((p) => p.isFeatured);
+      const json = (await res.json()) as { data: StrapiProductItem[] };
+      return json.data.map(mapStrapiProduct);
+    } catch {
+      return mockProducts.filter((p) => p.isFeatured);
+    }
   }
 
   return mockProducts.filter((p) => p.isFeatured);
@@ -202,17 +213,21 @@ export async function getFeaturedProducts(): Promise<Product[]> {
 
 export async function getBestsellers(): Promise<Product[]> {
   if (USE_STRAPI) {
-    const params = new URLSearchParams();
-    params.set("filters[isBestseller][$eq]", "true");
-    params.set("populate", "images,category");
-    params.set("pagination[limit]", "8");
+    try {
+      const params = new URLSearchParams();
+      params.set("filters[isBestseller][$eq]", "true");
+      params.set("populate", "images,category");
+      params.set("pagination[limit]", "8");
 
-    const res = await fetch(`${STRAPI_URL}/api/products?${params}`, {
-      headers: strapiHeaders,
-    });
-    if (!res.ok) throw new Error("Failed to fetch bestsellers from Strapi");
-    const json = (await res.json()) as { data: StrapiProductItem[] };
-    return json.data.map(mapStrapiProduct);
+      const res = await fetch(`${STRAPI_URL}/api/products?${params}`, {
+        headers: strapiHeaders,
+      });
+      if (!res.ok) return mockProducts.filter((p) => p.isBestseller);
+      const json = (await res.json()) as { data: StrapiProductItem[] };
+      return json.data.map(mapStrapiProduct);
+    } catch {
+      return mockProducts.filter((p) => p.isBestseller);
+    }
   }
 
   return mockProducts.filter((p) => p.isBestseller);
@@ -221,27 +236,31 @@ export async function getBestsellers(): Promise<Product[]> {
 export async function getRelatedProducts(
   productId: string
 ): Promise<Product[]> {
-  if (USE_STRAPI) {
-    const params = new URLSearchParams();
-    params.set("filters[id][$ne]", productId);
-    params.set("populate", "images,category");
-    params.set("pagination[limit]", "4");
+  const mockFallback = () => {
+    const source = mockProducts.find((p) => p.id === productId);
+    if (!source) return [];
+    return mockProducts
+      .filter((p) => p.id !== productId && p.category.slug === source.category.slug)
+      .slice(0, 4);
+  };
 
-    const res = await fetch(`${STRAPI_URL}/api/products?${params}`, {
-      headers: strapiHeaders,
-    });
-    if (!res.ok)
-      throw new Error("Failed to fetch related products from Strapi");
-    const json = (await res.json()) as { data: StrapiProductItem[] };
-    return json.data.map(mapStrapiProduct);
+  if (USE_STRAPI) {
+    try {
+      const params = new URLSearchParams();
+      params.set("filters[id][$ne]", productId);
+      params.set("populate", "images,category");
+      params.set("pagination[limit]", "4");
+
+      const res = await fetch(`${STRAPI_URL}/api/products?${params}`, {
+        headers: strapiHeaders,
+      });
+      if (!res.ok) return mockFallback();
+      const json = (await res.json()) as { data: StrapiProductItem[] };
+      return json.data.map(mapStrapiProduct);
+    } catch {
+      return mockFallback();
+    }
   }
 
-  const source = mockProducts.find((p) => p.id === productId);
-  if (!source) return [];
-
-  return mockProducts
-    .filter(
-      (p) => p.id !== productId && p.category.slug === source.category.slug
-    )
-    .slice(0, 4);
+  return mockFallback();
 }

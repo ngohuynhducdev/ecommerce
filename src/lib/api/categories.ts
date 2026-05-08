@@ -34,12 +34,16 @@ export function mapStrapiCategory(item: StrapiCategoryItem | null | undefined): 
 
 export async function getCategories(): Promise<Category[]> {
   if (USE_STRAPI) {
-    const res = await fetch(`${STRAPI_URL}/api/categories?populate=image`, {
-      headers: strapiHeaders,
-    });
-    if (!res.ok) throw new Error("Failed to fetch categories from Strapi");
-    const json = (await res.json()) as { data: StrapiCategoryItem[] };
-    return json.data.map(mapStrapiCategory);
+    try {
+      const res = await fetch(`${STRAPI_URL}/api/categories?populate=image`, {
+        headers: strapiHeaders,
+      });
+      if (!res.ok) return mockCategories;
+      const json = (await res.json()) as { data: StrapiCategoryItem[] };
+      return json.data.map(mapStrapiCategory);
+    } catch {
+      return mockCategories;
+    }
   }
 
   return mockCategories;
