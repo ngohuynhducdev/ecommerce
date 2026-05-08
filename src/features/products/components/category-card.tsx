@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/safe-image";
 import Link from "next/link";
 import type { Category } from "@/features/products/types";
 
@@ -10,7 +10,7 @@ export function CategoryCard({ category }: CategoryCardProps) {
   return (
     <Link href={`/shop?category=${category.slug}`} className="group block">
       <div className="relative overflow-hidden rounded-xl aspect-square">
-        <Image
+        <SafeImage
           src={category.image}
           alt={category.name}
           fill

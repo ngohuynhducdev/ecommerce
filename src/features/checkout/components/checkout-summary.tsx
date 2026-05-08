@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/safe-image";
 import { useAtomValue } from "jotai";
 
 import { cartItemsAtom, cartSubtotalAtom } from "@/features/cart/atoms";
@@ -44,7 +44,7 @@ export function CheckoutSummary() {
                 key={`${item.product.id}-${item.variant?.id ?? "default"}`}
                 className="relative w-12 h-12 rounded-lg overflow-hidden bg-white border border-[#E8ECEF]"
               >
-                <Image
+                <SafeImage
                   src={item.product.images[0]}
                   alt={item.product.name}
                   fill

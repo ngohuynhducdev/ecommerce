@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/safe-image";
 import Link from "next/link";
 import { useAtom, useSetAtom } from "jotai";
 import { cartItemsAtom, cartOpenAtom } from "@/features/cart/atoms";
@@ -106,7 +106,7 @@ export function ProductCard({ product }: ProductCardProps) {
       {/* Image */}
       <div className="aspect-square relative overflow-hidden">
         <Link href={`/shop/${product.slug}`}>
-          <Image
+          <SafeImage
             src={product.images[0]}
             alt={product.name}
             fill

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/safe-image";
 import { useRouter } from "next/navigation";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { ArrowLeft, Loader2 } from "lucide-react";
@@ -155,7 +155,7 @@ export function ReviewStep() {
               className="flex gap-4"
             >
               <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-[#FAFAFA] shrink-0">
-                <Image
+                <SafeImage
                   src={item.product.images[0]}
                   alt={item.product.name}
                   fill

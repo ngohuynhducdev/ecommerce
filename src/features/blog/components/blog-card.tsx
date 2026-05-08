@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/safe-image";
 import Link from "next/link";
 import type { BlogPost } from "@/features/blog/types";
 
@@ -19,7 +19,7 @@ export function BlogCard({ post }: Props) {
     <div>
       <div className="aspect-video relative rounded-xl overflow-hidden">
         <Link href={`/blog/${post.slug}`}>
-          <Image
+          <SafeImage
             src={post.coverImage}
             alt={post.title}
             fill

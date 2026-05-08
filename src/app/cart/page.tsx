@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/safe-image";
 import Link from "next/link";
 import { useAtom, useAtomValue } from "jotai";
 import {
@@ -132,7 +132,7 @@ export default function CartPage() {
                       <td className="px-4 py-6">
                         <div className="flex items-center gap-4">
                           <div className="relative w-[88px] h-[88px] rounded-lg overflow-hidden bg-[#FAFAFA] shrink-0">
-                            <Image
+                            <SafeImage
                               src={item.product.images[0]}
                               alt={item.product.name}
                               fill
@@ -190,7 +190,7 @@ export default function CartPage() {
                   className="flex gap-4 border-b border-[#E8ECEF] pb-5 mb-5"
                 >
                   <div className="relative w-[72px] h-[72px] rounded-lg overflow-hidden bg-[#FAFAFA] shrink-0">
-                    <Image
+                    <SafeImage
                       src={item.product.images[0]}
                       alt={item.product.name}
                       fill

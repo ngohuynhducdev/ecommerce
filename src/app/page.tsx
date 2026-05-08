@@ -1,36 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getFeaturedProducts, getProducts } from "@/lib/api/products";
-
 import { getCategories } from "@/lib/api/categories";
+import { getPosts } from "@/lib/api/blog";
+import { SafeImage } from "@/components/ui/safe-image";
 import { CategoryCard } from "@/features/products/components/category-card";
 import { OurProducts } from "@/features/products/components/our-products";
 import { NewsletterSection } from "@/features/shared/components/newsletter-section";
 import { formatPrice } from "@/lib/utils";
 
-const mockBlogPosts = [
-  {
-    id: "blog-1",
-    slug: "scandinavian-design-tips",
-    title: "10 Scandinavian Design Tips for a Minimalist Home",
-    date: "April 12, 2024",
-    cover: "https://picsum.photos/seed/blog-scandi/800/450",
-  },
-  {
-    id: "blog-2",
-    slug: "choosing-sofa",
-    title: "How to Choose the Perfect Sofa for Your Living Room",
-    date: "March 28, 2024",
-    cover: "https://picsum.photos/seed/blog-sofa/800/450",
-  },
-  {
-    id: "blog-3",
-    slug: "home-office-setup",
-    title: "Building a Productive and Elegant Home Office Setup",
-    date: "March 10, 2024",
-    cover: "https://picsum.photos/seed/blog-office/800/450",
-  },
-];
+function formatDate(iso: string): string {
+  return new Date(iso).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
 
 function TruckIcon() {
   return (
@@ -95,10 +80,11 @@ const features = [
 ];
 
 export default async function HomePage() {
-  const [featuredProducts, allProducts, categories] = await Promise.all([
+  const [featuredProducts, allProducts, categories, blogPosts] = await Promise.all([
     getFeaturedProducts(),
     getProducts(),
     getCategories(),
+    getPosts(),
   ]);
 
   const heroProduct = featuredProducts[0];
@@ -235,18 +221,18 @@ export default async function HomePage() {
           </Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
-          {mockBlogPosts.map((post) => (
+          {blogPosts.slice(0, 3).map((post) => (
             <Link key={post.id} href={`/blog/${post.slug}`} className="group block">
               <div className="relative aspect-video rounded-lg overflow-hidden">
-                <Image
-                  src={post.cover}
+                <SafeImage
+                  src={post.coverImage}
                   alt={post.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
-              <p className="text-xs text-[#807D7E] mt-3">{post.date}</p>
+              <p className="text-xs text-[#807D7E] mt-3">{formatDate(post.publishedAt)}</p>
               <p className="font-medium text-lg mt-1 line-clamp-2 group-hover:text-[#B88E2F] transition-colors">
                 {post.title}
               </p>

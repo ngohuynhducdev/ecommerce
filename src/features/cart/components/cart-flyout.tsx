@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/safe-image";
 import Link from "next/link";
 import { useAtom, useAtomValue } from "jotai";
 import { ShoppingCart, Trash2, Minus, Plus } from "lucide-react";
@@ -97,7 +97,7 @@ export function CartFlyout() {
                 >
                   {/* Thumbnail */}
                   <div className="relative w-[72px] h-[72px] rounded-lg overflow-hidden shrink-0 bg-[#F3F5F7]">
-                    <Image
+                    <SafeImage
                       src={item.product.images[0]}
                       alt={item.product.name}
                       fill

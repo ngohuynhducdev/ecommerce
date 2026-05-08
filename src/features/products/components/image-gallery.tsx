@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/safe-image";
 import { cn } from "@/lib/utils";
 
 interface ImageGalleryProps {
@@ -16,7 +16,7 @@ export function ImageGallery({ images, name, isOnSale }: ImageGalleryProps) {
   return (
     <div>
       <div className="aspect-square rounded-2xl overflow-hidden relative bg-[#FAFAFA] group">
-        <Image
+        <SafeImage
           src={images[selectedIndex]}
           alt={name}
           fill
@@ -45,7 +45,7 @@ export function ImageGallery({ images, name, isOnSale }: ImageGalleryProps) {
               )}
               aria-label={`View image ${index + 1}`}
             >
-              <Image
+              <SafeImage
                 src={src}
                 alt={`${name} thumbnail ${index + 1}`}
                 fill

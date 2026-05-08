@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/safe-image";
 import { notFound } from "next/navigation";
 import { Breadcrumb } from "@/features/shared/components/breadcrumb";
 import { BlogCard } from "@/features/blog/components/blog-card";
@@ -47,9 +47,15 @@ export default async function BlogPostPage({ params }: Props) {
   const allPosts = await getPosts();
   const related = allPosts.filter((p) => p.slug !== slug).slice(0, 3);
 
-  const tocItems = post.sections
-    .filter((s) => s.type === "h2" && s.id)
-    .map((s) => ({ id: s.id!, label: s.content }));
+  // const tocItems = post.sections
+  //   .filter((s) => s.type === "h2" && s.id)
+  //   .map((s) => ({ id: s.id!, label: s.content }));
+
+  //   const tocItems = (post.sections ?? [])
+  // .filter((s) => s.type === "h2" && s.id)
+  // .map((s) => ({ id: s.id!, label: s.content }));
+
+  const tocItems: { id: string; label: string }[] = []
 
   return (
     <div className="px-8 lg:px-20 py-12">
@@ -63,7 +69,7 @@ export default async function BlogPostPage({ params }: Props) {
 
       {/* Cover image */}
       <div className="relative w-full h-120 rounded-2xl overflow-hidden">
-        <Image
+        <SafeImage
           src={post.coverImage}
           alt={post.title}
           fill
@@ -76,7 +82,7 @@ export default async function BlogPostPage({ params }: Props) {
       {/* Author row */}
       <div className="flex items-center gap-3 mt-4">
         <div className="w-9 h-9 rounded-full overflow-hidden relative shrink-0">
-          <Image
+          <SafeImage
             src={post.author.avatar}
             alt={post.author.name}
             fill
@@ -101,7 +107,7 @@ export default async function BlogPostPage({ params }: Props) {
             {post.title}
           </h1>
 
-          {post.sections.map((section, i) => {
+          {/* {post.sections.map((section, i) => {
             if (section.type === "h2") {
               return (
                 <h2
@@ -134,7 +140,7 @@ export default async function BlogPostPage({ params }: Props) {
                 {section.content}
               </p>
             );
-          })}
+          })} */}
 
           <ShareButtons />
 

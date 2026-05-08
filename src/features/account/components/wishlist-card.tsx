@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/safe-image";
 import Link from "next/link";
 import { X } from "lucide-react";
 import { useSetAtom } from "jotai";
@@ -55,7 +55,7 @@ export function WishlistCard({ item }: Props) {
       {/* Image */}
       <div className="aspect-square relative overflow-hidden">
         <Link href={`/shop/${product.slug}`}>
-          <Image
+          <SafeImage
             src={product.images[0]}
             alt={product.name}
             fill

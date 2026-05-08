@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/safe-image";
 import Link from "next/link";
 import { Package } from "lucide-react";
 import { useAtomValue } from "jotai";
@@ -76,7 +76,7 @@ function OrderCard({ order }: { order: Order }) {
             key={item.product.id}
             className="w-11 h-11 rounded-lg overflow-hidden relative shrink-0 bg-[#F3F5F7]"
           >
-            <Image
+            <SafeImage
               src={item.product.images[0]}
               alt={item.product.name}
               fill

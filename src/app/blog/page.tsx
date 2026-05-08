@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/safe-image";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -32,7 +32,7 @@ export default async function BlogPage() {
       {/* Featured post */}
       <div className="lg:flex gap-10 items-center mb-16">
         <div className="lg:w-1/2 aspect-video relative rounded-2xl overflow-hidden shrink-0">
-          <Image
+          <SafeImage
             src={featured.coverImage}
             alt={featured.title}
             fill
