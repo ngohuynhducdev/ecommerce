@@ -10,8 +10,15 @@ import { getPostBySlug, getPosts } from "@/lib/api/blog";
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
-  const posts = await getPosts();
-  return posts.map((p) => ({ slug: p.slug }));
+  try {
+    const posts = await getPosts();
+    return posts.map((p) => ({ slug: p.slug }));
+  } catch (error) {
+    // Nếu Strapi fail lúc build, trả về mảng rỗng
+    // Next.js sẽ render dynamic thay vì static
+    console.error("Failed to fetch posts for static params:", error);
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -55,7 +62,7 @@ export default async function BlogPostPage({ params }: Props) {
   // .filter((s) => s.type === "h2" && s.id)
   // .map((s) => ({ id: s.id!, label: s.content }));
 
-  const tocItems: { id: string; label: string }[] = []
+  const tocItems: { id: string; label: string }[] = [];
 
   return (
     <div className="px-8 lg:px-20 py-12">
@@ -103,7 +110,10 @@ export default async function BlogPostPage({ params }: Props) {
       <div className="lg:grid lg:grid-cols-[1fr_240px] gap-16 mt-8">
         {/* Article */}
         <article>
-          <h1 className="text-4xl font-bold leading-tight mb-6" style={{ fontFamily: "Poppins, sans-serif" }}>
+          <h1
+            className="text-4xl font-bold leading-tight mb-6"
+            style={{ fontFamily: "Poppins, sans-serif" }}
+          >
             {post.title}
           </h1>
 

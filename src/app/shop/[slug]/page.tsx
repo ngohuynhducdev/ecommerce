@@ -1,3 +1,4 @@
+export const dynamicParams = true;
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -18,8 +19,15 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const products = await getProducts();
-  return products.map((product) => ({ slug: product.slug }));
+  try {
+    const products = await getProducts();
+    return products.map((p) => ({ slug: p.slug }));
+  } catch (error) {
+    // Nếu Strapi fail lúc build, trả về mảng rỗng
+    // Next.js sẽ render dynamic thay vì static
+    console.error("Failed to fetch products for static params:", error);
+    return [];
+  }
 }
 
 export async function generateMetadata({
