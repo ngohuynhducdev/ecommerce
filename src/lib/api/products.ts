@@ -151,17 +151,16 @@ export async function getProducts(
 
   if (USE_STRAPI) {
     try {
-      const params = new URLSearchParams();
-      params.set("populate", "images,category");
-      if (filters.sort) params.set("sort", SORT_MAP[filters.sort]);
-      if (filters.category)
-        params.set("filters[category][slug][$eq]", filters.category);
-      if (filters.minPrice !== undefined)
-        params.set("filters[price][$gte]", String(filters.minPrice));
-      if (filters.maxPrice !== undefined)
-        params.set("filters[price][$lte]", String(filters.maxPrice));
+      const queryParts: string[] = [
+        "populate[0]=images",
+        "populate[1]=category",
+      ];
+      if (filters.sort) queryParts.push(`sort=${SORT_MAP[filters.sort]}`);
+      if (filters.category) queryParts.push(`filters[category][slug][$eq]=${filters.category}`);
+      if (filters.minPrice !== undefined) queryParts.push(`filters[price][$gte]=${filters.minPrice}`);
+      if (filters.maxPrice !== undefined) queryParts.push(`filters[price][$lte]=${filters.maxPrice}`);
 
-      const url = `${STRAPI_URL}/api/products?${params}`;
+      const url = `${STRAPI_URL}/api/products?${queryParts.join("&")}`;
       console.log("[getProducts] Fetching Strapi:", url);
 
       const res = await fetch(url, { headers: strapiHeaders });
@@ -188,11 +187,14 @@ export async function getProducts(
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   if (USE_STRAPI) {
     try {
-      const params = new URLSearchParams();
-      params.set("filters[slug][$eq]", slug);
-      params.set("populate", "*");
+      const queryParts = [
+        `filters[slug][$eq]=${slug}`,
+        "populate[0]=images",
+        "populate[1]=category",
+        "populate[2]=category.image",
+      ];
 
-      const res = await fetch(`${STRAPI_URL}/api/products?${params}`, {
+      const res = await fetch(`${STRAPI_URL}/api/products?${queryParts.join("&")}`, {
         headers: strapiHeaders,
       });
       if (!res.ok) return mockProducts.find((p) => p.slug === slug) ?? null;
@@ -209,12 +211,14 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
 export async function getFeaturedProducts(): Promise<Product[]> {
   if (USE_STRAPI) {
     try {
-      const params = new URLSearchParams();
-      params.set("filters[isFeatured][$eq]", "true");
-      params.set("populate", "images,category");
-      params.set("pagination[limit]", "8");
+      const queryParts = [
+        "filters[isFeatured][$eq]=true",
+        "populate[0]=images",
+        "populate[1]=category",
+        "pagination[limit]=8",
+      ];
 
-      const res = await fetch(`${STRAPI_URL}/api/products?${params}`, {
+      const res = await fetch(`${STRAPI_URL}/api/products?${queryParts.join("&")}`, {
         headers: strapiHeaders,
       });
       if (!res.ok) return mockProducts.filter((p) => p.isFeatured);
@@ -231,12 +235,14 @@ export async function getFeaturedProducts(): Promise<Product[]> {
 export async function getBestsellers(): Promise<Product[]> {
   if (USE_STRAPI) {
     try {
-      const params = new URLSearchParams();
-      params.set("filters[isBestseller][$eq]", "true");
-      params.set("populate", "images,category");
-      params.set("pagination[limit]", "8");
+      const queryParts = [
+        "filters[isBestseller][$eq]=true",
+        "populate[0]=images",
+        "populate[1]=category",
+        "pagination[limit]=8",
+      ];
 
-      const res = await fetch(`${STRAPI_URL}/api/products?${params}`, {
+      const res = await fetch(`${STRAPI_URL}/api/products?${queryParts.join("&")}`, {
         headers: strapiHeaders,
       });
       if (!res.ok) return mockProducts.filter((p) => p.isBestseller);
@@ -265,12 +271,14 @@ export async function getRelatedProducts(
 
   if (USE_STRAPI) {
     try {
-      const params = new URLSearchParams();
-      params.set("filters[id][$ne]", productId);
-      params.set("populate", "images,category");
-      params.set("pagination[limit]", "4");
+      const queryParts = [
+        `filters[id][$ne]=${productId}`,
+        "populate[0]=images",
+        "populate[1]=category",
+        "pagination[limit]=4",
+      ];
 
-      const res = await fetch(`${STRAPI_URL}/api/products?${params}`, {
+      const res = await fetch(`${STRAPI_URL}/api/products?${queryParts.join("&")}`, {
         headers: strapiHeaders,
       });
       if (!res.ok) return mockFallback();

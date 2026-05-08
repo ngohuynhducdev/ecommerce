@@ -67,7 +67,7 @@ export async function getPosts(): Promise<BlogPost[]> {
   if (USE_STRAPI) {
     try {
       const res = await fetch(
-        `${STRAPI_URL}/api/blog-posts?populate=coverImage,author.avatar&sort=publishedAt:desc`,
+        `${STRAPI_URL}/api/blog-posts?populate[0]=coverImage&populate[1]=author&sort=publishedAt:desc`,
         { headers: strapiHeaders }
       );
       if (!res.ok) return MOCK_POSTS;
@@ -83,11 +83,14 @@ export async function getPosts(): Promise<BlogPost[]> {
 export async function getPostBySlug(slug: string): Promise<BlogPost | undefined> {
   if (USE_STRAPI) {
     try {
-      const params = new URLSearchParams();
-      params.set("filters[slug][$eq]", slug);
-      params.set("populate", "*");
+      const queryParts = [
+        `filters[slug][$eq]=${slug}`,
+        "populate[0]=coverImage",
+        "populate[1]=author",
+        "populate[2]=sections",
+      ];
 
-      const res = await fetch(`${STRAPI_URL}/api/blog-posts?${params}`, {
+      const res = await fetch(`${STRAPI_URL}/api/blog-posts?${queryParts.join("&")}`, {
         headers: strapiHeaders,
       });
       if (!res.ok) return MOCK_POSTS.find((p) => p.slug === slug);

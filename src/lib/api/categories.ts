@@ -36,7 +36,7 @@ export function mapStrapiCategory(item: StrapiCategoryItem | null | undefined): 
 export async function getCategories(): Promise<Category[]> {
   if (USE_STRAPI) {
     try {
-      const res = await fetch(`${STRAPI_URL}/api/categories?populate=image`, {
+      const res = await fetch(`${STRAPI_URL}/api/categories?populate[0]=image`, {
         headers: strapiHeaders,
       });
       if (!res.ok) return mockCategories;
