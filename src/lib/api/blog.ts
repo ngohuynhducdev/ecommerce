@@ -11,56 +11,55 @@ const strapiHeaders = {
 
 // Strapi v5 response shapes
 interface StrapiMediaData {
-  attributes: { url: string };
+  id: number;
+  url: string;
 }
 
-interface StrapiAuthorAttributes {
+interface StrapiAuthor {
   name: string;
-  avatar?: { data?: StrapiMediaData | null } | string;
+  avatar?: StrapiMediaData | null;
 }
 
 interface StrapiBlogPostItem {
   id: number;
-  attributes: {
-    slug: string;
-    title: string;
-    excerpt?: string;
-    category?: string;
-    author?: StrapiAuthorAttributes;
-    coverImage?: { data?: StrapiMediaData | null } | string;
-    publishedAt?: string;
-    readTime?: string;
-    sections?: ArticleSection[];
-  };
+  documentId: string;
+  slug: string;
+  title: string;
+  excerpt?: string;
+  category?: string;
+  author?: StrapiAuthor;
+  coverImage?: StrapiMediaData | string | null;
+  publishedAt?: string;
+  readTime?: string;
+  sections?: ArticleSection[];
 }
 
 function resolveMediaUrl(
-  field: { data?: StrapiMediaData | null } | string | undefined
+  field: StrapiMediaData | string | null | undefined
 ): string {
   if (!field) return "";
   if (typeof field === "string") return field;
-  return field.data?.attributes?.url ? `${STRAPI_URL}${field.data.attributes.url}` : "";
+  if (!field.url) return "";
+  return field.url.startsWith("http") ? field.url : `${STRAPI_URL}${field.url}`;
 }
 
 function mapStrapiBlogPost(item: StrapiBlogPostItem): BlogPost {
-  const a = item.attributes;
-
   const author: BlogAuthor = {
-    name: a.author?.name ?? "",
-    avatar: resolveMediaUrl(a.author?.avatar),
+    name: item.author?.name ?? "",
+    avatar: resolveMediaUrl(item.author?.avatar),
   };
 
   return {
     id: String(item.id),
-    slug: a.slug,
-    title: a.title,
-    excerpt: a.excerpt ?? "",
-    category: a.category ?? "",
+    slug: item.slug,
+    title: item.title,
+    excerpt: item.excerpt ?? "",
+    category: item.category ?? "",
     author,
-    coverImage: resolveMediaUrl(a.coverImage),
-    publishedAt: a.publishedAt ?? new Date().toISOString(),
-    readTime: a.readTime ?? "",
-    sections: a.sections ?? [],
+    coverImage: resolveMediaUrl(item.coverImage),
+    publishedAt: item.publishedAt ?? new Date().toISOString(),
+    readTime: item.readTime ?? "",
+    sections: item.sections ?? [],
   };
 }
 

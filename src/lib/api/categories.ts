@@ -11,24 +11,25 @@ const strapiHeaders = {
 
 export interface StrapiCategoryItem {
   id: number;
-  attributes: {
-    slug: string;
-    name: string;
-    description?: string;
-    image?: { data?: { attributes: { url: string } } | null };
-  };
+  documentId: string;
+  slug: string;
+  name: string;
+  description?: string;
+  image?: { url: string } | null;
+}
+
+function resolveImageUrl(url: string | undefined, strapiUrl: string): string {
+  if (!url) return "";
+  return url.startsWith("http") ? url : `${strapiUrl}${url}`;
 }
 
 export function mapStrapiCategory(item: StrapiCategoryItem | null | undefined): Category {
-  const a = item?.attributes;
   return {
     id: String(item?.id ?? ""),
-    slug: a?.slug ?? "",
-    name: a?.name ?? "",
-    image: a?.image?.data?.attributes?.url
-      ? `${STRAPI_URL}${a.image.data.attributes.url}`
-      : "",
-    description: a?.description ?? "",
+    slug: item?.slug ?? "",
+    name: item?.name ?? "",
+    image: resolveImageUrl(item?.image?.url, STRAPI_URL),
+    description: item?.description ?? "",
   };
 }
 

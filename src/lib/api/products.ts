@@ -28,7 +28,7 @@ export interface ProductFilters {
 // Strapi v5 response shapes
 interface StrapiImage {
   id: number;
-  attributes: { url: string };
+  url: string;
 }
 
 interface StrapiVariant {
@@ -41,22 +41,26 @@ interface StrapiVariant {
 
 interface StrapiProductItem {
   id: number;
-  attributes: {
-    slug: string;
-    name: string;
-    description?: string;
-    price: number;
-    comparePrice?: number;
-    images?: { data?: StrapiImage[] | null };
-    category?: { data?: StrapiCategoryItem | null };
-    tags?: string[];
-    variants?: StrapiVariant[];
-    stock?: number;
-    isFeatured?: boolean;
-    isBestseller?: boolean;
-    rating?: number;
-    reviewCount?: number;
-  };
+  documentId: string;
+  slug: string;
+  name: string;
+  description?: string;
+  price: number;
+  comparePrice?: number;
+  images?: StrapiImage[] | null;
+  category?: StrapiCategoryItem | null;
+  tags?: string[];
+  variants?: StrapiVariant[];
+  stock?: number;
+  isFeatured?: boolean;
+  isBestseller?: boolean;
+  rating?: number;
+  reviewCount?: number;
+}
+
+function resolveImageUrl(url: string | undefined): string {
+  if (!url) return "";
+  return url.startsWith("http") ? url : `${STRAPI_URL}${url}`;
 }
 
 const SORT_MAP: Record<NonNullable<ProductFilters["sort"]>, string> = {
@@ -67,20 +71,18 @@ const SORT_MAP: Record<NonNullable<ProductFilters["sort"]>, string> = {
 };
 
 function mapStrapiProduct(item: StrapiProductItem): Product {
-  const a = item.attributes;
   return {
     id: String(item.id),
-    slug: a.slug,
-    name: a.name,
-    description: a.description ?? "",
-    price: a.price,
-    comparePrice: a.comparePrice,
-    images:
-      a.images?.data?.map((img) => `${STRAPI_URL}${img.attributes.url}`) ?? [],
-    category: mapStrapiCategory(a.category?.data),
-    tags: a.tags ?? [],
-    variants: (a.variants ?? []).map(
-      (v): Variant => ({
+    slug: item.slug,
+    name: item.name,
+    description: item.description ?? "",
+    price: item.price,
+    comparePrice: item.comparePrice,
+    images: (item.images ?? []).map((img: StrapiImage) => resolveImageUrl(img.url)),
+    category: mapStrapiCategory(item.category),
+    tags: item.tags ?? [],
+    variants: (item.variants ?? []).map(
+      (v: StrapiVariant): Variant => ({
         id: v.id,
         name: v.name,
         value: v.value,
@@ -88,11 +90,11 @@ function mapStrapiProduct(item: StrapiProductItem): Product {
         priceModifier: v.priceModifier,
       }),
     ),
-    stock: a.stock ?? 0,
-    isFeatured: a.isFeatured ?? false,
-    isBestseller: a.isBestseller ?? false,
-    rating: a.rating ?? 0,
-    reviewCount: a.reviewCount ?? 0,
+    stock: item.stock ?? 0,
+    isFeatured: item.isFeatured ?? false,
+    isBestseller: item.isBestseller ?? false,
+    rating: item.rating ?? 0,
+    reviewCount: item.reviewCount ?? 0,
   };
 }
 
@@ -145,6 +147,8 @@ function applyFilters(products: Product[], filters: ProductFilters): Product[] {
 export async function getProducts(
   filters: ProductFilters = {},
 ): Promise<Product[]> {
+  console.log("[getProducts] USE_STRAPI =", USE_STRAPI, "| filters =", filters);
+
   if (USE_STRAPI) {
     try {
       const params = new URLSearchParams();
@@ -157,17 +161,27 @@ export async function getProducts(
       if (filters.maxPrice !== undefined)
         params.set("filters[price][$lte]", String(filters.maxPrice));
 
-      const res = await fetch(`${STRAPI_URL}/api/products?${params}`, {
-        headers: strapiHeaders,
-      });
-      if (!res.ok) return applyFilters(mockProducts, filters);
+      const url = `${STRAPI_URL}/api/products?${params}`;
+      console.log("[getProducts] Fetching Strapi:", url);
+
+      const res = await fetch(url, { headers: strapiHeaders });
+      console.log("[getProducts] Strapi response status:", res.status, res.statusText);
+
+      if (!res.ok) {
+        console.warn("[getProducts] Strapi returned non-OK, falling back to mock data");
+        return applyFilters(mockProducts, filters);
+      }
+
       const json = (await res.json()) as { data: StrapiProductItem[] };
+      console.log("[getProducts] Strapi returned", json.data.length, "products");
       return json.data.map(mapStrapiProduct);
-    } catch {
+    } catch (err) {
+      console.error("[getProducts] Fetch threw an error, falling back to mock data:", err);
       return applyFilters(mockProducts, filters);
     }
   }
 
+  console.log("[getProducts] Strapi disabled, using mock data");
   return applyFilters(mockProducts, filters);
 }
 
