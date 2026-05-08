@@ -1,3 +1,8 @@
+console.log("=== API CONFIG ===");
+console.log("USE_STRAPI:", process.env.NEXT_PUBLIC_USE_STRAPI);
+console.log("STRAPI_URL:", process.env.NEXT_PUBLIC_STRAPI_URL);
+console.log("==================");
+
 import type { Product, Variant } from "@/features/products/types";
 import { mockProducts } from "@/features/products/mock-data";
 import { type StrapiCategoryItem, mapStrapiCategory } from "./categories";
@@ -81,7 +86,7 @@ function mapStrapiProduct(item: StrapiProductItem): Product {
         value: v.value,
         stock: v.stock,
         priceModifier: v.priceModifier,
-      })
+      }),
     ),
     stock: a.stock ?? 0,
     isFeatured: a.isFeatured ?? false,
@@ -106,7 +111,7 @@ function applyFilters(products: Product[], filters: ProductFilters): Product[] {
   if (filters.color) {
     const color = filters.color.toLowerCase();
     result = result.filter((p) =>
-      p.variants.some((v) => v.value.toLowerCase().includes(color))
+      p.variants.some((v) => v.value.toLowerCase().includes(color)),
     );
   }
   if (filters.material) {
@@ -138,7 +143,7 @@ function applyFilters(products: Product[], filters: ProductFilters): Product[] {
 }
 
 export async function getProducts(
-  filters: ProductFilters = {}
+  filters: ProductFilters = {},
 ): Promise<Product[]> {
   if (USE_STRAPI) {
     try {
@@ -166,9 +171,7 @@ export async function getProducts(
   return applyFilters(mockProducts, filters);
 }
 
-export async function getProductBySlug(
-  slug: string
-): Promise<Product | null> {
+export async function getProductBySlug(slug: string): Promise<Product | null> {
   if (USE_STRAPI) {
     try {
       const params = new URLSearchParams();
@@ -234,13 +237,15 @@ export async function getBestsellers(): Promise<Product[]> {
 }
 
 export async function getRelatedProducts(
-  productId: string
+  productId: string,
 ): Promise<Product[]> {
   const mockFallback = () => {
     const source = mockProducts.find((p) => p.id === productId);
     if (!source) return [];
     return mockProducts
-      .filter((p) => p.id !== productId && p.category.slug === source.category.slug)
+      .filter(
+        (p) => p.id !== productId && p.category.slug === source.category.slug,
+      )
       .slice(0, 4);
   };
 
