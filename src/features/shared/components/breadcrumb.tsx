@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 
 export interface BreadcrumbItem {
   label: string;
@@ -32,7 +31,9 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
                 {item.label}
               </span>
             )}
-            {!isLast && <ChevronRight className="w-3.5 h-3.5" />}
+            {!isLast && (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+            )}
           </span>
         );
       })}

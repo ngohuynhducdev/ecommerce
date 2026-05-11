@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { SafeImage } from "@/components/ui/safe-image";
+import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Breadcrumb } from "@/features/shared/components/breadcrumb";
+import { SafeImage } from "@/components/ui/safe-image";
 import { BlogCard } from "@/features/blog/components/blog-card";
-import { TableOfContents } from "@/features/blog/components/table-of-contents";
-import { ShareButtons } from "@/features/blog/components/share-buttons";
+import { NewsletterSection } from "@/features/shared/components/newsletter-section";
 import { getPostBySlug, getPosts } from "@/lib/api/blog";
+import type { ArticleSection } from "@/features/blog/types";
 
 export const revalidate = 3600;
 
@@ -14,8 +15,6 @@ export async function generateStaticParams() {
     const posts = await getPosts();
     return posts.map((p) => ({ slug: p.slug }));
   } catch (error) {
-    // Nếu Strapi fail lúc build, trả về mảng rỗng
-    // Next.js sẽ render dynamic thay vì static
     console.error("Failed to fetch posts for static params:", error);
     return [];
   }
@@ -28,9 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: post.title,
     description: post.excerpt,
-    openGraph: {
-      images: [post.coverImage],
-    },
+    openGraph: { images: [post.coverImage] },
   };
 }
 
@@ -40,6 +37,71 @@ function formatDate(iso: string): string {
     month: "long",
     day: "numeric",
   });
+}
+
+function PersonIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+    </svg>
+  );
+}
+
+function CalendarIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2" />
+      <path d="M16 2v4M8 2v4M3 10h18" />
+    </svg>
+  );
+}
+
+function ArticleSections({ sections }: { sections: ArticleSection[] }) {
+  const result: React.ReactNode[] = [];
+  let i = 0;
+
+  while (i < sections.length) {
+    const section = sections[i];
+
+    if (section.type === "img") {
+      const next = sections[i + 1];
+      if (next?.type === "img") {
+        result.push(
+          <div key={i} className="grid grid-cols-2 gap-4 my-6">
+            <div className="relative aspect-4/3 overflow-hidden">
+              <Image src={section.content} alt="" fill sizes="50vw" className="object-cover" />
+            </div>
+            <div className="relative aspect-4/3 overflow-hidden">
+              <Image src={next.content} alt="" fill sizes="50vw" className="object-cover" />
+            </div>
+          </div>
+        );
+        i += 2;
+        continue;
+      }
+      result.push(
+        <div key={i} className="relative w-full aspect-video overflow-hidden my-6">
+          <Image src={section.content} alt="" fill sizes="(max-width: 768px) 100vw, 800px" className="object-cover" />
+        </div>
+      );
+    } else if (section.type === "h2") {
+      result.push(
+        <h2 key={i} id={section.id} className="text-2xl font-semibold text-[#1C1C1C] mt-10 mb-4">
+          {section.content}
+        </h2>
+      );
+    } else {
+      result.push(
+        <p key={i} className="text-[#807D7E] leading-8 mb-4">
+          {section.content}
+        </p>
+      );
+    }
+    i++;
+  }
+
+  return <>{result}</>;
 }
 
 interface Props {
@@ -54,119 +116,84 @@ export default async function BlogPostPage({ params }: Props) {
   const allPosts = await getPosts();
   const related = allPosts.filter((p) => p.slug !== slug).slice(0, 3);
 
-  // const tocItems = post.sections
-  //   .filter((s) => s.type === "h2" && s.id)
-  //   .map((s) => ({ id: s.id!, label: s.content }));
-
-  //   const tocItems = (post.sections ?? [])
-  // .filter((s) => s.type === "h2" && s.id)
-  // .map((s) => ({ id: s.id!, label: s.content }));
-
-  const tocItems: { id: string; label: string }[] = [];
-
   return (
-    <div className="px-8 lg:px-20 py-12">
-      <Breadcrumb
-        items={[
-          { label: "Home", href: "/" },
-          { label: "Blog", href: "/blog" },
-          { label: post.title },
-        ]}
-      />
+    <div>
+      <div className="px-8 lg:px-20 py-8">
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-2 text-sm text-[#807D7E] mb-6 flex-wrap">
+          <Link href="/" className="hover:text-[#1C1C1C] transition-colors">Home</Link>
+          <span>›</span>
+          <Link href="/blog" className="hover:text-[#1C1C1C] transition-colors">Blog</Link>
+          <span>›</span>
+          <span className="text-[#1C1C1C] line-clamp-1">{post.title}</span>
+        </nav>
 
-      {/* Cover image */}
-      <div className="relative w-full h-120 rounded-2xl overflow-hidden">
-        <SafeImage
-          src={post.coverImage}
-          alt={post.title}
-          fill
-          sizes="100vw"
-          className="object-cover"
-          priority
-        />
-      </div>
+        <div className="max-w-4xl">
+          {/* Article label */}
+          <p className="text-xs font-semibold uppercase tracking-widest text-[#807D7E] mb-4">
+            Article
+          </p>
 
-      {/* Author row */}
-      <div className="flex items-center gap-3 mt-4">
-        <div className="w-9 h-9 rounded-full overflow-hidden relative shrink-0">
-          <SafeImage
-            src={post.author.avatar}
-            alt={post.author.name}
-            fill
-            sizes="36px"
-            className="object-cover"
-          />
-        </div>
-        <p className="text-sm text-[#807D7E]">
-          <span className="font-medium text-[#1C1C1C]">{post.author.name}</span>
-          {" · "}
-          {formatDate(post.publishedAt)}
-          {" · "}
-          {post.readTime}
-        </p>
-      </div>
-
-      {/* Content + TOC */}
-      <div className="lg:grid lg:grid-cols-[1fr_240px] gap-16 mt-8">
-        {/* Article */}
-        <article>
-          <h1
-            className="text-4xl font-bold leading-tight mb-6"
-            style={{ fontFamily: "Poppins, sans-serif" }}
-          >
+          {/* Title */}
+          <h1 className="text-3xl lg:text-5xl font-bold text-[#1C1C1C] leading-tight mb-6">
             {post.title}
           </h1>
 
-          {/* {post.sections.map((section, i) => {
-            if (section.type === "h2") {
-              return (
-                <h2
-                  key={i}
-                  id={section.id}
-                  className="text-2xl font-semibold mt-8 mb-4"
-                >
-                  {section.content}
-                </h2>
-              );
-            }
-            if (section.type === "img") {
-              return (
-                <div
-                  key={i}
-                  className="relative w-full aspect-video rounded-xl overflow-hidden my-6"
-                >
-                  <Image
-                    src={section.content}
-                    alt=""
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 75vw"
-                    className="object-cover"
-                  />
-                </div>
-              );
-            }
-            return (
-              <p key={i} className="text-[#807D7E] leading-8 mb-4">
-                {section.content}
-              </p>
-            );
-          })} */}
-
-          <ShareButtons />
-
-          {/* Related posts */}
-          <div className="mt-16">
-            <h2 className="text-2xl font-semibold mb-8">Related Posts</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {related.map((p) => (
-                <BlogCard key={p.id} post={p} />
-              ))}
-            </div>
+          {/* Author + date */}
+          <div className="flex items-center gap-6 text-sm text-[#807D7E] mb-8">
+            <span className="flex items-center gap-1.5">
+              <PersonIcon />
+              {post.author.name}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <CalendarIcon />
+              {formatDate(post.publishedAt)}
+            </span>
           </div>
+        </div>
+
+        {/* Cover image */}
+        <div className="relative w-full h-72 lg:h-120 overflow-hidden mb-8">
+          <SafeImage
+            src={post.coverImage}
+            alt={post.title}
+            fill
+            sizes="100vw"
+            className="object-cover"
+            fetchPriority="high"
+          />
+        </div>
+
+        {/* Article body */}
+        <article className="max-w-4xl">
+          {post.excerpt && (
+            <p className="text-[#807D7E] leading-8 mb-4">{post.excerpt}</p>
+          )}
+          <ArticleSections sections={post.sections} />
         </article>
 
-        {/* Table of contents */}
-        {tocItems.length > 0 && <TableOfContents items={tocItems} />}
+        {/* You might also like */}
+        <div className="mt-20 pt-10 border-t border-[#E8ECEF]">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-semibold text-[#1C1C1C]">You might also like</h2>
+            <Link
+              href="/blog"
+              className="text-sm font-medium text-[#1C1C1C] border-b border-[#1C1C1C] pb-0.5 hover:text-[#B88E2F] hover:border-[#B88E2F] transition-colors"
+            >
+              More Articles →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {related.map((p) => (
+              <BlogCard key={p.id} post={p} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Newsletter */}
+      <div className="mt-16">
+        <NewsletterSection />
       </div>
     </div>
   );

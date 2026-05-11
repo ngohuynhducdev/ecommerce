@@ -1,8 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { useAtom, useSetAtom } from "jotai";
-import { Minus, Plus, Truck, RotateCcw, Clock } from "lucide-react";
 import { toast } from "sonner";
 
 import { cartItemsAtom, cartOpenAtom } from "@/features/cart/atoms";
@@ -61,6 +60,13 @@ function resolveColor(value: string): { hex: string; hasBorder: boolean } {
   return { hex: "#D1D5DB", hasBorder: false };
 }
 
+interface TimeLeft {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
+
 export function AddToCartSection({ product }: AddToCartSectionProps) {
   const setCartItems = useSetAtom(cartItemsAtom);
   const setCartOpen = useSetAtom(cartOpenAtom);
@@ -82,6 +88,27 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
     () => sizeVariants.find((v) => v.stock > 0) ?? sizeVariants[0]
   );
   const [quantity, setQuantity] = useState(1);
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const targetRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    // 2 days + 12 hours from now
+    targetRef.current = Date.now() + (2 * 24 * 60 * 60 * 1000) + (12 * 60 * 60 * 1000);
+
+    function tick() {
+      if (targetRef.current === null) return;
+      const diff = Math.max(0, targetRef.current - Date.now());
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      setTimeLeft({ days, hours, minutes, seconds });
+    }
+
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
 
   const selectedVariant = selectedSize ?? selectedColor;
   const availableStock = selectedVariant?.stock ?? product.stock;
@@ -129,34 +156,53 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
     toast.success(isWishlisted ? "Removed from wishlist" : "Added to wishlist");
   }
 
-  const stockMessage = (() => {
-    if (availableStock === 0) {
-      return <span className="text-red-500 text-sm">Out of Stock</span>;
-    }
-    if (availableStock <= 5) {
-      return (
-        <span className="text-amber-500 text-sm">
-          Only {availableStock} left
-        </span>
-      );
-    }
-    return <span className="text-[#2EC1AC] text-sm">In Stock ✓</span>;
-  })();
+  const timerUnits: Array<{ label: string; value: number }> = [
+    { label: "Days", value: timeLeft.days },
+    { label: "Hours", value: timeLeft.hours },
+    { label: "Minutes", value: timeLeft.minutes },
+    { label: "Seconds", value: timeLeft.seconds },
+  ];
 
   return (
     <div className="mt-6">
-      {/* Color selector */}
+      {/* 1. Countdown timer */}
+      <div>
+        <p className="text-sm text-[#807D7E] mb-3">Offer expires in:</p>
+        <div className="flex gap-3">
+          {timerUnits.map(({ label, value }) => (
+            <div key={label} className="flex flex-col items-center gap-1">
+              <div className="w-14 h-14 bg-[#F3F5F7] rounded-lg flex items-center justify-center text-xl font-semibold tabular-nums text-[#1C1C1C]">
+                {String(value).padStart(2, "0")}
+              </div>
+              <span className="text-xs text-[#807D7E] text-center">{label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 2. Divider */}
+      <div className="h-px bg-[#E8ECEF] my-6" />
+
+      {/* 3. Measurements */}
+      <div>
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium text-[#1C1C1C]">Measurements</span>
+          <span className="text-sm text-[#807D7E]">/</span>
+        </div>
+        <p className="text-sm text-[#807D7E] mt-1">17 1/2×20 5/8&quot;</p>
+      </div>
+
+      {/* 4. Choose Color */}
       {colorVariants.length > 0 && (
-        <div className="mb-6">
-          <p className="font-medium text-sm mb-2 text-[#1C1C1C]">
-            Color:{" "}
-            {selectedColor && (
-              <span className="text-[#807D7E] font-normal">
-                {selectedColor.value}
-              </span>
-            )}
-          </p>
-          <div className="flex flex-wrap gap-2">
+        <div className="mt-6">
+          <div className="flex items-center">
+            <span className="text-sm font-medium text-[#1C1C1C]">Choose Color</span>
+            <span className="text-[#807D7E] ml-1">›</span>
+          </div>
+          {selectedColor && (
+            <p className="text-sm text-[#807D7E] capitalize mt-0.5">{selectedColor.value}</p>
+          )}
+          <div className="flex flex-wrap gap-2 mt-3">
             {colorVariants.map((variant) => {
               const { hex, hasBorder } = resolveColor(variant.value);
               const isSelected = selectedColor?.id === variant.id;
@@ -168,7 +214,7 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
                   disabled={isUnavailable}
                   aria-label={variant.value}
                   className={cn(
-                    "w-8 h-8 rounded-full border-2 transition-all cursor-pointer",
+                    "rounded-full w-9 h-9 border-2 transition-all cursor-pointer",
                     hasBorder ? "border-[#E8ECEF]" : "border-transparent",
                     isSelected && "ring-2 ring-offset-2 ring-[#1C1C1C]",
                     isUnavailable && "opacity-40 cursor-not-allowed"
@@ -183,7 +229,7 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
 
       {/* Size selector */}
       {sizeVariants.length > 0 && (
-        <div className="mb-6">
+        <div className="mt-6">
           <div className="flex items-center justify-between mb-2">
             <p className="font-medium text-sm text-[#1C1C1C]">Size:</p>
             <button className="text-xs text-[#807D7E] hover:text-[#1C1C1C] underline cursor-pointer">
@@ -215,16 +261,19 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
         </div>
       )}
 
-      {/* Quantity + stock */}
-      <div className="flex items-center gap-4 mb-4">
-        <div className="flex border border-[#E8ECEF] rounded-sm w-fit">
+      {/* 5. Quantity + Wishlist row */}
+      <div className="flex gap-3 mt-6">
+        {/* Qty stepper */}
+        <div className="flex items-center border border-[#1C1C1C] rounded-sm">
           <button
             onClick={() => handleQtyChange(quantity - 1)}
             disabled={quantity <= 1}
             className="w-10 h-10 flex items-center justify-center text-[#1C1C1C] hover:bg-[#F3F5F7] transition-colors disabled:opacity-40 cursor-pointer"
             aria-label="Decrease quantity"
           >
-            <Minus className="w-4 h-4" />
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
           </button>
           <input
             type="text"
@@ -242,42 +291,50 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
             className="w-10 h-10 flex items-center justify-center text-[#1C1C1C] hover:bg-[#F3F5F7] transition-colors disabled:opacity-40 cursor-pointer"
             aria-label="Increase quantity"
           >
-            <Plus className="w-4 h-4" />
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
           </button>
         </div>
-        {stockMessage}
+
+        {/* Wishlist button */}
+        <button
+          onClick={handleToggleWishlist}
+          className="flex-1 border border-[#1C1C1C] rounded-sm flex items-center justify-center gap-2 text-sm font-medium text-[#1C1C1C] hover:bg-[#F3F5F7] transition-colors cursor-pointer"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill={isWishlisted ? "#1C1C1C" : "none"}
+            stroke="currentColor"
+            strokeWidth={1.5}
+          >
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+          </svg>
+          Wishlist
+        </button>
       </div>
 
-      {/* Add to Cart */}
+      {/* 6. Add to Cart */}
       <button
         onClick={handleAddToCart}
         disabled={isOutOfStock}
-        className="w-full h-14 bg-[#1C1C1C] text-white text-sm font-medium mt-4 rounded-sm hover:bg-[#333] transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+        className="w-full h-14 bg-[#1C1C1C] text-white text-sm font-medium mt-3 rounded-sm hover:bg-[#B88E2F] transition-colors disabled:opacity-40 cursor-pointer"
       >
         {isOutOfStock ? "Out of Stock" : "Add to Cart"}
       </button>
 
-      {/* Add to Wishlist */}
-      <button
-        onClick={handleToggleWishlist}
-        className="w-full h-12 border border-[#1C1C1C] mt-3 rounded-sm text-sm text-[#1C1C1C] hover:bg-[#1C1C1C] hover:text-white transition-colors cursor-pointer"
-      >
-        {isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
-      </button>
-
-      {/* Delivery strip */}
-      <div className="flex flex-col gap-3 mt-6 pt-6 border-t border-[#E8ECEF]">
-        <div className="flex items-center gap-3 text-sm text-[#1C1C1C]">
-          <Truck className="w-4 h-4 shrink-0 text-[#807D7E]" />
-          <span>Free delivery on orders over $50</span>
+      {/* 7. SKU + Category meta */}
+      <div className="mt-6 pt-4 border-t border-[#E8ECEF] space-y-2">
+        <div className="flex items-center gap-8">
+          <span className="text-xs font-semibold uppercase tracking-widest text-[#807D7E] w-20">SKU</span>
+          <span className="text-xs text-[#1C1C1C]">{product.id.slice(0, 6)}</span>
         </div>
-        <div className="flex items-center gap-3 text-sm text-[#1C1C1C]">
-          <RotateCcw className="w-4 h-4 shrink-0 text-[#807D7E]" />
-          <span>Free 90-day returns</span>
-        </div>
-        <div className="flex items-center gap-3 text-sm text-[#1C1C1C]">
-          <Clock className="w-4 h-4 shrink-0 text-[#807D7E]" />
-          <span>Estimated delivery 3-5 business days</span>
+        <div className="flex items-center gap-8">
+          <span className="text-xs font-semibold uppercase tracking-widest text-[#807D7E] w-20">Category</span>
+          <span className="text-xs text-[#1C1C1C]">{product.category.name}</span>
         </div>
       </div>
     </div>

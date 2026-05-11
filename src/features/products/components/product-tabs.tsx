@@ -1,8 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import type { Product } from "@/features/products/types";
-import { cn } from "@/lib/utils";
 
 interface ProductTabsProps {
   product: Product;
@@ -24,39 +24,15 @@ function StarIcon({ filled, size = 14 }: { filled: boolean; size?: number }) {
 }
 
 const MOCK_REVIEWS = [
-  {
-    id: "rev-1",
-    author: "Sarah M.",
-    rating: 5,
-    date: "March 12, 2024",
-    comment:
-      "Beautifully made and even better in person. The finish is flawless and the build quality feels premium. Arrived ahead of schedule.",
-  },
-  {
-    id: "rev-2",
-    author: "James L.",
-    rating: 4,
-    date: "February 28, 2024",
-    comment:
-      "Great value for the price. Assembly was simple and the design fits perfectly in our living room. Would buy again.",
-  },
-  {
-    id: "rev-3",
-    author: "Priya K.",
-    rating: 5,
-    date: "February 14, 2024",
-    comment:
-      "Elegant and incredibly comfortable. The colour matches the photos exactly. Very happy with this purchase.",
-  },
+  { id: "r1", author: "Sofia Harvetz", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=50&h=50&fit=crop&auto=format&q=80", rating: 5, comment: 'I bought it 3 weeks ago and now come back just to say "Awesome Product". I really enjoy it. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupt et quas molestias excepturi sint non provident.' },
+  { id: "r2", author: "Nicolas Jensen", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&auto=format&q=80", rating: 5, comment: 'I bought it 3 weeks ago and now come back just to say "Awesome Product". I really enjoy it. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupt et quas molestias excepturi sint non provident.' },
+  { id: "r3", author: "Emma Carter", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop&auto=format&q=80", rating: 5, comment: 'I bought it 3 weeks ago and now come back just to say "Awesome Product". I really enjoy it. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupt et quas molestias excepturi sint non provident.' },
+  { id: "r4", author: "Daniel Park", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop&auto=format&q=80", rating: 5, comment: 'I bought it 3 weeks ago and now come back just to say "Awesome Product". I really enjoy it. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupt et quas molestias excepturi sint non provident.' },
+  { id: "r5", author: "Olivia Chen", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50&h=50&fit=crop&auto=format&q=80", rating: 5, comment: 'I bought it 3 weeks ago and now come back just to say "Awesome Product". I really enjoy it. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupt et quas molestias excepturi sint non provident.' },
 ];
 
-const STAR_DISTRIBUTION = [
-  { stars: 5, percent: 72 },
-  { stars: 4, percent: 18 },
-  { stars: 3, percent: 6 },
-  { stars: 2, percent: 3 },
-  { stars: 1, percent: 1 },
-];
+const triggerClass =
+  "rounded-none px-0 pb-3 text-sm data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-[#1C1C1C] data-[state=active]:text-[#1C1C1C] data-[state=inactive]:text-[#807D7E] shadow-none";
 
 export function ProductTabs({ product }: ProductTabsProps) {
   const specRow = (label: string, value: string) => (
@@ -68,45 +44,18 @@ export function ProductTabs({ product }: ProductTabsProps) {
 
   return (
     <section id="reviews" className="mt-20">
-      <Tabs defaultValue="description">
+      <Tabs defaultValue="reviews">
         <TabsList className="bg-transparent p-0 gap-6 h-auto border-b border-[#E8ECEF] rounded-none w-full justify-start">
-          <TabsTrigger
-            value="description"
-            className="rounded-none px-0 pb-3 text-sm data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-[#1C1C1C] data-[state=active]:text-[#1C1C1C] data-[state=inactive]:text-[#807D7E] shadow-none"
-          >
-            Description
-          </TabsTrigger>
-          <TabsTrigger
-            value="additional"
-            className="rounded-none px-0 pb-3 text-sm data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-[#1C1C1C] data-[state=active]:text-[#1C1C1C] data-[state=inactive]:text-[#807D7E] shadow-none"
-          >
+          <TabsTrigger value="additional" className={triggerClass}>
             Additional Info
           </TabsTrigger>
-          <TabsTrigger
-            value="reviews"
-            className="rounded-none px-0 pb-3 text-sm data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-[#1C1C1C] data-[state=active]:text-[#1C1C1C] data-[state=inactive]:text-[#807D7E] shadow-none"
-          >
+          <TabsTrigger value="questions" className={triggerClass}>
+            Questions
+          </TabsTrigger>
+          <TabsTrigger value="reviews" className={triggerClass}>
             Reviews ({product.reviewCount})
           </TabsTrigger>
         </TabsList>
-
-        {/* Description */}
-        <TabsContent value="description" className="pt-8">
-          <div className="max-w-3xl space-y-4">
-            <p className="text-[#807D7E] leading-relaxed">{product.description}</p>
-            <p className="text-[#807D7E] leading-relaxed">
-              Crafted with care, this piece is designed to bring both comfort
-              and character to any room. Thoughtful details and lasting
-              materials mean it ages beautifully over time.
-            </p>
-            <ul className="list-disc pl-6 space-y-2 text-[#807D7E] text-sm mt-6">
-              <li>Premium materials tested for everyday use</li>
-              <li>Responsibly sourced from certified suppliers</li>
-              <li>Easy assembly — tools and instructions included</li>
-              <li>Backed by our 90-day return promise</li>
-            </ul>
-          </div>
-        </TabsContent>
 
         {/* Additional Info */}
         <TabsContent value="additional" className="pt-8">
@@ -124,76 +73,100 @@ export function ProductTabs({ product }: ProductTabsProps) {
           </div>
         </TabsContent>
 
+        {/* Questions */}
+        <TabsContent value="questions">
+          <p className="text-[#807D7E] text-sm pt-8">No questions yet. Be the first to ask!</p>
+        </TabsContent>
+
         {/* Reviews */}
-        <TabsContent value="reviews" className="pt-8">
-          <div className="grid lg:grid-cols-[280px_1fr] gap-12">
-            {/* Summary */}
-            <div>
-              <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-semibold text-[#1C1C1C]">
-                  {product.rating.toFixed(1)}
-                </span>
-                <span className="text-sm text-[#807D7E]">/ 5</span>
-              </div>
-              <div className="flex gap-1 mt-2">
+        <TabsContent value="reviews">
+          <div className="pt-8">
+            {/* Heading */}
+            <h2 className="text-2xl font-semibold text-[#1C1C1C] mb-2">Customer Reviews</h2>
+
+            {/* Overall rating row */}
+            <div className="flex items-center gap-3 mb-1">
+              <div className="flex gap-0.5">
                 {[1, 2, 3, 4, 5].map((s) => (
                   <StarIcon key={s} filled={s <= Math.round(product.rating)} size={16} />
                 ))}
               </div>
-              <p className="text-sm text-[#807D7E] mt-1">
-                Based on {product.reviewCount} reviews
-              </p>
+              <span className="text-sm text-[#807D7E]">{product.reviewCount} Reviews</span>
+            </div>
+            <p className="text-sm text-[#807D7E] mb-6">{product.name}</p>
 
-              <div className="mt-6 space-y-2">
-                {STAR_DISTRIBUTION.map((row) => (
-                  <div key={row.stars} className="flex items-center gap-2">
-                    <span className="text-xs text-[#807D7E] w-4">
-                      {row.stars}
-                    </span>
-                    <StarIcon filled size={12} />
-                    <div className="flex-1 h-1.5 bg-[#E8ECEF] rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-[#FFC700]"
-                        style={{ width: `${row.percent}%` }}
-                      />
-                    </div>
-                    <span className="text-xs text-[#807D7E] w-8 text-right">
-                      {row.percent}%
-                    </span>
-                  </div>
+            {/* Input + emoji + Write Review */}
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex-1 border border-[#E8ECEF] rounded-lg px-4 h-11 flex items-center">
+                <input
+                  type="text"
+                  placeholder="Share your thoughts"
+                  className="flex-1 text-sm outline-none bg-transparent placeholder:text-[#807D7E]"
+                />
+              </div>
+              {/* Emoji row */}
+              <div className="hidden sm:flex items-center gap-1.5 bg-white border border-[#E8ECEF] rounded-full px-3 py-1.5">
+                {["❤️", "😍", "😊", "😮", "😤", "😱"].map((e) => (
+                  <button key={e} className="text-lg leading-none cursor-pointer">
+                    {e}
+                  </button>
                 ))}
               </div>
-
-              <button className="w-full mt-6 h-11 bg-[#1C1C1C] text-white text-sm rounded-sm hover:bg-[#333] transition-colors cursor-pointer">
+              <button className="h-11 px-5 bg-[#1C1C1C] text-white text-sm rounded-lg hover:bg-[#B88E2F] transition-colors cursor-pointer whitespace-nowrap">
                 Write Review
               </button>
             </div>
 
-            {/* Reviews list */}
-            <div className="space-y-6">
-              {MOCK_REVIEWS.map((review, index) => (
-                <div
-                  key={review.id}
-                  className={cn(
-                    "pb-6",
-                    index < MOCK_REVIEWS.length - 1 &&
-                      "border-b border-[#E8ECEF]"
-                  )}
-                >
-                  <div className="flex items-center justify-between">
-                    <p className="font-medium text-[#1C1C1C]">{review.author}</p>
-                    <span className="text-xs text-[#807D7E]">{review.date}</span>
+            {/* Review count + sort */}
+            <div className="flex items-center justify-between py-4 border-y border-[#E8ECEF] mb-6">
+              <span className="text-sm font-semibold text-[#1C1C1C]">{product.reviewCount} Reviews</span>
+              <select className="text-sm text-[#1C1C1C] bg-transparent border-none outline-none cursor-pointer">
+                <option>Newest</option>
+                <option>Oldest</option>
+                <option>Highest Rating</option>
+                <option>Lowest Rating</option>
+              </select>
+            </div>
+
+            {/* Review list */}
+            <div className="space-y-8">
+              {MOCK_REVIEWS.map((review) => (
+                <div key={review.id} className="flex gap-4">
+                  <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 relative bg-[#F3F5F7]">
+                    <Image
+                      src={review.avatar}
+                      alt={review.author}
+                      fill
+                      sizes="40px"
+                      className="object-cover"
+                    />
                   </div>
-                  <div className="flex gap-0.5 mt-1">
-                    {[1, 2, 3, 4, 5].map((s) => (
-                      <StarIcon key={s} filled={s <= review.rating} size={12} />
-                    ))}
+                  <div className="flex-1">
+                    <p className="font-semibold text-[#1C1C1C] text-sm">{review.author}</p>
+                    <div className="flex gap-0.5 mt-1">
+                      {[1, 2, 3, 4, 5].map((s) => (
+                        <StarIcon key={s} filled={s <= review.rating} size={12} />
+                      ))}
+                    </div>
+                    <p className="text-sm text-[#807D7E] leading-relaxed mt-2">{review.comment}</p>
+                    <div className="flex items-center gap-4 mt-3">
+                      <button className="text-xs text-[#807D7E] hover:text-[#1C1C1C] cursor-pointer">
+                        Like
+                      </button>
+                      <button className="text-xs text-[#807D7E] hover:text-[#1C1C1C] cursor-pointer">
+                        Reply
+                      </button>
+                    </div>
                   </div>
-                  <p className="text-sm text-[#807D7E] leading-relaxed mt-3">
-                    {review.comment}
-                  </p>
                 </div>
               ))}
+            </div>
+
+            {/* Load more */}
+            <div className="flex justify-center mt-10">
+              <button className="border border-[#1C1C1C] text-[#1C1C1C] px-12 py-3 rounded-full text-sm hover:bg-[#1C1C1C] hover:text-white transition-colors cursor-pointer">
+                Load more
+              </button>
             </div>
           </div>
         </TabsContent>

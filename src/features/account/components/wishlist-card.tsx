@@ -2,7 +2,6 @@
 
 import { SafeImage } from "@/components/ui/safe-image";
 import Link from "next/link";
-import { X } from "lucide-react";
 import { useSetAtom } from "jotai";
 import { cartItemsAtom, cartOpenAtom } from "@/features/cart/atoms";
 import { wishlistAtom } from "@/features/wishlist/atoms";
@@ -49,7 +48,7 @@ export function WishlistCard({ item }: Props) {
         className="absolute top-2 right-2 z-10 w-7 h-7 bg-white rounded-full flex items-center justify-center shadow-sm hover:bg-red-50 hover:text-red-500 transition-colors"
         aria-label={`Remove ${product.name} from wishlist`}
       >
-        <X size={13} />
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
       </button>
 
       {/* Image */}
@@ -87,7 +86,7 @@ export function WishlistCard({ item }: Props) {
         </div>
         <button
           onClick={handleMoveToCart}
-          className="mt-3 w-full h-8 border border-[#1C1C1C] rounded-sm text-xs font-medium text-[#1C1C1C] hover:bg-[#1C1C1C] hover:text-white transition-colors"
+          className="mt-3 w-full h-8 border border-[#1C1C1C] rounded-lg text-xs font-medium text-[#1C1C1C] hover:bg-[#1C1C1C] hover:text-white transition-colors"
         >
           Move to Cart
         </button>

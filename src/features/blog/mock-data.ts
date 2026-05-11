@@ -1,5 +1,11 @@
 import type { BlogPost } from "./types";
 
+const U = (id: string, w = 1200, h = 800) =>
+  `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&fit=crop&auto=format&q=80`;
+
+const avatar = (id: string) =>
+  `https://images.unsplash.com/photo-${id}?w=100&h=100&fit=crop&auto=format&q=80`;
+
 export const MOCK_POSTS: BlogPost[] = [
   {
     id: "1",
@@ -8,8 +14,8 @@ export const MOCK_POSTS: BlogPost[] = [
     excerpt:
       "Finding the right sofa is one of the most important decisions you'll make for your living room. From size and shape to fabric and color, we break down everything you need to know.",
     category: "Furniture Guide",
-    author: { name: "Emma Carter", avatar: "https://picsum.photos/seed/emma/100/100" },
-    coverImage: "https://picsum.photos/seed/sofa-guide/1200/800",
+    author: { name: "Emma Carter", avatar: avatar("1544005313-94ddf0286df2") },
+    coverImage: U("1555041469-a586c61ea9bc"),
     publishedAt: "2026-04-10",
     readTime: "5 min read",
     sections: [
@@ -35,7 +41,7 @@ export const MOCK_POSTS: BlogPost[] = [
       },
       {
         type: "img",
-        content: "https://picsum.photos/seed/sofa-style/1200/600",
+        content: U("1586023492125-27b2c045efd7", 1200, 600),
       },
       {
         type: "h2",
@@ -76,8 +82,8 @@ export const MOCK_POSTS: BlogPost[] = [
     excerpt:
       "Minimalism is more than just an aesthetic — it's a lifestyle. Discover the core principles that will help you create a calm, clutter-free home without sacrificing style.",
     category: "Interior Design",
-    author: { name: "James Lee", avatar: "https://picsum.photos/seed/james/100/100" },
-    coverImage: "https://picsum.photos/seed/minimalist/1200/800",
+    author: { name: "James Lee", avatar: avatar("1507003211169-0a1dd7228f2d") },
+    coverImage: U("1484101403633-562f891dc89a"),
     publishedAt: "2026-04-05",
     readTime: "7 min read",
     sections: [
@@ -103,7 +109,7 @@ export const MOCK_POSTS: BlogPost[] = [
       },
       {
         type: "img",
-        content: "https://picsum.photos/seed/minimalist-room/1200/600",
+        content: U("1616486338812-3dadae4b4ace", 1200, 600),
       },
       {
         type: "h2",
@@ -134,8 +140,8 @@ export const MOCK_POSTS: BlogPost[] = [
     excerpt:
       "Who says your furniture has to match perfectly? Learn how to blend different styles, eras, and materials to create a space that feels uniquely yours.",
     category: "Style Tips",
-    author: { name: "Sophia Martin", avatar: "https://picsum.photos/seed/sophia/100/100" },
-    coverImage: "https://picsum.photos/seed/mixing-styles/1200/800",
+    author: { name: "Sophia Martin", avatar: avatar("1494790108377-be9c29b29330") },
+    coverImage: U("1493663284031-b7e3aefcae8e"),
     publishedAt: "2026-03-28",
     readTime: "6 min read",
     sections: [
@@ -161,7 +167,7 @@ export const MOCK_POSTS: BlogPost[] = [
       },
       {
         type: "img",
-        content: "https://picsum.photos/seed/mixing-eras/1200/600",
+        content: U("1549187774-b4e9b0445b41", 1200, 600),
       },
       {
         type: "h2",
@@ -192,8 +198,8 @@ export const MOCK_POSTS: BlogPost[] = [
     excerpt:
       "Your workspace should inspire focus and creativity. Here's how to set up a home office that boosts productivity without compromising on design.",
     category: "Home Office",
-    author: { name: "Daniel Park", avatar: "https://picsum.photos/seed/daniel/100/100" },
-    coverImage: "https://picsum.photos/seed/home-office/1200/800",
+    author: { name: "Daniel Park", avatar: avatar("1500648767791-00dcc994a43e") },
+    coverImage: U("1593642632559-0c6d3fc62b89"),
     publishedAt: "2026-03-20",
     readTime: "8 min read",
     sections: [
@@ -219,7 +225,7 @@ export const MOCK_POSTS: BlogPost[] = [
       },
       {
         type: "img",
-        content: "https://picsum.photos/seed/office-setup/1200/600",
+        content: U("1519710164239-da123dc03ef4", 1200, 600),
       },
       {
         type: "h2",
@@ -250,8 +256,8 @@ export const MOCK_POSTS: BlogPost[] = [
     excerpt:
       "As consumers become more eco-conscious, sustainable furniture has moved from niche to mainstream. Here's your guide to making greener choices for your home.",
     category: "Sustainability",
-    author: { name: "Olivia Chen", avatar: "https://picsum.photos/seed/olivia/100/100" },
-    coverImage: "https://picsum.photos/seed/sustainable/1200/800",
+    author: { name: "Olivia Chen", avatar: avatar("1438761681033-6461ffad8d80") },
+    coverImage: U("1524758631624-e2822e304c36"),
     publishedAt: "2026-03-14",
     readTime: "5 min read",
     sections: [
@@ -277,7 +283,7 @@ export const MOCK_POSTS: BlogPost[] = [
       },
       {
         type: "img",
-        content: "https://picsum.photos/seed/sustainable-wood/1200/600",
+        content: U("1558618666-fcd25c85cd64", 1200, 600),
       },
       {
         type: "h2",
@@ -308,8 +314,8 @@ export const MOCK_POSTS: BlogPost[] = [
     excerpt:
       "Limited square footage doesn't mean limited style. Discover smart furniture choices and layout tricks that make small apartments feel spacious and stylish.",
     category: "Style Tips",
-    author: { name: "Emma Carter", avatar: "https://picsum.photos/seed/emma/100/100" },
-    coverImage: "https://picsum.photos/seed/small-space/1200/800",
+    author: { name: "Emma Carter", avatar: avatar("1544005313-94ddf0286df2") },
+    coverImage: U("1522708323590-d24dbb6b0267"),
     publishedAt: "2026-03-07",
     readTime: "6 min read",
     sections: [
@@ -335,7 +341,7 @@ export const MOCK_POSTS: BlogPost[] = [
       },
       {
         type: "img",
-        content: "https://picsum.photos/seed/small-apartment/1200/600",
+        content: U("1527859978995-4f1e78f5a7de", 1200, 600),
       },
       {
         type: "h2",

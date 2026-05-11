@@ -4,25 +4,32 @@ import { useState } from "react";
 import { SafeImage } from "@/components/ui/safe-image";
 import Link from "next/link";
 import { useAtom, useAtomValue } from "jotai";
-import {
-  Minus,
-  Plus,
-  Trash2,
-  ArrowLeft,
-  ShoppingCart,
-  X,
-} from "lucide-react";
 
 import { cartItemsAtom, cartSubtotalAtom } from "@/features/cart/atoms";
-import { couponAtom } from "@/features/checkout/atoms";
+import {
+  couponAtom,
+  shippingMethodAtom,
+  SHIPPING_COSTS,
+  type ShippingMethod,
+} from "@/features/checkout/atoms";
+import { StepIndicator } from "@/features/checkout/components/step-indicator";
 import type { CartItem } from "@/features/products/types";
 import { formatPrice, cn } from "@/lib/utils";
-import { Breadcrumb } from "@/features/shared/components/breadcrumb";
 
 const COUPONS: Record<string, { discount: number; type: "percent" }> = {
   SAVE10: { discount: 10, type: "percent" },
   FURNITURE20: { discount: 20, type: "percent" },
 };
+
+const SHIPPING_OPTIONS: Array<{
+  value: ShippingMethod;
+  label: string;
+  displayCost: string;
+}> = [
+  { value: "standard", label: "Free shipping", displayCost: "$0.00" },
+  { value: "express", label: "Express shipping", displayCost: "+$15.00" },
+  { value: "nextday", label: "Pick Up", displayCost: "$21.00" },
+];
 
 function isSameItem(a: CartItem, b: CartItem) {
   return (
@@ -35,10 +42,29 @@ function cartItemKey(item: CartItem) {
   return `${item.product.id}-${item.variant?.id ?? "default"}`;
 }
 
+function CouponIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 5H3a2 2 0 0 0-2 2v3a2 2 0 0 1 0 4v3a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2v-3a2 2 0 0 1 0-4V7a2 2 0 0 0-2-2z" />
+    </svg>
+  );
+}
+
+function EmptyCartIcon() {
+  return (
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="text-[#E8ECEF]">
+      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <path d="M16 10a4 4 0 0 1-8 0" />
+    </svg>
+  );
+}
+
 export default function CartPage() {
   const [items, setItems] = useAtom(cartItemsAtom);
   const subtotal = useAtomValue(cartSubtotalAtom);
   const [coupon, setCoupon] = useAtom(couponAtom);
+  const [shippingMethod, setShippingMethod] = useAtom(shippingMethodAtom);
 
   const [couponInput, setCouponInput] = useState("");
   const [couponError, setCouponError] = useState<string | null>(null);
@@ -60,49 +86,34 @@ export default function CartPage() {
     setCouponError(null);
     setCouponSuccess(null);
     if (!code) return;
-
     const match = COUPONS[code];
     if (!match) {
       setCouponError("Invalid coupon code");
       return;
     }
-
     setCoupon({ code, discount: match.discount, type: match.type });
     setCouponSuccess(`${code} applied — ${match.discount}% off`);
     setCouponInput("");
   }
 
-  function removeCoupon() {
-    setCoupon(null);
-    setCouponSuccess(null);
-    setCouponError(null);
-  }
-
-  const discountAmount =
-    coupon && coupon.type === "percent"
-      ? (subtotal * coupon.discount) / 100
-      : coupon?.discount ?? 0;
-  const total = Math.max(0, subtotal - discountAmount);
+  const shippingCost = SHIPPING_COSTS[shippingMethod];
+  const total = subtotal + shippingCost;
 
   return (
     <div className="px-8 lg:px-20 py-12">
-      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Cart" }]} />
-
-      <h1 className="text-3xl font-semibold text-[#1C1C1C] mb-8">Cart</h1>
+      <h1 className="text-4xl font-bold text-[#1C1C1C] text-center mb-8">Cart</h1>
+      <StepIndicator step={1} />
 
       {items.length === 0 ? (
         <div className="py-24 flex flex-col items-center text-center">
-          <ShoppingCart size={64} className="text-[#E8ECEF] mb-4" />
-          <p className="text-xl font-semibold text-[#1C1C1C]">
-            Your cart is empty
-          </p>
+          <EmptyCartIcon />
+          <p className="text-xl font-semibold text-[#1C1C1C] mt-4">Your cart is empty</p>
           <p className="text-sm text-[#807D7E] mt-2 max-w-xs">
-            Looks like you haven&apos;t added anything yet. Start exploring our
-            collection.
+            Looks like you haven&apos;t added anything yet.
           </p>
           <Link
             href="/shop"
-            className="inline-flex items-center justify-center h-12 px-8 mt-6 bg-[#1C1C1C] text-white text-sm font-medium rounded-sm hover:bg-[#333] transition-colors"
+            className="inline-flex items-center justify-center h-12 px-8 mt-6 bg-[#1C1C1C] text-white text-sm font-medium rounded-lg hover:bg-[#B88E2F] transition-colors"
           >
             Start Shopping
           </Link>
@@ -113,163 +124,155 @@ export default function CartPage() {
           <div>
             {/* Desktop table */}
             <div className="hidden lg:block">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="bg-[#F3F5F7] text-xs uppercase tracking-wider text-[#807D7E]">
-                    <th className="text-left px-4 py-3 font-medium">Product</th>
-                    <th className="text-left px-4 py-3 font-medium">Price</th>
-                    <th className="text-left px-4 py-3 font-medium">Quantity</th>
-                    <th className="text-left px-4 py-3 font-medium">Subtotal</th>
-                    <th className="px-4 py-3"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {items.map((item) => (
-                    <tr
-                      key={cartItemKey(item)}
-                      className="border-b border-[#E8ECEF]"
-                    >
-                      <td className="px-4 py-6">
-                        <div className="flex items-center gap-4">
-                          <div className="relative w-[88px] h-[88px] rounded-lg overflow-hidden bg-[#FAFAFA] shrink-0">
-                            <SafeImage
-                              src={item.product.images[0]}
-                              alt={item.product.name}
-                              fill
-                              sizes="88px"
-                              className="object-cover"
-                            />
-                          </div>
-                          <div>
-                            <Link
-                              href={`/shop/${item.product.slug}`}
-                              className="font-medium text-[#1C1C1C] hover:text-[#B88E2F] transition-colors"
-                            >
-                              {item.product.name}
-                            </Link>
-                            {item.variant && (
-                              <p className="text-sm text-[#807D7E] mt-1">
-                                {item.variant.name}: {item.variant.value}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-4 py-6 text-[#1C1C1C]">
-                        {formatPrice(item.product.price)}
-                      </td>
-                      <td className="px-4 py-6">
-                        <QuantityStepper
-                          quantity={item.quantity}
-                          onChange={(q) => updateQuantity(item, q)}
-                        />
-                      </td>
-                      <td className="px-4 py-6 font-medium text-[#1C1C1C]">
-                        {formatPrice(item.product.price * item.quantity)}
-                      </td>
-                      <td className="px-4 py-6">
-                        <button
-                          onClick={() => removeItem(item)}
-                          aria-label="Remove item"
-                          className="text-[#807D7E] hover:text-red-500 transition-colors cursor-pointer"
-                        >
-                          <Trash2 size={18} />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Mobile list */}
-            <div className="lg:hidden">
+              <div className="grid grid-cols-[1fr_auto_auto_auto] gap-4 border-b border-[#E8ECEF] pb-3 mb-2">
+                <span className="text-sm font-medium text-[#1C1C1C]">Product</span>
+                <span className="text-sm font-medium text-[#1C1C1C] w-32 text-center">Quantity</span>
+                <span className="text-sm font-medium text-[#1C1C1C] w-20 text-right">Price</span>
+                <span className="text-sm font-medium text-[#1C1C1C] w-20 text-right">Subtotal</span>
+              </div>
               {items.map((item) => (
                 <div
                   key={cartItemKey(item)}
-                  className="flex gap-4 border-b border-[#E8ECEF] pb-5 mb-5"
+                  className="grid grid-cols-[1fr_auto_auto_auto] gap-4 items-center border-b border-[#E8ECEF] py-5"
                 >
-                  <div className="relative w-[72px] h-[72px] rounded-lg overflow-hidden bg-[#FAFAFA] shrink-0">
+                  <div className="flex items-start gap-4">
+                    <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-[#F3F5F7] shrink-0">
+                      <SafeImage
+                        src={item.product.images[0]}
+                        alt={item.product.name}
+                        fill
+                        sizes="80px"
+                        className="object-cover"
+                      />
+                    </div>
+                    <div>
+                      <Link
+                        href={`/shop/${item.product.slug}`}
+                        className="font-semibold text-sm text-[#1C1C1C] hover:text-[#B88E2F] transition-colors"
+                      >
+                        {item.product.name}
+                      </Link>
+                      {item.variant && (
+                        <p className="text-xs text-[#807D7E] mt-0.5">
+                          Color: {item.variant.value}
+                        </p>
+                      )}
+                      <button
+                        onClick={() => removeItem(item)}
+                        className="flex items-center gap-1 text-xs text-[#807D7E] hover:text-[#1C1C1C] transition-colors mt-2 cursor-pointer"
+                      >
+                        <span>×</span>
+                        <span>Remove</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="w-32 flex justify-center">
+                    <QuantityStepper
+                      quantity={item.quantity}
+                      onChange={(q) => updateQuantity(item, q)}
+                    />
+                  </div>
+                  <div className="w-20 text-right text-sm text-[#1C1C1C]">
+                    {formatPrice(item.product.price)}
+                  </div>
+                  <div className="w-20 text-right text-sm font-semibold text-[#1C1C1C]">
+                    {formatPrice(item.product.price * item.quantity)}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Mobile list */}
+            <div className="lg:hidden divide-y divide-[#E8ECEF]">
+              {items.map((item) => (
+                <div key={cartItemKey(item)} className="py-4 flex gap-3">
+                  <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-[#F3F5F7] shrink-0">
                     <SafeImage
                       src={item.product.images[0]}
                       alt={item.product.name}
                       fill
-                      sizes="72px"
+                      sizes="64px"
                       className="object-cover"
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <Link
-                      href={`/shop/${item.product.slug}`}
-                      className="font-medium text-sm text-[#1C1C1C] truncate block hover:text-[#B88E2F] transition-colors"
-                    >
-                      {item.product.name}
-                    </Link>
+                    <div className="flex items-start justify-between gap-2">
+                      <Link
+                        href={`/shop/${item.product.slug}`}
+                        className="font-semibold text-sm text-[#1C1C1C] leading-snug"
+                      >
+                        {item.product.name}
+                      </Link>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className="text-sm font-semibold text-[#1C1C1C]">
+                          {formatPrice(item.product.price)}
+                        </span>
+                        <button
+                          onClick={() => removeItem(item)}
+                          aria-label="Remove"
+                          className="text-[#807D7E] hover:text-[#1C1C1C] transition-colors cursor-pointer text-lg leading-none"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    </div>
                     {item.variant && (
                       <p className="text-xs text-[#807D7E] mt-0.5">
-                        {item.variant.name}: {item.variant.value}
+                        Color: {item.variant.value}
                       </p>
                     )}
-                    <p className="font-semibold text-sm text-[#1C1C1C] mt-1">
-                      {formatPrice(item.product.price * item.quantity)}
-                    </p>
-                    <div className="flex items-center justify-between mt-3">
+                    <div className="mt-2">
                       <QuantityStepper
                         quantity={item.quantity}
                         onChange={(q) => updateQuantity(item, q)}
                       />
-                      <button
-                        onClick={() => removeItem(item)}
-                        aria-label="Remove item"
-                        className="text-[#807D7E] hover:text-red-500 transition-colors cursor-pointer"
-                      >
-                        <Trash2 size={16} />
-                      </button>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Coupon */}
-            <div className="mt-8">
+            {/* Coupon section */}
+            <div className="mt-12">
+              <h3 className="text-base font-semibold text-[#1C1C1C]">Have a coupon?</h3>
+              <p className="text-sm text-[#807D7E] mt-1 mb-4">
+                Add your code for an instant cart discount
+              </p>
               {coupon ? (
-                <div className="inline-flex items-center gap-2 bg-[#F3F5F7] px-3 py-1.5 rounded-full text-sm">
-                  <span className="text-[#1C1C1C]">
-                    {coupon.code} applied ✓
-                  </span>
+                <div className="inline-flex items-center gap-2 bg-[#F3F5F7] px-4 py-2.5 rounded-lg text-sm">
+                  <CouponIcon />
+                  <span className="text-[#1C1C1C]">{coupon.code} applied ✓</span>
                   <button
-                    onClick={removeCoupon}
+                    onClick={() => { setCoupon(null); setCouponSuccess(null); }}
+                    className="text-[#807D7E] hover:text-red-500 transition-colors cursor-pointer ml-1"
                     aria-label="Remove coupon"
-                    className="text-[#807D7E] hover:text-red-500 transition-colors cursor-pointer"
                   >
-                    <X className="w-3.5 h-3.5" />
+                    ×
                   </button>
                 </div>
               ) : (
                 <>
-                  <div className="flex gap-3 max-w-sm">
+                  <div className="flex items-center border border-[#E8ECEF] rounded-lg max-w-sm overflow-hidden">
+                    <div className="px-3 text-[#807D7E]">
+                      <CouponIcon />
+                    </div>
                     <input
                       type="text"
                       value={couponInput}
                       onChange={(e) => setCouponInput(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") applyCoupon();
-                      }}
+                      onKeyDown={(e) => { if (e.key === "Enter") applyCoupon(); }}
                       placeholder="Coupon Code"
-                      className="flex-1 h-11 border border-[#E8ECEF] rounded-sm px-3 text-sm outline-none focus:border-[#1C1C1C] transition-colors"
+                      className="flex-1 py-3 text-sm outline-none bg-transparent placeholder:text-[#807D7E]"
                     />
                     <button
                       onClick={applyCoupon}
-                      className="h-11 px-6 border border-[#1C1C1C] text-[#1C1C1C] text-sm rounded-sm hover:bg-[#1C1C1C] hover:text-white transition-colors cursor-pointer"
+                      className="px-5 py-3 text-sm font-medium text-[#1C1C1C] hover:text-[#B88E2F] transition-colors cursor-pointer"
                     >
                       Apply
                     </button>
                   </div>
                   {couponSuccess && (
-                    <p className="text-sm text-[#2EC1AC] mt-2">
-                      {couponSuccess}
-                    </p>
+                    <p className="text-sm text-[#2EC1AC] mt-2">{couponSuccess}</p>
                   )}
                   {couponError && (
                     <p className="text-sm text-red-500 mt-2">{couponError}</p>
@@ -277,59 +280,60 @@ export default function CartPage() {
                 </>
               )}
             </div>
-
-            {/* Continue shopping */}
-            <Link
-              href="/shop"
-              className="inline-flex items-center gap-2 text-sm text-[#1C1C1C] hover:text-[#B88E2F] transition-colors mt-8"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Continue Shopping
-            </Link>
           </div>
 
-          {/* RIGHT — summary */}
-          <aside className="bg-[#F3F5F7] rounded-2xl p-8 mt-10 lg:mt-0 h-fit">
-            <h2 className="text-xl font-semibold text-[#1C1C1C] mb-6">
-              Cart Totals
-            </h2>
+          {/* RIGHT — Cart summary */}
+          <aside className="mt-10 lg:mt-0 h-fit">
+            <div className="border border-[#E8ECEF] rounded-2xl p-6">
+              <h2 className="text-base font-semibold text-[#1C1C1C] mb-5">Cart summary</h2>
 
-            <div className="flex justify-between items-center border-b border-[#E8ECEF] py-3">
-              <span className="text-sm text-[#807D7E]">Subtotal</span>
-              <span className="text-sm font-medium text-[#1C1C1C]">
-                {formatPrice(subtotal)}
-              </span>
-            </div>
-
-            <div className="flex justify-between items-center border-b border-[#E8ECEF] py-3">
-              <span className="text-sm text-[#807D7E]">Shipping</span>
-              <span className="text-sm font-medium text-[#2EC1AC]">Free</span>
-            </div>
-
-            {coupon && (
-              <div className="flex justify-between items-center border-b border-[#E8ECEF] py-3">
-                <span className="text-sm text-[#807D7E]">
-                  Discount ({coupon.code})
-                </span>
-                <span className="text-sm font-medium text-red-500">
-                  -{coupon.discount}%
-                </span>
+              {/* Shipping options */}
+              <div className="space-y-3 mb-6">
+                {SHIPPING_OPTIONS.map((option) => {
+                  const selected = shippingMethod === option.value;
+                  return (
+                    <label
+                      key={option.value}
+                      className={cn(
+                        "flex items-center justify-between p-3.5 border rounded-xl cursor-pointer transition-colors",
+                        selected ? "border-[#1C1C1C] bg-[#F3F5F7]" : "border-[#E8ECEF] hover:border-[#807D7E]"
+                      )}
+                    >
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="radio"
+                          name="shipping"
+                          value={option.value}
+                          checked={selected}
+                          onChange={() => setShippingMethod(option.value)}
+                          className="w-4 h-4 accent-[#1C1C1C]"
+                        />
+                        <span className="text-sm text-[#1C1C1C]">{option.label}</span>
+                      </div>
+                      <span className="text-sm text-[#1C1C1C]">{option.displayCost}</span>
+                    </label>
+                  );
+                })}
               </div>
-            )}
 
-            <div className="flex justify-between items-center pt-4 mt-2">
-              <span className="font-bold text-xl text-[#1C1C1C]">Total</span>
-              <span className="font-bold text-xl text-[#1C1C1C]">
-                {formatPrice(total)}
-              </span>
+              <div className="border-t border-[#E8ECEF] pt-4 space-y-3">
+                <div className="flex justify-between text-sm">
+                  <span className="text-[#807D7E]">Subtotal</span>
+                  <span className="text-[#1C1C1C] font-medium">{formatPrice(subtotal)}</span>
+                </div>
+                <div className="flex justify-between pt-2 border-t border-[#E8ECEF]">
+                  <span className="font-bold text-[#1C1C1C]">Total</span>
+                  <span className="font-bold text-[#1C1C1C]">{formatPrice(total)}</span>
+                </div>
+              </div>
+
+              <Link
+                href="/checkout"
+                className="w-full h-14 bg-[#1C1C1C] text-white mt-5 rounded-lg flex items-center justify-center text-sm font-medium hover:bg-[#B88E2F] transition-colors"
+              >
+                Checkout
+              </Link>
             </div>
-
-            <Link
-              href="/checkout"
-              className="w-full h-14 bg-[#1C1C1C] text-white mt-6 rounded-sm flex items-center justify-center text-sm font-medium hover:bg-[#333] transition-colors"
-            >
-              Proceed to Checkout
-            </Link>
           </aside>
         </div>
       )}
@@ -345,34 +349,27 @@ function QuantityStepper({
   onChange: (next: number) => void;
 }) {
   return (
-    <div className="flex border border-[#E8ECEF] rounded-sm w-fit">
+    <div className="inline-flex items-center border border-[#E8ECEF] rounded-lg">
       <button
         onClick={() => onChange(quantity - 1)}
         disabled={quantity <= 1}
         aria-label="Decrease quantity"
         className={cn(
-          "w-9 h-9 flex items-center justify-center text-[#1C1C1C] hover:bg-[#F3F5F7] transition-colors cursor-pointer",
+          "w-9 h-9 flex items-center justify-center text-[#1C1C1C] hover:bg-[#F3F5F7] rounded-l-lg transition-colors cursor-pointer text-lg",
           quantity <= 1 && "opacity-40 cursor-not-allowed"
         )}
       >
-        <Minus className="w-3.5 h-3.5" />
+        −
       </button>
-      <input
-        type="text"
-        inputMode="numeric"
-        value={quantity}
-        onChange={(e) => {
-          const next = Number(e.target.value);
-          if (Number.isFinite(next) && next >= 1) onChange(next);
-        }}
-        className="text-center w-12 text-sm outline-none bg-transparent"
-      />
+      <span className="w-9 text-center text-sm text-[#1C1C1C] select-none">
+        {quantity}
+      </span>
       <button
         onClick={() => onChange(quantity + 1)}
         aria-label="Increase quantity"
-        className="w-9 h-9 flex items-center justify-center text-[#1C1C1C] hover:bg-[#F3F5F7] transition-colors cursor-pointer"
+        className="w-9 h-9 flex items-center justify-center text-[#1C1C1C] hover:bg-[#F3F5F7] rounded-r-lg transition-colors cursor-pointer text-lg"
       >
-        <Plus className="w-3.5 h-3.5" />
+        +
       </button>
     </div>
   );

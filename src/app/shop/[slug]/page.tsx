@@ -5,14 +5,13 @@ import { notFound } from "next/navigation";
 import {
   getProductBySlug,
   getProducts,
-  getRelatedProducts,
 } from "@/lib/api/products";
 import { formatPrice } from "@/lib/utils";
 import { Breadcrumb } from "@/features/shared/components/breadcrumb";
 import { ImageGallery } from "@/features/products/components/image-gallery";
 import { AddToCartSection } from "@/features/products/components/add-to-cart-section";
 import { ProductTabs } from "@/features/products/components/product-tabs";
-import { RelatedProducts } from "@/features/products/components/related-products";
+import { NewsletterSection } from "@/features/shared/components/newsletter-section";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -69,84 +68,84 @@ export default async function ProductDetailPage({ params }: PageProps) {
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 
-  const relatedProducts = await getRelatedProducts(product.id);
-
   const discountPercent = product.comparePrice
     ? Math.round((1 - product.price / product.comparePrice) * 100)
     : 0;
 
   return (
-    <div className="px-8 lg:px-20 py-12">
-      <Breadcrumb
-        items={[
-          { label: "Home", href: "/" },
-          { label: "Shop", href: "/shop" },
-          {
-            label: product.category.name,
-            href: `/shop?category=${product.category.slug}`,
-          },
-          { label: product.name },
-        ]}
-      />
-
-      <div className="lg:grid lg:grid-cols-2 gap-16 items-start mt-8">
-        {/* Gallery */}
-        <ImageGallery
-          images={product.images}
-          name={product.name}
-          isOnSale={!!product.comparePrice}
+    <div>
+      <div className="px-8 lg:px-20 py-12">
+        <Breadcrumb
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Shop", href: "/shop" },
+            {
+              label: product.category.name,
+              href: `/shop?category=${product.category.slug}`,
+            },
+            { label: product.name },
+          ]}
         />
 
-        {/* Info */}
-        <div className="mt-10 lg:mt-0">
-          <div className="flex items-center gap-2">
-            <div className="flex gap-0.5">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <StarIcon
-                  key={star}
-                  filled={star <= Math.round(product.rating)}
-                />
-              ))}
+        <div className="lg:grid lg:grid-cols-2 gap-16 items-start mt-8">
+          {/* Gallery */}
+          <ImageGallery
+            images={product.images}
+            name={product.name}
+            isNew={true}
+            discountPercent={discountPercent}
+          />
+
+          {/* Info */}
+          <div className="mt-10 lg:mt-0">
+            <div className="flex items-center gap-2">
+              <div className="flex gap-0.5">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <StarIcon
+                    key={star}
+                    filled={star <= Math.round(product.rating)}
+                  />
+                ))}
+              </div>
+              <a
+                href="#reviews"
+                className="text-sm text-[#807D7E] underline cursor-pointer hover:text-[#1C1C1C] transition-colors"
+              >
+                {product.reviewCount} Reviews
+              </a>
             </div>
-            <a
-              href="#reviews"
-              className="text-sm text-[#807D7E] underline cursor-pointer hover:text-[#1C1C1C] transition-colors"
-            >
-              {product.reviewCount} Reviews
-            </a>
+
+            <h1 className="text-3xl font-semibold text-[#1C1C1C] mt-2">
+              {product.name}
+            </h1>
+
+            <div className="flex items-center gap-3 mt-2">
+              <span className="text-2xl font-semibold text-[#1C1C1C]">
+                {formatPrice(product.price)}
+              </span>
+              {product.comparePrice && (
+                <>
+                  <span className="text-sm text-[#807D7E] line-through">
+                    {formatPrice(product.comparePrice)}
+                  </span>
+                  <span className="bg-red-100 text-red-600 text-xs px-2 py-0.5 rounded">
+                    Save {discountPercent}%
+                  </span>
+                </>
+              )}
+            </div>
+
+            <p className="text-[#807D7E] leading-relaxed mt-4 pb-4 border-b border-[#E8ECEF]">
+              {product.description}
+            </p>
+
+            <AddToCartSection product={product} />
           </div>
-
-          <h1 className="text-3xl font-semibold text-[#1C1C1C] mt-2">
-            {product.name}
-          </h1>
-
-          <div className="flex items-center gap-3 mt-2">
-            <span className="text-2xl font-semibold text-[#1C1C1C]">
-              {formatPrice(product.price)}
-            </span>
-            {product.comparePrice && (
-              <>
-                <span className="text-sm text-[#807D7E] line-through">
-                  {formatPrice(product.comparePrice)}
-                </span>
-                <span className="bg-red-100 text-red-600 text-xs px-2 py-0.5 rounded">
-                  Save {discountPercent}%
-                </span>
-              </>
-            )}
-          </div>
-
-          <p className="text-[#807D7E] leading-relaxed mt-4 pb-4 border-b border-[#E8ECEF]">
-            {product.description}
-          </p>
-
-          <AddToCartSection product={product} />
         </div>
+
+        <ProductTabs product={product} />
       </div>
-
-      <ProductTabs product={product} />
-
-      <RelatedProducts products={relatedProducts} />
+      <NewsletterSection />
     </div>
   );
 }
