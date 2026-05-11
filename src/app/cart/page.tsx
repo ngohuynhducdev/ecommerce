@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { SafeImage } from "@/components/ui/safe-image";
 import Link from "next/link";
 import { useAtom, useAtomValue } from "jotai";
@@ -16,10 +16,6 @@ import { StepIndicator } from "@/features/checkout/components/step-indicator";
 import type { CartItem } from "@/features/products/types";
 import { formatPrice, cn } from "@/lib/utils";
 
-const COUPONS: Record<string, { discount: number; type: "percent" }> = {
-  SAVE10: { discount: 10, type: "percent" },
-  FURNITURE20: { discount: 20, type: "percent" },
-};
 
 const SHIPPING_OPTIONS: Array<{
   value: ShippingMethod;
@@ -69,6 +65,7 @@ export default function CartPage() {
   const [couponInput, setCouponInput] = useState("");
   const [couponError, setCouponError] = useState<string | null>(null);
   const [couponSuccess, setCouponSuccess] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
 
   function updateQuantity(item: CartItem, nextQty: number) {
     if (nextQty < 1) return;
@@ -86,14 +83,18 @@ export default function CartPage() {
     setCouponError(null);
     setCouponSuccess(null);
     if (!code) return;
-    const match = COUPONS[code];
-    if (!match) {
-      setCouponError("Invalid coupon code");
-      return;
-    }
-    setCoupon({ code, discount: match.discount, type: match.type });
-    setCouponSuccess(`${code} applied — ${match.discount}% off`);
-    setCouponInput("");
+
+    startTransition(async () => {
+      const res = await fetch(`/api/coupons/validate?code=${encodeURIComponent(code)}`);
+      if (!res.ok) {
+        setCouponError("Invalid coupon code");
+        return;
+      }
+      const data = (await res.json()) as { code: string; discount: number; type: "percent" | "fixed"; minOrder: number };
+      setCoupon({ code: data.code, discount: data.discount, type: data.type });
+      setCouponSuccess(`${data.code} applied — ${data.discount}${data.type === "percent" ? "%" : "$"} off`);
+      setCouponInput("");
+    });
   }
 
   const shippingCost = SHIPPING_COSTS[shippingMethod];
@@ -266,9 +267,10 @@ export default function CartPage() {
                     />
                     <button
                       onClick={applyCoupon}
-                      className="px-5 py-3 text-sm font-medium text-[#1C1C1C] hover:text-[#B88E2F] transition-colors cursor-pointer"
+                      disabled={isPending}
+                      className="px-5 py-3 text-sm font-medium text-[#1C1C1C] hover:text-[#B88E2F] transition-colors cursor-pointer disabled:opacity-50"
                     >
-                      Apply
+                      {isPending ? "…" : "Apply"}
                     </button>
                   </div>
                   {couponSuccess && (
