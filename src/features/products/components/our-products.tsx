@@ -1,67 +1,120 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { useRef, useState, useCallback, useEffect } from "react";
 import { ProductCard } from "@/features/products/components/product-card";
 import type { Product } from "@/features/products/types";
-
-const TABS = [
-  { value: "all", label: "All" },
-  { value: "living-room", label: "Living Room" },
-  { value: "bedroom", label: "Bedroom" },
-  { value: "dining", label: "Dining" },
-  { value: "office", label: "Office" },
-] as const;
 
 interface OurProductsProps {
   products: Product[];
 }
 
 export function OurProducts({ products }: OurProductsProps) {
-  const [tab, setTab] = useState("all");
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [progressPct, setProgressPct] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartX = useRef(0);
+  const dragScrollLeft = useRef(0);
 
-  const visible = (
-    tab === "all"
-      ? products
-      : products.filter((p) => p.category.slug === tab)
-  ).slice(0, 8);
+  const updateProgress = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const max = el.scrollWidth - el.clientWidth;
+    setProgressPct(max > 0 ? ((el.scrollLeft + el.clientWidth) / el.scrollWidth) * 100 : 100);
+  }, []);
+
+  useEffect(() => {
+    updateProgress();
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", updateProgress, { passive: true });
+    return () => el.removeEventListener("scroll", updateProgress);
+  }, [updateProgress]);
+
+  // Convert vertical wheel to horizontal scroll (passive: false required for preventDefault)
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onWheel = (e: WheelEvent) => {
+      if (e.deltaY === 0) return;
+      e.preventDefault();
+      el.scrollLeft += e.deltaY;
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, []);
+
+  function handleMouseDown(e: React.MouseEvent<HTMLDivElement>) {
+    const el = scrollRef.current;
+    if (!el) return;
+    setIsDragging(true);
+    dragStartX.current = e.pageX - el.offsetLeft;
+    dragScrollLeft.current = el.scrollLeft;
+  }
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    if (!isDragging || !scrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - dragStartX.current) * 1.5;
+    scrollRef.current.scrollLeft = dragScrollLeft.current - walk;
+  }
+
+  function handleMouseUp() {
+    setIsDragging(false);
+  }
 
   return (
     <section className="py-20 px-8 lg:px-20">
-      <div className="flex justify-between items-center mb-8">
-        <h2 className="text-3xl font-semibold text-[#1C1C1C]">Our Products</h2>
+      {/* Header */}
+      <div className="flex justify-between items-start mb-8">
+        <h2 className="text-4xl lg:text-5xl font-bold text-[#1C1C1C] leading-tight">
+          New<br />Arrivals
+        </h2>
         <Link
           href="/shop"
-          className="text-sm text-[#1C1C1C] hover:underline"
+          className="hidden lg:inline-flex items-center gap-1 text-sm font-medium text-[#1C1C1C] border-b border-[#1C1C1C] pb-0.5 hover:text-[#B88E2F] hover:border-[#B88E2F] transition-colors self-end"
         >
-          View More
+          More Products →
         </Link>
       </div>
 
-      <Tabs value={tab} onValueChange={setTab}>
-        <TabsList className="bg-transparent p-0 gap-2 mb-8 flex-wrap h-auto">
-          {TABS.map((t) => (
-            <TabsTrigger
-              key={t.value}
-              value={t.value}
-              className="rounded-sm px-4 py-2 text-sm data-[state=active]:bg-[#1C1C1C] data-[state=active]:text-white data-[state=inactive]:text-[#807D7E] data-[state=inactive]:bg-transparent border border-[#E8ECEF] data-[state=active]:border-[#1C1C1C]"
-            >
-              {t.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-
-        {TABS.map((t) => (
-          <TabsContent key={t.value} value={t.value} className="mt-0">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-              {visible.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          </TabsContent>
+      {/* Carousel */}
+      <div
+        ref={scrollRef}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+        className={`flex items-start gap-5 overflow-x-auto [&::-webkit-scrollbar]:hidden select-none ${
+          isDragging ? "cursor-grabbing" : "cursor-grab"
+        }`}
+        style={{ scrollbarWidth: "none" }}
+      >
+        {products.map((product) => (
+          <div key={product.id} className={`flex-none w-60 lg:w-72 ${isDragging ? "pointer-events-none" : ""}`}>
+            <ProductCard product={product} />
+          </div>
         ))}
-      </Tabs>
+      </div>
+
+      {/* Progress bar */}
+      <div className="mt-6 h-0.5 bg-[#E8ECEF] rounded-full overflow-hidden">
+        <div
+          className="h-full bg-[#1C1C1C] rounded-full transition-all duration-150"
+          style={{ width: `${progressPct}%` }}
+        />
+      </div>
+
+      {/* Mobile "More Products" link */}
+      <div className="mt-6 flex justify-center lg:hidden">
+        <Link
+          href="/shop"
+          className="inline-flex items-center gap-1 text-sm font-medium text-[#1C1C1C] border-b border-[#1C1C1C] pb-0.5 hover:text-[#B88E2F] hover:border-[#B88E2F] transition-colors"
+        >
+          More Products →
+        </Link>
+      </div>
     </section>
   );
 }

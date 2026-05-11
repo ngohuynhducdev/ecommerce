@@ -66,7 +66,7 @@ export function MegaMenu({ onMouseEnter, onMouseLeave }: MegaMenuProps) {
         <div className="flex flex-col">
           <div className="relative h-52 w-full rounded-lg overflow-hidden mb-3">
             <Image
-              src="https://picsum.photos/seed/furniture-new/300/400"
+              src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=300&h=400&fit=crop&auto=format&q=80"
               alt="New Arrivals"
               fill
               sizes="200px"

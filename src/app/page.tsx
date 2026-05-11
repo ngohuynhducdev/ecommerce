@@ -1,170 +1,45 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getFeaturedProducts, getProducts } from "@/lib/api/products";
+import { getProducts } from "@/lib/api/products";
 import { getCategories } from "@/lib/api/categories";
 import { getPosts } from "@/lib/api/blog";
 import { SafeImage } from "@/components/ui/safe-image";
 import { CategoryCard } from "@/features/products/components/category-card";
 import { OurProducts } from "@/features/products/components/our-products";
 import { NewsletterSection } from "@/features/shared/components/newsletter-section";
-import { formatPrice } from "@/lib/utils";
+import { HeroCarousel } from "@/features/shared/components/hero-carousel";
+import { FeaturesStrip } from "@/features/shared/components/features-strip";
 
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}
-
-function TruckIcon() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-      <rect x="1" y="3" width="15" height="13" rx="1" />
-      <path d="M16 8h4l3 4v5h-7V8z" />
-      <circle cx="5.5" cy="18.5" r="2.5" />
-      <circle cx="18.5" cy="18.5" r="2.5" />
-    </svg>
-  );
-}
-
-function ShieldIcon() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      <path d="m9 12 2 2 4-4" />
-    </svg>
-  );
-}
-
-function LockIcon() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-    </svg>
-  );
-}
-
-function HeadphonesIcon() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
-      <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z" />
-      <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
-    </svg>
-  );
-}
-
-const features = [
-  {
-    icon: <TruckIcon />,
-    label: "Free Shipping",
-    description: "Order over $150",
-  },
-  {
-    icon: <ShieldIcon />,
-    label: "Money-back Guarantee",
-    description: "30 days return policy",
-  },
-  {
-    icon: <LockIcon />,
-    label: "Secure Payment",
-    description: "100% protected transactions",
-  },
-  {
-    icon: <HeadphonesIcon />,
-    label: "24/7 Support",
-    description: "Dedicated support team",
-  },
-];
 
 export default async function HomePage() {
-  const [featuredProducts, allProducts, categories, blogPosts] = await Promise.all([
-    getFeaturedProducts(),
+  const [allProducts, categories, blogPosts] = await Promise.all([
     getProducts(),
     getCategories(),
     getPosts(),
   ]);
 
-  const heroProduct = featuredProducts[0];
   const showcaseCategories = categories.slice(0, 3);
 
   return (
     <div className="flex flex-col">
-      {/* ── Hero ── */}
-      <section className="min-h-screen grid lg:grid-cols-2 items-center">
-        {/* Left */}
-        <div className="px-8 lg:px-20 py-20 lg:py-0">
-          <div className="flex items-center gap-3 mb-6">
-            <span className="w-12 h-px bg-[#1C1C1C]" />
-            <span className="text-xs uppercase tracking-widest text-[#807D7E]">
-              New Arrivals
-            </span>
-          </div>
-          <h1 className="font-bold text-5xl lg:text-7xl leading-tight text-[#1C1C1C]">
-            Simply Unique/
-            <br />
-            Simply Better.
-          </h1>
-          <p className="text-[#807D7E] text-lg max-w-md mt-4 mb-8">
-            3legant is a gift &amp; decorations store based in HCMC, Vietnam.
-            Unique pieces to make every space feel like home.
+      {/* ── Hero Carousel ── */}
+      <HeroCarousel />
+
+      {/* ── Hero Text ── */}
+      <section className="px-8 lg:px-20 py-12 lg:py-16 grid lg:grid-cols-2 gap-8 lg:gap-20 items-end">
+        <h1 className="font-bold text-5xl lg:text-7xl leading-tight text-[#1C1C1C]">
+          Simply Unique/<br />Simply Better.
+        </h1>
+        <div>
+          <p className="text-[#807D7E] text-base lg:text-lg leading-relaxed">
+            <span className="font-semibold text-[#1C1C1C]">3legant</span> is a gift &amp; decorations store based in HCMC, Vietnam. Est since 2019.
           </p>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/shop"
-              className="bg-[#1C1C1C] text-white px-8 py-4 text-sm font-medium rounded-sm hover:bg-[#333] transition-colors"
-            >
-              Shop Now
-            </Link>
-            <Link
-              href="/shop"
-              className="border border-[#1C1C1C] text-[#1C1C1C] px-8 py-4 text-sm font-medium rounded-sm hover:bg-[#1C1C1C] hover:text-white transition-colors"
-            >
-              Explore
-            </Link>
-          </div>
-        </div>
-
-        {/* Right */}
-        <div className="relative overflow-hidden h-[60vh] lg:h-screen">
-          <Image
-            src="https://picsum.photos/seed/hero-chair/800/900"
-            alt="Featured furniture"
-            fill
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover"
-            priority
-          />
-          {heroProduct && (
-            <div className="absolute bottom-8 left-8 bg-white p-4 rounded-xl shadow-lg w-52">
-              <span className="text-xs bg-[#2EC1AC] text-white px-2 py-0.5 rounded inline-block mb-2">
-                New
-              </span>
-              <p className="font-medium text-sm text-[#1C1C1C] leading-snug">
-                {heroProduct.name}
-              </p>
-              <p className="text-[#B88E2F] font-semibold text-sm mt-1">
-                {formatPrice(heroProduct.price)}
-              </p>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* ── Features Strip ── */}
-      <section className="border-y border-[#E8ECEF] py-7 px-8 lg:px-20">
-        <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-[#E8ECEF]">
-          {features.map((feature) => (
-            <div key={feature.label} className="flex items-center gap-4 px-6 first:pl-0 last:pr-0">
-              <span className="text-[#1C1C1C] shrink-0">{feature.icon}</span>
-              <div>
-                <p className="font-medium text-sm text-[#1C1C1C]">{feature.label}</p>
-                <p className="text-xs text-[#807D7E] mt-0.5">{feature.description}</p>
-              </div>
-            </div>
-          ))}
+          <Link
+            href="/shop"
+            className="inline-flex items-center gap-1 mt-6 text-sm font-medium text-[#1C1C1C] border-b border-[#1C1C1C] pb-0.5 hover:text-[#B88E2F] hover:border-[#B88E2F] transition-colors"
+          >
+            Shop Now →
+          </Link>
         </div>
       </section>
 
@@ -176,54 +51,74 @@ export default async function HomePage() {
             Explore the possibilities of our diverse furniture collection
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-          {showcaseCategories.map((category) => (
-            <CategoryCard key={category.id} category={category} />
-          ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+          {showcaseCategories[0] && (
+            <div className="h-100 md:h-155">
+              <CategoryCard category={showcaseCategories[0]} large />
+            </div>
+          )}
+          <div className="grid grid-rows-2 gap-6 h-100 md:h-155">
+            {showcaseCategories.slice(1, 3).map((category) => (
+              <CategoryCard key={category.id} category={category} />
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ── Our Products ── */}
       <OurProducts products={allProducts} />
 
-      {/* ── Room Inspiration Banner ── */}
-      <section className="relative h-[500px] overflow-hidden mx-8 lg:mx-20 rounded-2xl">
-        <Image
-          src="https://picsum.photos/seed/room-inspiration/1400/500"
-          alt="Room inspiration"
-          fill
-          sizes="(max-width: 1024px) calc(100vw - 4rem), calc(100vw - 10rem)"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-black/30" />
-        <div className="absolute bottom-10 left-10 text-white">
-          <p className="text-xs uppercase tracking-widest mb-2">
-            INSPIRING FURNITURE SETS
-          </p>
-          <h2 className="text-3xl font-bold max-w-xs leading-snug">
-            50+ Beautiful Rooms Inspiration
+      {/* ── Features Strip ── */}
+      <FeaturesStrip />
+
+      {/* ── Sale Banner ── */}
+      <section className="mx-8 lg:mx-20 rounded-2xl overflow-hidden grid lg:grid-cols-2 bg-[#F3F5F7] lg:min-h-140">
+        {/* Image */}
+        <div className="relative h-80 lg:h-auto">
+          <Image
+            src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&h=600&fit=crop&auto=format&q=80"
+            alt="Room inspiration"
+            fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover"
+          />
+        </div>
+
+        {/* Text */}
+        <div className="flex flex-col justify-center px-10 py-14 lg:px-16 lg:py-20">
+          <span className="text-xs font-semibold uppercase tracking-widest text-[#2EC1AC] mb-4">
+            Sale up to 35% off
+          </span>
+          <h2 className="text-3xl lg:text-5xl font-bold text-[#1C1C1C] leading-tight">
+            HUNDREDS of<br />New lower prices!
           </h2>
+          <p className="text-[#807D7E] mt-5 max-w-sm leading-relaxed">
+            It&apos;s more affordable than ever to give every room in your home a stylish makeover.
+          </p>
           <Link
             href="/shop"
-            className="inline-block mt-4 underline text-sm hover:no-underline"
+            className="inline-flex items-center gap-1 mt-8 text-sm font-medium text-[#1C1C1C] border-b border-[#1C1C1C] pb-0.5 self-start hover:text-[#B88E2F] hover:border-[#B88E2F] transition-colors"
           >
-            Explore More →
+            Shop Now →
           </Link>
         </div>
       </section>
 
       {/* ── Blog Preview ── */}
       <section className="py-20 px-8 lg:px-20">
-        <div className="flex justify-between items-center">
-          <h2 className="text-3xl font-semibold text-[#1C1C1C]">Our Blog</h2>
-          <Link href="/blog" className="text-sm text-[#1C1C1C] hover:underline">
-            View All →
+        <div className="flex justify-between items-center mb-10">
+          <h2 className="text-3xl font-semibold text-[#1C1C1C]">Articles</h2>
+          <Link
+            href="/blog"
+            className="text-sm font-medium text-[#1C1C1C] border-b border-[#1C1C1C] pb-0.5 hover:text-[#B88E2F] hover:border-[#B88E2F] transition-colors"
+          >
+            More Articles →
           </Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {blogPosts.slice(0, 3).map((post) => (
             <Link key={post.id} href={`/blog/${post.slug}`} className="group block">
-              <div className="relative aspect-video rounded-lg overflow-hidden">
+              <div className="relative aspect-3/2 overflow-hidden">
                 <SafeImage
                   src={post.coverImage}
                   alt={post.title}
@@ -232,11 +127,12 @@ export default async function HomePage() {
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
-              <p className="text-xs text-[#807D7E] mt-3">{formatDate(post.publishedAt)}</p>
-              <p className="font-medium text-lg mt-1 line-clamp-2 group-hover:text-[#B88E2F] transition-colors">
+              <p className="font-semibold text-lg mt-4 line-clamp-2 group-hover:text-[#B88E2F] transition-colors">
                 {post.title}
               </p>
-              <p className="text-sm text-[#1C1C1C] mt-2 hover:underline">Read More →</p>
+              <span className="inline-flex items-center gap-1 mt-3 text-sm font-medium text-[#1C1C1C] border-b border-[#1C1C1C] pb-0.5 group-hover:text-[#B88E2F] group-hover:border-[#B88E2F] transition-colors">
+                Read More →
+              </span>
             </Link>
           ))}
         </div>

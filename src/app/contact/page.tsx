@@ -1,71 +1,145 @@
 import type { Metadata } from "next";
-import { MapPin, Phone, Clock } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { ContactForm } from "@/features/contact/components/contact-form";
+import { FeaturesStrip } from "@/features/shared/components/features-strip";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Get in touch with the 3legant team. We’re here to help with any questions.",
+  description: "Get in touch with the 3legant team.",
 };
-import { ContactForm } from "@/features/contact/components/contact-form";
+
+function LocationIcon() {
+  return (
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+      <polyline points="9 22 9 12 15 12 15 22" />
+    </svg>
+  );
+}
+
+function PhoneIcon() {
+  return (
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 11.5 19.79 19.79 0 0 1 1.61 2.84 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.59a16 16 0 0 0 6.5 6.5l.95-.86a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+    </svg>
+  );
+}
+
+function MailIcon() {
+  return (
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="4" width="20" height="16" rx="2" />
+      <path d="m22 7-10 7L2 7" />
+    </svg>
+  );
+}
 
 const INFO_CARDS = [
   {
-    icon: MapPin,
-    title: "Our Address",
-    value: "123 Furniture Lane, New York, NY 10001",
+    icon: <LocationIcon />,
+    label: "ADDRESS",
+    value: "234 Hai Trieu, Ho Chi Minh City,\nViet Nam",
   },
   {
-    icon: Phone,
-    title: "Phone Number",
-    value: "+1 (555) 000-0000",
+    icon: <PhoneIcon />,
+    label: "CONTACT US",
+    value: "+84 234 567 890",
   },
   {
-    icon: Clock,
-    title: "Working Hours",
-    value: "Mon – Fri: 9am – 6pm\nSat: 10am – 4pm",
+    icon: <MailIcon />,
+    label: "EMAIL",
+    value: "hello@3legant.com",
   },
 ];
 
 export default function ContactPage() {
   return (
-    <div className="px-8 lg:px-20 py-12">
-      {/* Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-semibold mb-3">Contact Us</h1>
-        <p className="text-[#807D7E] max-w-md mx-auto">
-          Have a question or need help? We&apos;d love to hear from you. Send us a
-          message and we&apos;ll respond as soon as possible.
-        </p>
-      </div>
+    <div>
+      {/* Breadcrumb */}
+      <nav className="px-8 lg:px-20 py-4 flex items-center gap-2 text-sm text-[#807D7E]">
+        <Link href="/" className="hover:text-[#1C1C1C] transition-colors">Home</Link>
+        <span>›</span>
+        <span className="text-[#1C1C1C] font-medium">Contact Us</span>
+      </nav>
 
-      {/* Info cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-        {INFO_CARDS.map(({ icon: Icon, title, value }) => (
-          <div
-            key={title}
-            className="bg-[#F3F5F7] rounded-2xl p-8 text-center"
-          >
-            <Icon size={32} className="mx-auto mb-4 text-[#1C1C1C]" />
-            <p className="font-semibold mb-2">{title}</p>
-            <p className="text-[#807D7E] text-sm whitespace-pre-line">{value}</p>
+      {/* Hero */}
+      <section className="bg-white px-8 lg:px-20 pt-8 pb-14">
+        <h1 className="text-4xl lg:text-6xl font-bold text-[#1C1C1C] leading-tight max-w-3xl">
+          We believe in sustainable decor. We&apos;re passionate about life at home.
+        </h1>
+        <p className="mt-6 text-[#807D7E] leading-relaxed max-w-2xl">
+          Our features timeless furniture, with natural fabrics, curved lines, plenty of mirrors and classic design, which can be incorporated into any decor project. The pieces enchant for their sobriety, to last for generations, faithful to the shapes of each period, with a touch of the present
+        </p>
+      </section>
+
+      {/* About Us card */}
+      <section className="bg-white px-8 lg:px-20 pb-16">
+        <div className="grid lg:grid-cols-2 rounded-2xl overflow-hidden border border-[#E8ECEF]">
+          <div className="relative h-72 lg:h-auto min-h-72">
+            <Image
+              src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&h=600&fit=crop&auto=format&q=80"
+              alt="3legant showroom"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
+            />
           </div>
-        ))}
-      </div>
+          <div className="bg-[#F3F5F7] flex flex-col justify-center px-10 py-12 lg:px-16">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-[#1C1C1C]">About Us</h2>
+            <p className="text-[#807D7E] mt-4 leading-relaxed">
+              3legant is a gift &amp; decorations store based in HCMC, Vietnam. Est since 2019.<br />
+              Our customer service is always prepared to support you 24/7
+            </p>
+            <Link
+              href="/shop"
+              className="inline-flex items-center gap-1 mt-6 text-sm font-medium text-[#1C1C1C] border-b border-[#1C1C1C] pb-0.5 self-start hover:text-[#B88E2F] hover:border-[#B88E2F] transition-colors"
+            >
+              Shop Now →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact info */}
+      <section className="bg-white px-8 lg:px-20 py-16">
+        <h2 className="text-3xl font-semibold text-[#1C1C1C] text-center">Contact Us</h2>
+        <div className="mt-10 grid grid-cols-1 lg:grid-cols-3 border border-[#E8ECEF] rounded-2xl overflow-hidden divide-y lg:divide-y-0 lg:divide-x divide-[#E8ECEF]">
+          {INFO_CARDS.map(({ icon, label, value }) => (
+            <div key={label} className="py-10 px-6 flex flex-col items-center text-center">
+              <span className="text-[#1C1C1C] mb-5">{icon}</span>
+              <p className="text-xs font-semibold uppercase tracking-widest text-[#807D7E]">{label}</p>
+              <p className="font-bold text-[#1C1C1C] mt-3 whitespace-pre-line leading-relaxed">{value}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* Form + Map */}
-      <div className="lg:grid lg:grid-cols-2 gap-16">
-        {/* Contact form */}
-        <div>
-          <h2 className="text-2xl font-semibold mb-6">Send Us a Message</h2>
-          <ContactForm />
+      <section className="bg-white px-8 lg:px-20 pt-8 pb-20">
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
+          {/* Form — right on mobile (order-2), left on desktop */}
+          <div className="order-2 lg:order-1">
+            <ContactForm />
+          </div>
+          {/* Map — top on mobile (order-1), right on desktop */}
+          <div className="order-1 lg:order-2 rounded-2xl overflow-hidden h-72 lg:h-full min-h-72 lg:min-h-120">
+            <iframe
+              src="https://maps.google.com/maps?q=Ho+Chi+Minh+City,+Vietnam&hl=en&z=13&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="3legant store location"
+            />
+          </div>
         </div>
+      </section>
 
-        {/* Map placeholder */}
-        <div className="mt-10 lg:mt-0 bg-[#F3F5F7] min-h-100 rounded-2xl flex flex-col items-center justify-center">
-          <MapPin size={48} className="text-[#807D7E]" />
-          <p className="text-[#807D7E] mt-3 font-medium">Our Location</p>
-          <p className="text-[#807D7E] text-sm mt-1">123 Furniture Lane, New York, NY</p>
-        </div>
-      </div>
+      {/* Features Strip */}
+      <FeaturesStrip />
     </div>
   );
 }

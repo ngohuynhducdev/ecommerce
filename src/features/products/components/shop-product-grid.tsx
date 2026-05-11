@@ -9,9 +9,10 @@ const INCREMENT = 6;
 
 interface ShopProductGridProps {
   products: Product[];
+  gridCols?: 1 | 2 | 3 | 4;
 }
 
-export function ShopProductGrid({ products }: ShopProductGridProps) {
+export function ShopProductGrid({ products, gridCols = 3 }: ShopProductGridProps) {
   const [visible, setVisible] = useState(INITIAL_COUNT);
   const [prevProducts, setPrevProducts] = useState<Product[]>(products);
 
@@ -34,9 +35,16 @@ export function ShopProductGrid({ products }: ShopProductGridProps) {
   const shown = products.slice(0, visible);
   const hasMore = visible < products.length;
 
+  const gridClass = {
+    1: "grid grid-cols-1 gap-6",
+    2: "grid grid-cols-2 gap-6",
+    3: "grid grid-cols-2 lg:grid-cols-3 gap-6",
+    4: "grid grid-cols-2 lg:grid-cols-4 gap-4",
+  }[gridCols];
+
   return (
     <div>
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className={gridClass}>
         {shown.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
@@ -45,9 +53,9 @@ export function ShopProductGrid({ products }: ShopProductGridProps) {
         <div className="flex justify-center mt-12">
           <button
             onClick={() => setVisible((v) => v + INCREMENT)}
-            className="border border-[#1C1C1C] text-[#1C1C1C] px-8 py-3 rounded-sm text-sm hover:bg-[#1C1C1C] hover:text-white transition-colors cursor-pointer"
+            className="border border-[#1C1C1C] text-[#1C1C1C] px-12 py-3 rounded-full text-sm hover:bg-[#1C1C1C] hover:text-white transition-colors cursor-pointer"
           >
-            Load More
+            Show more
           </button>
         </div>
       )}

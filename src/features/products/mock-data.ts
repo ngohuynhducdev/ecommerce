@@ -1,32 +1,35 @@
 import type { Category, Product } from "./types";
 
+const U = (id: string, w = 800, h = 800) =>
+  `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&fit=crop&auto=format&q=80`;
+
 export const mockCategories: Category[] = [
   {
     id: "cat-1",
     slug: "living-room",
     name: "Living Room",
-    image: "https://picsum.photos/seed/living-room/800/800",
+    image: U("1555041469-a586c61ea9bc"),
     description: "Comfortable and stylish furniture for your living space.",
   },
   {
     id: "cat-2",
     slug: "bedroom",
     name: "Bedroom",
-    image: "https://picsum.photos/seed/bedroom/800/800",
+    image: U("1540518614846-7eded433c457"),
     description: "Create your perfect sanctuary with our bedroom collection.",
   },
   {
     id: "cat-3",
     slug: "dining",
     name: "Dining",
-    image: "https://picsum.photos/seed/dining/800/800",
+    image: U("1577140917170-285929fb55b7"),
     description: "Elegant dining sets for memorable meals together.",
   },
   {
     id: "cat-4",
     slug: "office",
     name: "Office",
-    image: "https://picsum.photos/seed/office/800/800",
+    image: U("1593642632559-0c6d3fc62b89"),
     description: "Productive and refined furniture for your home office.",
   },
 ];
@@ -43,9 +46,9 @@ export const mockProducts: Product[] = [
       "A timeless three-seater sofa upholstered in premium fabric. Deep cushions and solid oak legs make the Aria the perfect centrepiece for any modern living room.",
     price: 1299,
     images: [
-      "https://picsum.photos/seed/aria-sofa/800/800",
-      "https://picsum.photos/seed/aria-sofa-2/800/800",
-      "https://picsum.photos/seed/aria-sofa-3/800/800",
+      U("1555041469-a586c61ea9bc"),
+      U("1493663284031-b7e3aefcae8e"),
+      U("1484101403633-562f891dc89a"),
     ],
     category: livingRoom,
     tags: ["sofa", "fabric", "three-seater"],
@@ -68,8 +71,8 @@ export const mockProducts: Product[] = [
       "Solid walnut coffee table with a minimalist Scandinavian silhouette. The slatted lower shelf provides convenient storage while keeping the look light and airy.",
     price: 349,
     images: [
-      "https://picsum.photos/seed/nordic-coffee-table/800/800",
-      "https://picsum.photos/seed/nordic-coffee-table-2/800/800",
+      U("1549187774-b4e9b0445b41"),
+      U("1616486338812-3dadae4b4ace"),
     ],
     category: livingRoom,
     tags: ["coffee-table", "walnut", "scandinavian"],
@@ -92,9 +95,9 @@ export const mockProducts: Product[] = [
     price: 499,
     comparePrice: 649,
     images: [
-      "https://picsum.photos/seed/lounge-armchair/800/800",
-      "https://picsum.photos/seed/lounge-armchair-2/800/800",
-      "https://picsum.photos/seed/lounge-armchair-3/800/800",
+      U("1586023492125-27b2c045efd7"),
+      U("1567538096630-e0c55bd6374c"),
+      U("1493663284031-b7e3aefcae8e"),
     ],
     category: livingRoom,
     tags: ["armchair", "accent", "reading"],
@@ -118,9 +121,9 @@ export const mockProducts: Product[] = [
       "A statement king-size bed frame with an upholstered headboard and solid ash wood base. The Haven combines hotel-grade comfort with understated elegance.",
     price: 899,
     images: [
-      "https://picsum.photos/seed/haven-bed-frame/800/800",
-      "https://picsum.photos/seed/haven-bed-frame-2/800/800",
-      "https://picsum.photos/seed/haven-bed-frame-3/800/800",
+      U("1540518614846-7eded433c457"),
+      U("1505693416388-ac5ce068fe85"),
+      U("1585412727339-54e4bae3bbf9"),
     ],
     category: bedroom,
     tags: ["bed", "king", "upholstered"],
@@ -143,8 +146,8 @@ export const mockProducts: Product[] = [
       "A compact nightstand with one drawer and an open shelf, crafted from sustainably sourced oak. Its clean lines complement both contemporary and classic bedroom styles.",
     price: 249,
     images: [
-      "https://picsum.photos/seed/drift-nightstand/800/800",
-      "https://picsum.photos/seed/drift-nightstand-2/800/800",
+      U("1616594039964-ae9021a400a0"),
+      U("1540518614846-7eded433c457"),
     ],
     category: bedroom,
     tags: ["nightstand", "oak", "storage"],
@@ -167,8 +170,8 @@ export const mockProducts: Product[] = [
     price: 599,
     comparePrice: 749,
     images: [
-      "https://picsum.photos/seed/linen-dresser/800/800",
-      "https://picsum.photos/seed/linen-dresser-2/800/800",
+      U("1595526051245-4506e0005bd0"),
+      U("1631049307264-da0ec9d70304"),
     ],
     category: bedroom,
     tags: ["dresser", "storage", "drawers"],
@@ -193,9 +196,9 @@ export const mockProducts: Product[] = [
       "Solid marble-top dining table on a geometric brushed-steel base. Seats six comfortably and becomes the natural focal point of any dining room.",
     price: 1499,
     images: [
-      "https://picsum.photos/seed/ensemble-dining-table/800/800",
-      "https://picsum.photos/seed/ensemble-dining-table-2/800/800",
-      "https://picsum.photos/seed/ensemble-dining-table-3/800/800",
+      U("1577140917170-285929fb55b7"),
+      U("1533779283741-c4f04f5cd7a2"),
+      U("1559539463-7b282c0e2c3a"),
     ],
     category: dining,
     tags: ["dining-table", "marble", "six-seater"],
@@ -218,8 +221,8 @@ export const mockProducts: Product[] = [
     price: 189,
     comparePrice: 229,
     images: [
-      "https://picsum.photos/seed/contour-dining-chair/800/800",
-      "https://picsum.photos/seed/contour-dining-chair-2/800/800",
+      U("1592078615290-033ee584e267"),
+      U("1581539250439-c96689b516dd"),
     ],
     category: dining,
     tags: ["chair", "dining", "ergonomic"],
@@ -243,8 +246,8 @@ export const mockProducts: Product[] = [
     price: 179,
     comparePrice: 219,
     images: [
-      "https://picsum.photos/seed/mason-bar-stool/800/800",
-      "https://picsum.photos/seed/mason-bar-stool-2/800/800",
+      U("1530018607912-eff968941de0"),
+      U("1592078615290-033ee584e267"),
     ],
     category: dining,
     tags: ["stool", "bar", "adjustable"],
@@ -268,9 +271,9 @@ export const mockProducts: Product[] = [
       "Wide-surface writing desk with a hidden cable management channel and a built-in shallow drawer. The powder-coated steel frame keeps it sturdy yet sleek.",
     price: 799,
     images: [
-      "https://picsum.photos/seed/focus-desk/800/800",
-      "https://picsum.photos/seed/focus-desk-2/800/800",
-      "https://picsum.photos/seed/focus-desk-3/800/800",
+      U("1593642632559-0c6d3fc62b89"),
+      U("1519710164239-da123dc03ef4"),
+      U("1524758631624-e2822e304c36"),
     ],
     category: office,
     tags: ["desk", "home-office", "cable-management"],
@@ -293,8 +296,8 @@ export const mockProducts: Product[] = [
     price: 549,
     comparePrice: 699,
     images: [
-      "https://picsum.photos/seed/ergo-office-chair/800/800",
-      "https://picsum.photos/seed/ergo-office-chair-2/800/800",
+      U("1518455027359-f3f8164ba6bd"),
+      U("1593642632559-0c6d3fc62b89"),
     ],
     category: office,
     tags: ["chair", "ergonomic", "mesh"],
@@ -316,8 +319,8 @@ export const mockProducts: Product[] = [
       "Versatile open shelving unit that can be stacked and configured to your space. Each module is crafted from FSC-certified pine with a white lacquer finish.",
     price: 299,
     images: [
-      "https://picsum.photos/seed/stackable-shelf/800/800",
-      "https://picsum.photos/seed/stackable-shelf-2/800/800",
+      U("1558618666-fcd25c85cd64"),
+      U("1527859978995-4f1e78f5a7de"),
     ],
     category: office,
     tags: ["shelf", "modular", "storage"],

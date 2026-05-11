@@ -1,54 +1,69 @@
 "use client";
 
-import { useAtomValue } from "jotai";
-import { CheckCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { checkoutStepAtom } from "@/features/checkout/atoms";
+
+interface Props {
+  step: 1 | 2 | 3;
+}
 
 const STEPS = [
-  { num: 1, label: "Shipping" },
-  { num: 2, label: "Payment" },
-  { num: 3, label: "Review" },
+  { num: 1, label: "Shopping cart" },
+  { num: 2, label: "Checkout details" },
+  { num: 3, label: "Order complete" },
 ] as const;
 
-export function StepIndicator() {
-  const current = useAtomValue(checkoutStepAtom);
-
+function CheckIcon() {
   return (
-    <div className="flex items-center justify-center gap-4 mb-12">
-      {STEPS.map((step, index) => {
-        const isActive = step.num === current;
-        const isDone = step.num < current;
-        const isReached = isActive || isDone;
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  );
+}
 
-        return (
-          <div key={step.num} className="flex items-center gap-4">
-            <div className="flex flex-col items-center gap-2">
-              <div
-                className={cn(
-                  "w-9 h-9 rounded-full flex items-center justify-center text-sm font-medium transition-colors",
-                  isReached
-                    ? "bg-[#1C1C1C] text-white"
-                    : "border-2 border-[#E8ECEF] text-[#807D7E]"
-                )}
-              >
-                {isDone ? <CheckCheck className="w-4 h-4" /> : step.num}
+export function StepIndicator({ step }: Props) {
+  return (
+    <div className="mb-10">
+      <div className="flex items-start">
+        {STEPS.map((s, index) => {
+          const isDone = s.num < step;
+          const isActive = s.num === step;
+
+          return (
+            <div key={s.num} className="flex items-center">
+              <div className="flex flex-col">
+                <div className="flex items-center gap-2 pb-2">
+                  <div className={cn(
+                    "w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold shrink-0",
+                    isDone ? "bg-[#23A18C] text-white" :
+                    isActive ? "bg-[#1C1C1C] text-white" :
+                    "bg-[#D9D9D9] text-white"
+                  )}>
+                    {isDone ? <CheckIcon /> : s.num}
+                  </div>
+                  <span className={cn(
+                    "text-sm hidden sm:block",
+                    isDone ? "text-[#23A18C] font-medium" :
+                    isActive ? "text-[#1C1C1C] font-semibold" :
+                    "text-[#807D7E]"
+                  )}>
+                    {s.label}
+                  </span>
+                </div>
+                <div className={cn(
+                  "h-0.5 rounded-full",
+                  isDone ? "bg-[#23A18C]" :
+                  isActive ? "bg-[#1C1C1C]" :
+                  "bg-transparent"
+                )} />
               </div>
-              <span
-                className={cn(
-                  "text-xs",
-                  isReached ? "text-[#1C1C1C] font-medium" : "text-[#807D7E]"
-                )}
-              >
-                {step.label}
-              </span>
+
+              {index < STEPS.length - 1 && (
+                <div className="w-6 sm:w-12 lg:w-20 h-px bg-[#D9D9D9] mx-1 mb-2 shrink-0" />
+              )}
             </div>
-            {index < STEPS.length - 1 && (
-              <div className="h-px bg-[#E8ECEF] w-16 mb-6" />
-            )}
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }

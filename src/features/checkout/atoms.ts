@@ -16,13 +16,13 @@ export type ShippingMethod = "standard" | "express" | "nextday";
 export const SHIPPING_COSTS: Record<ShippingMethod, number> = {
   standard: 0,
   express: 15,
-  nextday: 30,
+  nextday: 21,
 };
 
 export const SHIPPING_LABELS: Record<ShippingMethod, string> = {
-  standard: "Standard",
-  express: "Express",
-  nextday: "Next Day",
+  standard: "Free shipping",
+  express: "Express shipping",
+  nextday: "Pick Up",
 };
 
 export const shippingMethodAtom = atom<ShippingMethod>("standard");

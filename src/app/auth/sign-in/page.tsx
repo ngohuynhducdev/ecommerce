@@ -8,15 +8,33 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { signIn } from "next-auth/react";
-import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 
 const schema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.string().min(1, "Please enter your username or email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
+  rememberMe: z.boolean().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
+
+function EyeIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+}
+
+function EyeOffIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+      <line x1="1" y1="1" x2="23" y2="23" />
+    </svg>
+  );
+}
 
 function SignInForm() {
   const router = useRouter();
@@ -49,71 +67,63 @@ function SignInForm() {
   };
 
   return (
-    <div className="min-h-screen lg:grid lg:grid-cols-2">
-      {/* Left: Form */}
-      <div className="relative flex items-center justify-center px-8 py-20 bg-white min-h-screen lg:min-h-0">
-        <Link
-          href="/"
-          className="absolute top-8 left-8 font-semibold text-xl tracking-tight text-[#1C1C1C] select-none"
-        >
-          3legant<span style={{ color: "#B88E2F" }}>°</span>
-        </Link>
+    <div className="min-h-screen flex flex-col lg:grid lg:grid-cols-2">
+      {/* Left / Top — Gray image panel */}
+      <div className="bg-[#F3F5F7] flex flex-col min-h-72 lg:min-h-screen">
+        {/* Logo */}
+        <div className="px-8 pt-8 lg:px-10 flex lg:justify-start justify-center">
+          <Link
+            href="/"
+            className="font-semibold text-xl tracking-tight text-[#1C1C1C] select-none"
+          >
+            3legant<span className="text-[#B88E2F]">.</span>
+          </Link>
+        </div>
 
+        {/* Chair image */}
+        <div className="flex-1 flex items-center justify-center px-8 py-8 lg:py-16">
+          <div className="relative w-full max-w-sm lg:max-w-lg aspect-square">
+            <Image
+              src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=800&fit=crop&auto=format&q=80"
+              alt="Elegant furniture"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-contain"
+              fetchPriority="high"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Right / Bottom — White form panel */}
+      <div className="bg-white flex items-center justify-center px-8 py-16 lg:min-h-screen">
         <div className="w-full max-w-sm">
-          <h1 className="text-2xl font-semibold">Sign In</h1>
-          <p className="text-[#807D7E] text-sm mt-1 mb-8">
-            Welcome back! Enter your details to continue.
+          <h1 className="text-4xl font-bold text-[#1C1C1C]">Sign In</h1>
+          <p className="text-sm text-[#807D7E] mt-3 mb-10">
+            Don&apos;t have an account yet?{" "}
+            <Link
+              href="/auth/sign-up"
+              className="text-[#2EC1AC] font-medium hover:underline"
+            >
+              Sign Up
+            </Link>
           </p>
 
-          {/* Google placeholder */}
-          <button
-            type="button"
-            className="border border-[#E8ECEF] rounded-lg w-full h-12 flex items-center gap-3 justify-center text-sm text-[#1C1C1C] hover:bg-[#F3F5F7] transition-colors mb-4"
-          >
-            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-              <path
-                d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908C16.658 14.215 17.64 11.907 17.64 9.2z"
-                fill="#4285F4"
-              />
-              <path
-                d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.26c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"
-                fill="#34A853"
-              />
-              <path
-                d="M3.964 10.709c-.18-.54-.282-1.117-.282-1.71 0-.595.102-1.17.282-1.71V4.957H.957A9.003 9.003 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.333z"
-                fill="#FBBC05"
-              />
-              <path
-                d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.957L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"
-                fill="#EA4335"
-              />
-            </svg>
-            Continue with Google
-          </button>
-
-          {/* Divider */}
-          <div className="flex items-center gap-3 mb-5">
-            <div className="flex-1 h-px bg-[#E8ECEF]" />
-            <span className="text-xs text-[#807D7E]">or continue with email</span>
-            <div className="flex-1 h-px bg-[#E8ECEF]" />
-          </div>
-
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+            {/* Email / username */}
             <div>
               <input
                 {...register("email")}
-                type="email"
-                placeholder="Email address"
+                placeholder="Your username or email address"
                 autoComplete="email"
-                className="w-full h-12 border border-[#E8ECEF] rounded-lg px-4 text-sm outline-none focus:border-[#1C1C1C] transition-colors placeholder:text-[#807D7E]"
+                className="w-full border-0 border-b border-[#E8ECEF] bg-transparent pb-3 text-sm outline-none focus:border-[#1C1C1C] transition-colors placeholder:text-[#807D7E]"
               />
               {errors.email && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.email.message}
-                </p>
+                <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
               )}
             </div>
 
+            {/* Password */}
             <div>
               <div className="relative">
                 <input
@@ -121,68 +131,49 @@ function SignInForm() {
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
                   autoComplete="current-password"
-                  className="w-full h-12 border border-[#E8ECEF] rounded-lg px-4 pr-12 text-sm outline-none focus:border-[#1C1C1C] transition-colors placeholder:text-[#807D7E]"
+                  className="w-full border-0 border-b border-[#E8ECEF] bg-transparent pb-3 pr-8 text-sm outline-none focus:border-[#1C1C1C] transition-colors placeholder:text-[#807D7E]"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#807D7E] hover:text-[#1C1C1C] transition-colors"
+                  className="absolute right-0 top-0 text-[#807D7E] hover:text-[#1C1C1C] transition-colors cursor-pointer"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  {showPassword ? <EyeOffIcon /> : <EyeIcon />}
                 </button>
               </div>
               {errors.password && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.password.message}
-                </p>
+                <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
               )}
             </div>
 
-            <div className="text-right">
+            {/* Remember me + Forgot password */}
+            <div className="flex items-center justify-between">
+              <label className="flex items-center gap-2 cursor-pointer select-none">
+                <input
+                  {...register("rememberMe")}
+                  type="checkbox"
+                  className="w-4 h-4 border border-[#E8ECEF] rounded-sm accent-[#1C1C1C] cursor-pointer"
+                />
+                <span className="text-sm text-[#807D7E]">Remember me</span>
+              </label>
               <a
                 href="#"
-                className="text-sm text-[#807D7E] hover:text-[#1C1C1C] transition-colors"
+                className="text-sm font-bold text-[#1C1C1C] hover:text-[#B88E2F] transition-colors"
               >
                 Forgot password?
               </a>
             </div>
 
+            {/* Submit */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full h-12 bg-[#1C1C1C] text-white rounded-sm text-sm font-medium hover:bg-[#2d2d2d] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full h-14 bg-[#1C1C1C] text-white rounded-lg text-sm font-medium hover:bg-[#B88E2F] transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
             >
               {loading ? "Signing in…" : "Sign In"}
             </button>
           </form>
-
-          <p className="text-center text-sm mt-4 text-[#807D7E]">
-            Don&apos;t have an account?{" "}
-            <Link
-              href="/auth/sign-up"
-              className="text-[#1C1C1C] font-medium hover:underline"
-            >
-              Sign Up
-            </Link>
-          </p>
-        </div>
-      </div>
-
-      {/* Right: Image */}
-      <div className="hidden lg:block relative">
-        <Image
-          src="https://picsum.photos/seed/interior-signin/800/1200"
-          alt="Elegant interior"
-          fill
-          className="object-cover"
-          sizes="50vw"
-        />
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 p-12 text-white">
-          <p className="text-2xl font-semibold leading-snug">
-            &ldquo;Experience the art of furnishing your space&rdquo;
-          </p>
-          <p className="text-sm mt-2 text-white/70">3legant — Modern Furniture</p>
         </div>
       </div>
     </div>
@@ -191,7 +182,7 @@ function SignInForm() {
 
 export default function SignInPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-white" />}>
+    <Suspense fallback={<div className="min-h-screen bg-[#F3F5F7]" />}>
       <SignInForm />
     </Suspense>
   );

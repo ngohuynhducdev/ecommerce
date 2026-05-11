@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
-import { SafeImage } from "@/components/ui/safe-image";
+import Image from "next/image";
+import Link from "next/link";
+import { getPosts } from "@/lib/api/blog";
+import { BlogContent } from "@/features/blog/components/blog-content";
+import { NewsletterSection } from "@/features/shared/components/newsletter-section";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -7,94 +11,45 @@ export const metadata: Metadata = {
 };
 
 export const revalidate = 3600;
-import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Breadcrumb } from "@/features/shared/components/breadcrumb";
-import { BlogCard } from "@/features/blog/components/blog-card";
-import { getPosts } from "@/lib/api/blog";
-
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}
 
 export default async function BlogPage() {
   const posts = await getPosts();
-  const [featured, ...rest] = posts;
 
   return (
-    <div className="px-8 lg:px-20 py-12">
-      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Blog" }]} />
-
-      {/* Featured post */}
-      <div className="lg:flex gap-10 items-center mb-16">
-        <div className="lg:w-1/2 aspect-video relative rounded-2xl overflow-hidden shrink-0">
-          <SafeImage
-            src={featured.coverImage}
-            alt={featured.title}
-            fill
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover"
-            priority
-          />
-        </div>
-        <div className="mt-6 lg:mt-0">
-          <span className="text-xs font-medium bg-[#F3F5F7] text-[#1C1C1C] px-2.5 py-1 rounded capitalize">
-            {featured.category}
-          </span>
-          <h1 className="text-3xl font-semibold mt-4 leading-snug">{featured.title}</h1>
-          <p className="text-[#807D7E] mt-3 leading-relaxed">{featured.excerpt}</p>
-          <p className="text-sm text-[#807D7E] mt-4">
-            {featured.author.name} · {formatDate(featured.publishedAt)} · {featured.readTime}
+    <div>
+      {/* Hero */}
+      <section className="relative h-64 lg:h-80 overflow-hidden">
+        <Image
+          src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=1600&h=640&fit=crop&auto=format&q=80"
+          alt="Our Blog"
+          fill
+          sizes="100vw"
+          className="object-cover"
+          fetchPriority="high"
+        />
+        <div className="absolute inset-0 bg-white/60" />
+        <div className="relative h-full flex flex-col items-center justify-center text-center px-8">
+          <nav className="flex items-center gap-2 text-sm text-[#807D7E] mb-4">
+            <Link href="/" className="hover:text-[#1C1C1C] transition-colors">
+              Home
+            </Link>
+            <span>›</span>
+            <span className="text-[#1C1C1C] font-medium">Blog</span>
+          </nav>
+          <h1 className="text-4xl lg:text-5xl font-bold text-[#1C1C1C]">Our Blog</h1>
+          <p className="mt-3 text-[#807D7E] text-sm lg:text-base">
+            Home ideas and design inspiration
           </p>
-          <Link
-            href={`/blog/${featured.slug}`}
-            className="inline-block mt-6 text-sm font-medium text-[#1C1C1C] hover:text-[#B88E2F] transition-colors"
-          >
-            Read More →
-          </Link>
         </div>
+      </section>
+
+      {/* Blog content */}
+      <div className="px-8 lg:px-20 py-10">
+        <BlogContent posts={posts} />
       </div>
 
-      {/* Latest articles */}
-      <h2 className="text-2xl font-semibold mb-8">Latest Articles</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {rest.map((post) => (
-          <BlogCard key={post.id} post={post} />
-        ))}
-      </div>
-
-      {/* Pagination */}
-      <div className="flex justify-center gap-2 mt-12">
-        <button
-          className="w-9 h-9 flex items-center justify-center border border-[#E8ECEF] rounded-lg text-[#807D7E] hover:border-[#1C1C1C] hover:text-[#1C1C1C] transition-colors"
-          aria-label="Previous page"
-        >
-          <ChevronLeft size={16} />
-        </button>
-        {[1, 2, 3].map((page) => (
-          <button
-            key={page}
-            className={`w-9 h-9 flex items-center justify-center rounded-lg text-sm font-medium transition-colors ${
-              page === 1
-                ? "bg-[#1C1C1C] text-white"
-                : "border border-[#E8ECEF] text-[#807D7E] hover:border-[#1C1C1C] hover:text-[#1C1C1C]"
-            }`}
-            aria-label={`Page ${page}`}
-          >
-            {page}
-          </button>
-        ))}
-        <button
-          className="w-9 h-9 flex items-center justify-center border border-[#E8ECEF] rounded-lg text-[#807D7E] hover:border-[#1C1C1C] hover:text-[#1C1C1C] transition-colors"
-          aria-label="Next page"
-        >
-          <ChevronRight size={16} />
-        </button>
-      </div>
+      {/* Newsletter */}
+      <NewsletterSection />
     </div>
   );
 }

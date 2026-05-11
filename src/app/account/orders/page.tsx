@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { SafeImage } from "@/components/ui/safe-image";
 import Link from "next/link";
-import { Package } from "lucide-react";
 import { useAtomValue } from "jotai";
 import { ordersAtom } from "@/features/checkout/atoms";
 import type { Order } from "@/features/products/types";
@@ -139,14 +138,14 @@ export default function OrdersPage() {
 
       {filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <Package size={48} className="text-[#E8ECEF] mb-4" />
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="text-[#E8ECEF] mb-4"><path d="M16.5 9.4 7.55 4.24" /><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /><polyline points="3.29 7 12 12 20.71 7" /><line x1="12" y1="22" x2="12" y2="12" /></svg>
           <p className="text-lg font-medium mb-2">No orders yet</p>
           <p className="text-sm text-[#807D7E] mb-6">
             Your order history will appear here
           </p>
           <Link
             href="/shop"
-            className="h-11 px-6 bg-[#1C1C1C] text-white text-sm font-medium rounded-sm flex items-center hover:bg-[#2d2d2d] transition-colors"
+            className="h-11 px-6 bg-[#1C1C1C] text-white text-sm font-medium rounded-lg flex items-center hover:bg-[#B88E2F] transition-colors"
           >
             Start Shopping
           </Link>

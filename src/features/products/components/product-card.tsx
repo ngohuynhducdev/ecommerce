@@ -25,31 +25,6 @@ function HeartIcon({ filled }: { filled: boolean }) {
   );
 }
 
-function SlidersIcon() {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <line x1="21" y1="4" x2="14" y2="4" />
-      <line x1="10" y1="4" x2="3" y2="4" />
-      <line x1="21" y1="12" x2="12" y2="12" />
-      <line x1="8" y1="12" x2="3" y2="12" />
-      <line x1="21" y1="20" x2="16" y2="20" />
-      <line x1="12" y1="20" x2="3" y2="20" />
-      <line x1="14" y1="2" x2="14" y2="6" />
-      <line x1="8" y1="10" x2="8" y2="14" />
-      <line x1="16" y1="18" x2="16" y2="22" />
-    </svg>
-  );
-}
-
 function StarIcon({ filled }: { filled: boolean }) {
   return (
     <svg
@@ -75,6 +50,10 @@ export function ProductCard({ product }: ProductCardProps) {
   const [wishlist, setWishlist] = useAtom(wishlistAtom);
 
   const isWishlisted = wishlist.some((w) => w.product.id === product.id);
+
+  const discountPct = product.comparePrice
+    ? Math.round(((product.comparePrice - product.price) / product.comparePrice) * 100)
+    : null;
 
   function handleAddToCart() {
     setCartItems((prev) => {
@@ -102,69 +81,65 @@ export function ProductCard({ product }: ProductCardProps) {
   }
 
   return (
-    <div className="relative group rounded-xl overflow-hidden bg-[#FAFAFA]">
-      {/* Image */}
-      <div className="aspect-square relative overflow-hidden">
-        <Link href={`/shop/${product.slug}`}>
-          <SafeImage
-            src={product.images[0]}
-            alt={product.name}
-            fill
-            sizes="(max-width: 768px) 50vw, 25vw"
-            className="object-cover"
-          />
-        </Link>
-
-        {/* Hover overlay */}
-        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-2">
-          <button
-            onClick={handleAddToCart}
-            className="bg-white text-[#1C1C1C] text-xs px-4 py-2 rounded-sm font-medium hover:bg-[#1C1C1C] hover:text-white transition-colors"
-          >
-            Add to Cart
-          </button>
-          <div className="flex gap-2">
-            <button
-              onClick={handleToggleWishlist}
-              className="bg-white w-9 h-9 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors"
-              aria-label="Add to wishlist"
-            >
-              <HeartIcon filled={isWishlisted} />
-            </button>
-            <button
-              className="bg-white w-9 h-9 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors"
-              aria-label="Compare"
-            >
-              <SlidersIcon />
-            </button>
-          </div>
-        </div>
-
+    <div className="flex flex-col">
+      {/* Image card */}
+      <div className="relative rounded-xl bg-[#F3F5F7] overflow-hidden flex flex-col">
         {/* Badges */}
-        <div className="absolute top-0 left-0 flex flex-col gap-1 p-3 pointer-events-none">
-          {product.comparePrice ? (
-            <span className="bg-[#E97171] text-white text-xs px-2 py-0.5 rounded">
-              Sale
-            </span>
-          ) : (
-            <span className="bg-[#2EC1AC] text-white text-xs px-2 py-0.5 rounded">
-              New
+        <div className="absolute top-3 left-3 z-10 flex flex-col gap-1">
+          <span className="bg-white text-[#1C1C1C] text-xs font-bold uppercase px-2.5 py-1 rounded">
+            NEW
+          </span>
+          {discountPct && (
+            <span className="bg-[#38CB89] text-white text-xs font-semibold px-2.5 py-1 rounded">
+              -{discountPct}%
             </span>
           )}
         </div>
+
+        {/* Heart */}
+        <button
+          onClick={handleToggleWishlist}
+          className="absolute top-3 right-3 z-10 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors"
+          aria-label="Add to wishlist"
+        >
+          <HeartIcon filled={isWishlisted} />
+        </button>
+
+        {/* Product image */}
+        <Link href={`/shop/${product.slug}`} className="block">
+          <div className="aspect-square relative">
+            <SafeImage
+              src={product.images[0]}
+              alt={product.name}
+              fill
+              sizes="(max-width: 768px) 50vw, 25vw"
+              className="object-contain p-4"
+            />
+          </div>
+        </Link>
+
+        {/* Add to cart button */}
+        <button
+          onClick={handleAddToCart}
+          className="w-full bg-[#1C1C1C] text-white text-sm font-medium py-3.5 hover:bg-[#B88E2F] transition-colors mt-auto"
+        >
+          Add to cart
+        </button>
       </div>
 
       {/* Info */}
-      <div className="p-4">
-        <p className="text-xs text-[#807D7E] mb-1 capitalize">
-          {product.category.name}
-        </p>
+      <div className="pt-4">
+        <div className="flex gap-0.5 mb-1">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <StarIcon key={star} filled={star <= Math.round(product.rating)} />
+          ))}
+        </div>
         <Link href={`/shop/${product.slug}`}>
-          <p className="font-medium text-sm leading-snug line-clamp-2 hover:text-[#B88E2F] transition-colors">
+          <p className="font-semibold text-sm text-[#1C1C1C] leading-snug line-clamp-2 hover:text-[#B88E2F] transition-colors">
             {product.name}
           </p>
         </Link>
-        <div className="flex items-center gap-2 mt-2">
+        <div className="flex items-center gap-2 mt-1.5">
           <span className="font-semibold text-[#1C1C1C]">
             {formatPrice(product.price)}
           </span>
@@ -173,11 +148,6 @@ export function ProductCard({ product }: ProductCardProps) {
               {formatPrice(product.comparePrice)}
             </span>
           )}
-        </div>
-        <div className="flex gap-0.5 mt-1">
-          {[1, 2, 3, 4, 5].map((star) => (
-            <StarIcon key={star} filled={star <= Math.round(product.rating)} />
-          ))}
         </div>
       </div>
     </div>

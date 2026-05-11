@@ -64,16 +64,23 @@ function mapStrapiBlogPost(item: StrapiBlogPostItem): BlogPost {
 }
 
 export async function getPosts(): Promise<BlogPost[]> {
+  console.log("[getPosts] USE_STRAPI =", USE_STRAPI);
   if (USE_STRAPI) {
     try {
-      const res = await fetch(
-        `${STRAPI_URL}/api/blog-posts?populate[0]=coverImage&populate[1]=author&sort=publishedAt:desc`,
-        { headers: strapiHeaders }
-      );
-      if (!res.ok) return MOCK_POSTS;
+      const url = `${STRAPI_URL}/api/blog-posts?populate[0]=coverImage&populate[1]=author&sort=publishedAt:desc`;
+      console.log("[getPosts] Fetching:", url);
+      const res = await fetch(url, { headers: strapiHeaders });
+      console.log("[getPosts] Status:", res.status, res.statusText);
+      if (!res.ok) {
+        const text = await res.text();
+        console.warn("[getPosts] Non-OK response body:", text);
+        return MOCK_POSTS;
+      }
       const json = (await res.json()) as { data: StrapiBlogPostItem[] };
+      console.log("[getPosts] Received", json.data.length, "posts");
       return json.data.map(mapStrapiBlogPost);
-    } catch {
+    } catch (err) {
+      console.error("[getPosts] Fetch error:", err);
       return MOCK_POSTS;
     }
   }
