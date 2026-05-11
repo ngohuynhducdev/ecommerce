@@ -1,5 +1,5 @@
 import { MOCK_POSTS } from "@/features/blog/mock-data";
-import type { BlogPost, BlogAuthor, ArticleSection } from "@/features/blog/types";
+import type { BlogPost, ArticleSection } from "@/features/blog/types";
 
 const USE_STRAPI = process.env.NEXT_PUBLIC_USE_STRAPI === "true";
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? "";
@@ -9,16 +9,30 @@ const strapiHeaders = {
   "Content-Type": "application/json",
 };
 
-// Strapi v5 response shapes
-interface StrapiMediaData {
-  id: number;
-  url: string;
+// ── Strapi v5 Blocks (Rich Text) types ────────────────────────────────────────
+
+interface StrapiBlockChild {
+  type: string;
+  text?: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
 }
 
-interface StrapiAuthor {
-  name: string;
-  avatar?: StrapiMediaData | null;
+interface StrapiBlockImage {
+  url: string;
+  alternativeText?: string;
 }
+
+interface StrapiBlock {
+  type: "heading" | "paragraph" | "image" | "list" | "quote" | "code" | string;
+  level?: number;
+  children?: StrapiBlockChild[];
+  image?: StrapiBlockImage;
+  format?: string;
+}
+
+// ── Strapi v5 BlogPost response shape ─────────────────────────────────────────
 
 interface StrapiBlogPostItem {
   id: number;
@@ -26,61 +40,73 @@ interface StrapiBlogPostItem {
   slug: string;
   title: string;
   excerpt?: string;
-  category?: string;
-  author?: StrapiAuthor;
-  coverImage?: StrapiMediaData | string | null;
+  author?: string;           // Simple Text field
+  cover?: { url: string } | null;  // Media field
   publishedAt?: string;
-  readTime?: string;
-  sections?: ArticleSection[];
+  tags?: string[] | null;
+  content?: StrapiBlock[] | null;  // Rich Text (Blocks)
 }
 
-function resolveMediaUrl(
-  field: StrapiMediaData | string | null | undefined
-): string {
-  if (!field) return "";
-  if (typeof field === "string") return field;
-  if (!field.url) return "";
-  return field.url.startsWith("http") ? field.url : `${STRAPI_URL}${field.url}`;
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function resolveUrl(url: string | undefined): string {
+  if (!url) return "";
+  return url.startsWith("http") ? url : `${STRAPI_URL}${url}`;
+}
+
+function blocksToSections(blocks: StrapiBlock[] | null | undefined): ArticleSection[] {
+  if (!blocks?.length) return [];
+  const sections: ArticleSection[] = [];
+
+  for (const block of blocks) {
+    const text = (block.children ?? [])
+      .map((c) => c.text ?? "")
+      .join("")
+      .trim();
+
+    if (block.type === "heading" && block.level === 2 && text) {
+      sections.push({ type: "h2", content: text });
+    } else if (block.type === "paragraph" && text) {
+      sections.push({ type: "p", content: text });
+    } else if (block.type === "image" && block.image?.url) {
+      sections.push({ type: "img", content: resolveUrl(block.image.url) });
+    } else if ((block.type === "list" || block.type === "quote") && text) {
+      sections.push({ type: "p", content: text });
+    }
+  }
+
+  return sections;
 }
 
 function mapStrapiBlogPost(item: StrapiBlogPostItem): BlogPost {
-  const author: BlogAuthor = {
-    name: item.author?.name ?? "",
-    avatar: resolveMediaUrl(item.author?.avatar),
-  };
-
   return {
     id: String(item.id),
     slug: item.slug,
     title: item.title,
     excerpt: item.excerpt ?? "",
-    category: item.category ?? "",
-    author,
-    coverImage: resolveMediaUrl(item.coverImage),
+    category: item.tags?.[0] ?? "",
+    author: {
+      name: item.author ?? "",
+      avatar: "",
+    },
+    coverImage: resolveUrl(item.cover?.url),
     publishedAt: item.publishedAt ?? new Date().toISOString(),
-    readTime: item.readTime ?? "",
-    sections: item.sections ?? [],
+    readTime: "",
+    sections: blocksToSections(item.content),
   };
 }
 
+// ── Public API ─────────────────────────────────────────────────────────────────
+
 export async function getPosts(): Promise<BlogPost[]> {
-  console.log("[getPosts] USE_STRAPI =", USE_STRAPI);
   if (USE_STRAPI) {
     try {
-      const url = `${STRAPI_URL}/api/blog-posts?populate[0]=coverImage&populate[1]=author&sort=publishedAt:desc`;
-      console.log("[getPosts] Fetching:", url);
-      const res = await fetch(url, { headers: strapiHeaders });
-      console.log("[getPosts] Status:", res.status, res.statusText);
-      if (!res.ok) {
-        const text = await res.text();
-        console.warn("[getPosts] Non-OK response body:", text);
-        return MOCK_POSTS;
-      }
+      const url = `${STRAPI_URL}/api/blog-posts?populate[0]=cover&sort=publishedAt:desc`;
+      const res = await fetch(url, { headers: strapiHeaders, next: { revalidate: 3600 } });
+      if (!res.ok) return MOCK_POSTS;
       const json = (await res.json()) as { data: StrapiBlogPostItem[] };
-      console.log("[getPosts] Received", json.data.length, "posts");
       return json.data.map(mapStrapiBlogPost);
-    } catch (err) {
-      console.error("[getPosts] Fetch error:", err);
+    } catch {
       return MOCK_POSTS;
     }
   }
@@ -92,14 +118,12 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | undefined>
     try {
       const queryParts = [
         `filters[slug][$eq]=${slug}`,
-        "populate[0]=coverImage",
-        "populate[1]=author",
-        "populate[2]=sections",
+        "populate[0]=cover",
       ];
-
-      const res = await fetch(`${STRAPI_URL}/api/blog-posts?${queryParts.join("&")}`, {
-        headers: strapiHeaders,
-      });
+      const res = await fetch(
+        `${STRAPI_URL}/api/blog-posts?${queryParts.join("&")}`,
+        { headers: strapiHeaders, next: { revalidate: 3600 } },
+      );
       if (!res.ok) return MOCK_POSTS.find((p) => p.slug === slug);
       const json = (await res.json()) as { data: StrapiBlogPostItem[] };
       return json.data[0] ? mapStrapiBlogPost(json.data[0]) : undefined;
