@@ -74,7 +74,7 @@ export function PaymentStep() {
 
   return (
     <div>
-      <h2 className="text-2xl font-semibold text-[#1C1C1C] mb-6">
+      <h2 className="text-2xl font-semibold text-primary mb-6">
         Payment Method
       </h2>
 
@@ -82,20 +82,20 @@ export function PaymentStep() {
         <TabsList className="bg-transparent p-0 gap-2 h-auto mb-6 flex-wrap">
           <TabsTrigger
             value="card"
-            className="rounded-sm px-4 py-2 text-sm border border-[#E8ECEF] data-[state=active]:bg-[#1C1C1C] data-[state=active]:text-white data-[state=active]:border-[#1C1C1C]"
+            className="rounded-sm px-4 py-2 text-sm border border-border data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:border-primary"
           >
             <CreditCard className="w-4 h-4 mr-2" />
             Credit Card
           </TabsTrigger>
           <TabsTrigger
             value="paypal"
-            className="rounded-sm px-4 py-2 text-sm border border-[#E8ECEF] data-[state=active]:bg-[#1C1C1C] data-[state=active]:text-white data-[state=active]:border-[#1C1C1C]"
+            className="rounded-sm px-4 py-2 text-sm border border-border data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:border-primary"
           >
             PayPal
           </TabsTrigger>
           <TabsTrigger
             value="bank"
-            className="rounded-sm px-4 py-2 text-sm border border-[#E8ECEF] data-[state=active]:bg-[#1C1C1C] data-[state=active]:text-white data-[state=active]:border-[#1C1C1C]"
+            className="rounded-sm px-4 py-2 text-sm border border-border data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:border-primary"
           >
             <Building2 className="w-4 h-4 mr-2" />
             Bank Transfer
@@ -149,27 +149,27 @@ export function PaymentStep() {
               />
             </div>
           </div>
-          <label className="flex items-center gap-2 cursor-pointer text-sm text-[#1C1C1C]">
+          <label className="flex items-center gap-2 cursor-pointer text-sm text-primary">
             <input
               type="checkbox"
               checked={saveCard}
               onChange={(e) => setSaveCard(e.target.checked)}
-              className="w-4 h-4 accent-[#1C1C1C]"
+              className="w-4 h-4 accent-primary"
             />
             Save card for future orders
           </label>
         </TabsContent>
 
         <TabsContent value="paypal">
-          <div className="bg-[#F3F5F7] rounded-xl p-6 flex items-start gap-4">
-            <div className="w-12 h-12 rounded-lg bg-white border border-[#E8ECEF] flex items-center justify-center font-bold text-sm text-[#003087]">
+          <div className="bg-subtle rounded-xl p-6 flex items-start gap-4">
+            <div className="w-12 h-12 rounded-lg bg-white border border-border flex items-center justify-center font-bold text-sm text-[#003087]">
               Pay<span className="text-[#009CDE]">Pal</span>
             </div>
             <div>
-              <p className="font-medium text-[#1C1C1C]">
+              <p className="font-medium text-primary">
                 Pay securely with PayPal
               </p>
-              <p className="text-sm text-[#807D7E] mt-1">
+              <p className="text-sm text-muted mt-1">
                 You&apos;ll be redirected to PayPal after reviewing your order
                 to complete payment securely.
               </p>
@@ -178,37 +178,37 @@ export function PaymentStep() {
         </TabsContent>
 
         <TabsContent value="bank">
-          <div className="bg-[#F3F5F7] rounded-xl p-6">
-            <p className="font-medium text-[#1C1C1C] mb-4">
+          <div className="bg-subtle rounded-xl p-6">
+            <p className="font-medium text-primary mb-4">
               Bank Transfer Details
             </p>
             <table className="w-full text-sm">
               <tbody>
-                <tr className="border-b border-[#E8ECEF]">
-                  <td className="py-2 text-[#807D7E] w-40">Bank Name</td>
-                  <td className="py-2 text-[#1C1C1C]">3legant Trust Bank</td>
+                <tr className="border-b border-border">
+                  <td className="py-2 text-muted w-40">Bank Name</td>
+                  <td className="py-2 text-primary">3legant Trust Bank</td>
                 </tr>
-                <tr className="border-b border-[#E8ECEF]">
-                  <td className="py-2 text-[#807D7E]">Account Name</td>
-                  <td className="py-2 text-[#1C1C1C]">3legant Furniture Co.</td>
+                <tr className="border-b border-border">
+                  <td className="py-2 text-muted">Account Name</td>
+                  <td className="py-2 text-primary">3legant Furniture Co.</td>
                 </tr>
-                <tr className="border-b border-[#E8ECEF]">
-                  <td className="py-2 text-[#807D7E]">Account Number</td>
-                  <td className="py-2 text-[#1C1C1C]">1234 5678 9012 3456</td>
+                <tr className="border-b border-border">
+                  <td className="py-2 text-muted">Account Number</td>
+                  <td className="py-2 text-primary">1234 5678 9012 3456</td>
                 </tr>
-                <tr className="border-b border-[#E8ECEF]">
-                  <td className="py-2 text-[#807D7E]">Routing / SWIFT</td>
-                  <td className="py-2 text-[#1C1C1C]">3LEGANTXXX</td>
+                <tr className="border-b border-border">
+                  <td className="py-2 text-muted">Routing / SWIFT</td>
+                  <td className="py-2 text-primary">3LEGANTXXX</td>
                 </tr>
                 <tr>
-                  <td className="py-2 text-[#807D7E]">Reference</td>
-                  <td className="py-2 text-[#1C1C1C]">
+                  <td className="py-2 text-muted">Reference</td>
+                  <td className="py-2 text-primary">
                     Your order number (emailed after placement)
                   </td>
                 </tr>
               </tbody>
             </table>
-            <p className="text-xs text-[#807D7E] mt-4">
+            <p className="text-xs text-muted mt-4">
               Your order will ship once the transfer is confirmed (usually 1-2
               business days).
             </p>
@@ -220,7 +220,7 @@ export function PaymentStep() {
         <button
           type="button"
           onClick={() => setStep(1)}
-          className="flex items-center gap-2 px-6 h-12 border border-[#E8ECEF] rounded-sm text-sm text-[#1C1C1C] hover:border-[#1C1C1C] transition-colors cursor-pointer"
+          className="flex items-center gap-2 px-6 h-12 border border-border rounded-sm text-sm text-primary hover:border-primary transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           Back
@@ -228,7 +228,7 @@ export function PaymentStep() {
         <button
           type="button"
           onClick={handleReview}
-          className="flex-1 h-14 bg-[#1C1C1C] text-white text-sm font-medium rounded-sm hover:bg-[#333] transition-colors cursor-pointer"
+          className="flex-1 h-14 bg-primary text-white text-sm font-medium rounded-sm hover:bg-[#333] transition-colors cursor-pointer"
         >
           Review Order
         </button>

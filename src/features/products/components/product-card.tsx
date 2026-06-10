@@ -83,10 +83,10 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="flex flex-col">
       {/* Image card */}
-      <div className="relative rounded-xl bg-[#F3F5F7] overflow-hidden flex flex-col">
+      <div className="relative rounded-xl bg-subtle overflow-hidden flex flex-col">
         {/* Badges */}
         <div className="absolute top-3 left-3 z-10 flex flex-col gap-1">
-          <span className="bg-white text-[#1C1C1C] text-xs font-bold uppercase px-2.5 py-1 rounded">
+          <span className="bg-white text-primary text-xs font-bold uppercase px-2.5 py-1 rounded">
             NEW
           </span>
           {discountPct && (
@@ -121,7 +121,7 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* Add to cart button */}
         <button
           onClick={handleAddToCart}
-          className="w-full bg-[#1C1C1C] text-white text-sm font-medium py-3.5 hover:bg-[#B88E2F] transition-colors mt-auto"
+          className="w-full bg-primary text-white text-sm font-medium py-3.5 hover:bg-accent transition-colors mt-auto"
         >
           Add to cart
         </button>
@@ -135,16 +135,16 @@ export function ProductCard({ product }: ProductCardProps) {
           ))}
         </div>
         <Link href={`/shop/${product.slug}`}>
-          <p className="font-semibold text-sm text-[#1C1C1C] leading-snug line-clamp-2 hover:text-[#B88E2F] transition-colors">
+          <p className="font-semibold text-sm text-primary leading-snug line-clamp-2 hover:text-accent transition-colors">
             {product.name}
           </p>
         </Link>
         <div className="flex items-center gap-2 mt-1.5">
-          <span className="font-semibold text-[#1C1C1C]">
+          <span className="font-semibold text-primary">
             {formatPrice(product.price)}
           </span>
           {product.comparePrice && (
-            <span className="text-sm text-[#807D7E] line-through">
+            <span className="text-sm text-muted line-through">
               {formatPrice(product.comparePrice)}
             </span>
           )}

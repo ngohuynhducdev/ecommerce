@@ -31,8 +31,8 @@ export function CheckoutSummary() {
   const itemCount = items.reduce((sum, i) => sum + i.quantity, 0);
 
   return (
-    <aside className="bg-[#F3F5F7] rounded-2xl p-6 sticky top-8 h-fit">
-      <h2 className="text-lg font-semibold text-[#1C1C1C] mb-4">
+    <aside className="bg-subtle rounded-2xl p-6 sticky top-8 h-fit">
+      <h2 className="text-lg font-semibold text-primary mb-4">
         Order Summary
       </h2>
 
@@ -42,7 +42,7 @@ export function CheckoutSummary() {
             {visibleItems.map((item) => (
               <div
                 key={`${item.product.id}-${item.variant?.id ?? "default"}`}
-                className="relative w-12 h-12 rounded-lg overflow-hidden bg-white border border-[#E8ECEF]"
+                className="relative w-12 h-12 rounded-lg overflow-hidden bg-white border border-border"
               >
                 <SafeImage
                   src={item.product.images[0]}
@@ -54,12 +54,12 @@ export function CheckoutSummary() {
               </div>
             ))}
             {extraCount > 0 && (
-              <div className="w-12 h-12 rounded-lg bg-white border border-[#E8ECEF] flex items-center justify-center text-xs font-medium text-[#807D7E]">
+              <div className="w-12 h-12 rounded-lg bg-white border border-border flex items-center justify-center text-xs font-medium text-muted">
                 +{extraCount}
               </div>
             )}
           </div>
-          <p className="text-xs text-[#807D7E]">
+          <p className="text-xs text-muted">
             {itemCount} {itemCount === 1 ? "item" : "items"}
           </p>
         </div>
@@ -67,16 +67,16 @@ export function CheckoutSummary() {
 
       <div className="space-y-2 text-sm">
         <div className="flex justify-between">
-          <span className="text-[#807D7E]">Subtotal</span>
-          <span className="text-[#1C1C1C]">{formatPrice(subtotal)}</span>
+          <span className="text-muted">Subtotal</span>
+          <span className="text-primary">{formatPrice(subtotal)}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-[#807D7E]">
+          <span className="text-muted">
             Shipping ({SHIPPING_LABELS[shippingMethod]})
           </span>
-          <span className="text-[#1C1C1C]">
+          <span className="text-primary">
             {shippingCost === 0 ? (
-              <span className="text-[#2EC1AC]">Free</span>
+              <span className="text-sale">Free</span>
             ) : (
               formatPrice(shippingCost)
             )}
@@ -84,15 +84,15 @@ export function CheckoutSummary() {
         </div>
         {coupon && (
           <div className="flex justify-between">
-            <span className="text-[#807D7E]">Discount ({coupon.code})</span>
+            <span className="text-muted">Discount ({coupon.code})</span>
             <span className="text-red-500">-{formatPrice(discountAmount)}</span>
           </div>
         )}
       </div>
 
-      <div className="flex justify-between pt-4 mt-4 border-t border-[#E8ECEF]">
-        <span className="font-bold text-[#1C1C1C]">Total</span>
-        <span className="font-bold text-[#1C1C1C] text-lg">
+      <div className="flex justify-between pt-4 mt-4 border-t border-border">
+        <span className="font-bold text-primary">Total</span>
+        <span className="font-bold text-primary text-lg">
           {formatPrice(total)}
         </span>
       </div>

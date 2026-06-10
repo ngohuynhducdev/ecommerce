@@ -26,13 +26,13 @@ function OrderSuccessContent() {
 
   return (
     <div className="px-8 lg:px-20 py-12">
-      <h1 className="text-4xl font-bold text-[#1C1C1C] text-center mb-8">Complete!</h1>
+      <h1 className="text-4xl font-bold text-primary text-center mb-8">Complete!</h1>
       <StepIndicator step={3} />
 
       <div className="flex justify-center">
-        <div className="w-full max-w-lg border border-[#E8ECEF] rounded-2xl p-8 text-center">
-          <p className="text-sm text-[#807D7E]">Thank you! 🎉</p>
-          <h2 className="text-2xl lg:text-3xl font-bold text-[#1C1C1C] mt-2 mb-8 leading-snug">
+        <div className="w-full max-w-lg border border-border rounded-2xl p-8 text-center">
+          <p className="text-sm text-muted">Thank you! 🎉</p>
+          <h2 className="text-2xl lg:text-3xl font-bold text-primary mt-2 mb-8 leading-snug">
             Your order has been received
           </h2>
 
@@ -44,7 +44,7 @@ function OrderSuccessContent() {
                   key={`${item.product.id}-${item.variant?.id ?? "default"}`}
                   className="relative"
                 >
-                  <div className="relative w-20 h-20 lg:w-24 lg:h-24 rounded-lg overflow-hidden bg-[#F3F5F7] border border-[#E8ECEF]">
+                  <div className="relative w-20 h-20 lg:w-24 lg:h-24 rounded-lg overflow-hidden bg-subtle border border-border">
                     <SafeImage
                       src={item.product.images[0]}
                       alt={item.product.name}
@@ -54,7 +54,7 @@ function OrderSuccessContent() {
                     />
                   </div>
                   {item.quantity > 1 && (
-                    <span className="absolute -top-2 -right-2 w-6 h-6 bg-[#1C1C1C] text-white text-xs rounded-full flex items-center justify-center font-semibold">
+                    <span className="absolute -top-2 -right-2 w-6 h-6 bg-primary text-white text-xs rounded-full flex items-center justify-center font-semibold">
                       {item.quantity}
                     </span>
                   )}
@@ -65,19 +65,19 @@ function OrderSuccessContent() {
 
           {/* Order details */}
           {order ? (
-            <div className="text-left space-y-0 divide-y divide-[#E8ECEF]">
+            <div className="text-left space-y-0 divide-y divide-border">
               <DetailRow label="Order code:" value={`#${order.orderNumber}`} />
               <DetailRow label="Date:" value={formatDate(order.createdAt)} />
               <DetailRow label="Total:" value={formatPrice(order.total)} />
               <DetailRow label="Payment method:" value={order.paymentMethod ?? "Credit Card"} />
             </div>
           ) : (
-            <div className="text-sm text-[#807D7E]">Order #{orderId}</div>
+            <div className="text-sm text-muted">Order #{orderId}</div>
           )}
 
           <Link
             href="/account/orders"
-            className="inline-flex items-center justify-center h-14 px-10 mt-8 bg-[#1C1C1C] text-white text-sm font-medium rounded-full hover:bg-[#B88E2F] transition-colors"
+            className="inline-flex items-center justify-center h-14 px-10 mt-8 bg-primary text-white text-sm font-medium rounded-full hover:bg-accent transition-colors"
           >
             Purchase history
           </Link>
@@ -90,15 +90,15 @@ function OrderSuccessContent() {
 function DetailRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="py-4 flex lg:flex-row flex-col lg:items-center lg:justify-between gap-1">
-      <span className="text-sm text-[#807D7E]">{label}</span>
-      <span className="text-sm font-semibold text-[#1C1C1C]">{value}</span>
+      <span className="text-sm text-muted">{label}</span>
+      <span className="text-sm font-semibold text-primary">{value}</span>
     </div>
   );
 }
 
 export default function OrderSuccessPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#F3F5F7]" />}>
+    <Suspense fallback={<div className="min-h-screen bg-subtle" />}>
       <OrderSuccessContent />
     </Suspense>
   );

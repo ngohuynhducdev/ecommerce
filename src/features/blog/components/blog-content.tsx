@@ -90,7 +90,7 @@ export function BlogContent({ posts }: BlogContentProps) {
 
   const iconClass = (cols: GridCols) =>
     `p-1.5 rounded cursor-pointer transition-colors ${
-      gridCols === cols ? "text-[#1C1C1C]" : "text-[#C1C4C9] hover:text-[#1C1C1C]"
+      gridCols === cols ? "text-primary" : "text-[#C1C4C9] hover:text-primary"
     }`;
 
   const gridClass: Record<GridCols, string> = {
@@ -103,7 +103,7 @@ export function BlogContent({ posts }: BlogContentProps) {
   return (
     <div>
       {/* Toolbar: tabs + sort + grid toggles */}
-      <div className="flex items-center gap-6 border-b border-[#E8ECEF] mb-8">
+      <div className="flex items-center gap-6 border-b border-border mb-8">
         {/* Desktop tabs */}
         <div className="hidden md:flex items-center gap-6">
           {(["all", "featured"] as Tab[]).map((tab) => (
@@ -112,8 +112,8 @@ export function BlogContent({ posts }: BlogContentProps) {
               onClick={() => handleTabChange(tab)}
               className={`pb-3 text-sm font-medium capitalize transition-colors cursor-pointer border-b-2 -mb-px ${
                 activeTab === tab
-                  ? "border-[#1C1C1C] text-[#1C1C1C]"
-                  : "border-transparent text-[#807D7E] hover:text-[#1C1C1C]"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted hover:text-primary"
               }`}
             >
               {tab === "all" ? "All Blog" : "Featured"}
@@ -126,7 +126,7 @@ export function BlogContent({ posts }: BlogContentProps) {
           <select
             value={activeTab}
             onChange={(e) => handleTabChange(e.target.value as Tab)}
-            className="text-sm font-medium text-[#1C1C1C] bg-transparent border border-[#E8ECEF] rounded px-3 py-1.5 cursor-pointer outline-none"
+            className="text-sm font-medium text-primary bg-transparent border border-border rounded px-3 py-1.5 cursor-pointer outline-none"
           >
             <option value="all">All Blog</option>
             <option value="featured">Featured</option>
@@ -136,15 +136,15 @@ export function BlogContent({ posts }: BlogContentProps) {
         <div className="flex-1" />
 
         {/* Sort by (desktop) */}
-        <div className="hidden md:flex items-center gap-1 text-sm text-[#1C1C1C]">
+        <div className="hidden md:flex items-center gap-1 text-sm text-primary">
           <span>Sort by</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="text-[#807D7E]">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="text-muted">
             <path d="m6 9 6 6 6-6" />
           </svg>
         </div>
 
         {/* Grid view toggles (desktop) */}
-        <div className="hidden md:flex items-center gap-0.5 border-l border-[#E8ECEF] pl-4">
+        <div className="hidden md:flex items-center gap-0.5 border-l border-border pl-4">
           <button className={iconClass(4)} onClick={() => setGridCols(4)} aria-label="4 columns"><IconGrid4 /></button>
           <button className={iconClass(3)} onClick={() => setGridCols(3)} aria-label="3 columns"><IconGrid3 /></button>
           <button className={iconClass(2)} onClick={() => setGridCols(2)} aria-label="2 columns"><IconGrid2 /></button>
@@ -164,7 +164,7 @@ export function BlogContent({ posts }: BlogContentProps) {
         <div className="flex justify-center mt-12">
           <button
             onClick={() => setVisible((v) => v + INCREMENT)}
-            className="border border-[#1C1C1C] text-[#1C1C1C] px-12 py-3 rounded-full text-sm hover:bg-[#1C1C1C] hover:text-white transition-colors cursor-pointer"
+            className="border border-primary text-primary px-12 py-3 rounded-full text-sm hover:bg-primary hover:text-white transition-colors cursor-pointer"
           >
             Show more
           </button>

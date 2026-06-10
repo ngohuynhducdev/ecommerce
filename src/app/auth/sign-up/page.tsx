@@ -70,14 +70,14 @@ export default function SignUpPage() {
   return (
     <div className="min-h-screen flex flex-col lg:grid lg:grid-cols-2">
       {/* Left / Top — Gray image panel */}
-      <div className="bg-[#F3F5F7] flex flex-col min-h-72 lg:min-h-screen">
+      <div className="bg-subtle flex flex-col min-h-72 lg:min-h-screen">
         {/* Logo */}
         <div className="px-8 pt-8 lg:px-10 flex lg:justify-start justify-center">
           <Link
             href="/"
-            className="font-semibold text-xl tracking-tight text-[#1C1C1C] select-none"
+            className="font-semibold text-xl tracking-tight text-primary select-none"
           >
-            3legant<span className="text-[#B88E2F]">.</span>
+            3legant<span className="text-accent">.</span>
           </Link>
         </div>
 
@@ -99,12 +99,12 @@ export default function SignUpPage() {
       {/* Right / Bottom — White form panel */}
       <div className="bg-white flex items-center justify-center px-8 py-16 lg:min-h-screen">
         <div className="w-full max-w-sm">
-          <h1 className="text-4xl font-bold text-[#1C1C1C]">Sign up</h1>
-          <p className="text-sm text-[#807D7E] mt-3 mb-10">
+          <h1 className="text-4xl font-bold text-primary">Sign up</h1>
+          <p className="text-sm text-muted mt-3 mb-10">
             Already have an account?{" "}
             <Link
               href="/auth/sign-in"
-              className="text-[#2EC1AC] font-medium hover:underline"
+              className="text-sale font-medium hover:underline"
             >
               Sign in
             </Link>
@@ -117,7 +117,7 @@ export default function SignUpPage() {
                 {...register("name")}
                 placeholder="Your name"
                 autoComplete="name"
-                className="w-full border-0 border-b border-[#E8ECEF] bg-transparent pb-3 text-sm outline-none focus:border-[#1C1C1C] transition-colors placeholder:text-[#807D7E]"
+                className="w-full border-0 border-b border-border bg-transparent pb-3 text-sm outline-none focus:border-primary transition-colors placeholder:text-muted"
               />
               {errors.name && (
                 <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
@@ -130,7 +130,7 @@ export default function SignUpPage() {
                 {...register("username")}
                 placeholder="Username"
                 autoComplete="username"
-                className="w-full border-0 border-b border-[#E8ECEF] bg-transparent pb-3 text-sm outline-none focus:border-[#1C1C1C] transition-colors placeholder:text-[#807D7E]"
+                className="w-full border-0 border-b border-border bg-transparent pb-3 text-sm outline-none focus:border-primary transition-colors placeholder:text-muted"
               />
               {errors.username && (
                 <p className="text-red-500 text-xs mt-1">{errors.username.message}</p>
@@ -144,7 +144,7 @@ export default function SignUpPage() {
                 type="email"
                 placeholder="Email address"
                 autoComplete="email"
-                className="w-full border-0 border-b border-[#E8ECEF] bg-transparent pb-3 text-sm outline-none focus:border-[#1C1C1C] transition-colors placeholder:text-[#807D7E]"
+                className="w-full border-0 border-b border-border bg-transparent pb-3 text-sm outline-none focus:border-primary transition-colors placeholder:text-muted"
               />
               {errors.email && (
                 <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
@@ -159,12 +159,12 @@ export default function SignUpPage() {
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
                   autoComplete="new-password"
-                  className="w-full border-0 border-b border-[#E8ECEF] bg-transparent pb-3 pr-8 text-sm outline-none focus:border-[#1C1C1C] transition-colors placeholder:text-[#807D7E]"
+                  className="w-full border-0 border-b border-border bg-transparent pb-3 pr-8 text-sm outline-none focus:border-primary transition-colors placeholder:text-muted"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute right-0 top-0 text-[#807D7E] hover:text-[#1C1C1C] transition-colors cursor-pointer"
+                  className="absolute right-0 top-0 text-muted hover:text-primary transition-colors cursor-pointer"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? <EyeOffIcon /> : <EyeIcon />}
@@ -181,15 +181,15 @@ export default function SignUpPage() {
                 <input
                   {...register("terms")}
                   type="checkbox"
-                  className="mt-0.5 w-4 h-4 border border-[#E8ECEF] rounded-sm accent-[#1C1C1C] cursor-pointer shrink-0"
+                  className="mt-0.5 w-4 h-4 border border-border rounded-sm accent-primary cursor-pointer shrink-0"
                 />
-                <span className="text-sm text-[#807D7E] leading-relaxed">
+                <span className="text-sm text-muted leading-relaxed">
                   I agree with{" "}
-                  <a href="#" className="font-bold text-[#1C1C1C] hover:underline">
+                  <a href="#" className="font-bold text-primary hover:underline">
                     Privacy Policy
                   </a>{" "}
                   and{" "}
-                  <a href="#" className="font-bold text-[#1C1C1C] hover:underline">
+                  <a href="#" className="font-bold text-primary hover:underline">
                     Terms of Use
                   </a>
                 </span>
@@ -203,7 +203,7 @@ export default function SignUpPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full h-14 bg-[#1C1C1C] text-white rounded-lg text-sm font-medium hover:bg-[#B88E2F] transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+              className="w-full h-14 bg-primary text-white rounded-lg text-sm font-medium hover:bg-accent transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
             >
               {loading ? "Creating account…" : "Sign Up"}
             </button>

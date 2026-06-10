@@ -36,14 +36,14 @@ export function MegaMenu({ onMouseEnter, onMouseLeave }: MegaMenuProps) {
     <div
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className="absolute top-full left-0 w-full bg-white shadow-lg border-t border-[#E8ECEF] z-50 p-10"
+      className="absolute top-full left-0 w-full bg-white shadow-lg border-t border-border z-50 p-10"
     >
       <div className="max-w-7xl mx-auto grid grid-cols-5 gap-8">
         {categories.map((cat) => (
           <div key={cat.slug}>
             <Link
               href={`/shop?category=${cat.slug}`}
-              className="text-sm font-semibold text-[#1C1C1C] mb-4 block hover:text-[#B88E2F] transition-colors"
+              className="text-sm font-semibold text-primary mb-4 block hover:text-accent transition-colors"
             >
               {cat.title}
             </Link>
@@ -52,7 +52,7 @@ export function MegaMenu({ onMouseEnter, onMouseLeave }: MegaMenuProps) {
                 <li key={link}>
                   <Link
                     href={`/shop?category=${cat.slug}`}
-                    className="text-sm text-[#807D7E] hover:text-[#1C1C1C] py-1 block transition-colors"
+                    className="text-sm text-muted hover:text-primary py-1 block transition-colors"
                   >
                     {link}
                   </Link>
@@ -73,12 +73,12 @@ export function MegaMenu({ onMouseEnter, onMouseLeave }: MegaMenuProps) {
               className="object-cover"
             />
           </div>
-          <span className="text-sm font-semibold text-[#1C1C1C] mb-1">
+          <span className="text-sm font-semibold text-primary mb-1">
             New Arrivals
           </span>
           <Link
             href="/shop"
-            className="text-sm text-[#B88E2F] hover:text-[#C9A84C] transition-colors"
+            className="text-sm text-accent hover:text-accent-hover transition-colors"
           >
             Shop Now →
           </Link>

@@ -21,7 +21,7 @@ export function NewsletterSection() {
   }
 
   return (
-    <section className="relative overflow-hidden bg-[#F3F5F7]">
+    <section className="relative overflow-hidden bg-subtle">
       <Image
         src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=1600&h=600&fit=crop&auto=format&q=80"
         alt=""
@@ -31,15 +31,15 @@ export function NewsletterSection() {
         aria-hidden="true"
       />
       <div className="relative py-16 lg:py-24 px-8 flex flex-col items-center text-center">
-        <h2 className="text-3xl lg:text-4xl font-bold text-[#1C1C1C]">
+        <h2 className="text-3xl lg:text-4xl font-bold text-primary">
           Join Our Newsletter
         </h2>
-        <p className="text-[#807D7E] mt-3 max-w-sm">
+        <p className="text-muted mt-3 max-w-sm">
           Sign up for deals, new products and promotions
         </p>
         <form onSubmit={handleSubmit} className="mt-10 w-full max-w-sm">
-          <div className="flex items-center gap-3 border-b border-[#1C1C1C] pb-3">
-            <span className="text-[#807D7E] shrink-0">
+          <div className="flex items-center gap-3 border-b border-primary pb-3">
+            <span className="text-muted shrink-0">
               <MailIcon />
             </span>
             <input
@@ -48,11 +48,11 @@ export function NewsletterSection() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email address"
               required
-              className="flex-1 bg-transparent text-sm outline-none placeholder:text-[#807D7E] text-[#1C1C1C]"
+              className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted text-primary"
             />
             <button
               type="submit"
-              className="text-sm font-medium text-[#807D7E] hover:text-[#1C1C1C] transition-colors shrink-0 cursor-pointer"
+              className="text-sm font-medium text-muted hover:text-primary transition-colors shrink-0 cursor-pointer"
             >
               Signup
             </button>

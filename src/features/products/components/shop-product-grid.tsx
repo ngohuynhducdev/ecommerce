@@ -23,9 +23,9 @@ export function ShopProductGrid({ products, gridCols = 3 }: ShopProductGridProps
 
   if (products.length === 0) {
     return (
-      <div className="py-16 text-center border border-dashed border-[#E8ECEF] rounded-lg">
-        <p className="text-[#1C1C1C] font-medium">No products found</p>
-        <p className="text-sm text-[#807D7E] mt-1">
+      <div className="py-16 text-center border border-dashed border-border rounded-lg">
+        <p className="text-primary font-medium">No products found</p>
+        <p className="text-sm text-muted mt-1">
           Try adjusting your filters to see more results.
         </p>
       </div>
@@ -53,7 +53,7 @@ export function ShopProductGrid({ products, gridCols = 3 }: ShopProductGridProps
         <div className="flex justify-center mt-12">
           <button
             onClick={() => setVisible((v) => v + INCREMENT)}
-            className="border border-[#1C1C1C] text-[#1C1C1C] px-12 py-3 rounded-full text-sm hover:bg-[#1C1C1C] hover:text-white transition-colors cursor-pointer"
+            className="border border-primary text-primary px-12 py-3 rounded-full text-sm hover:bg-primary hover:text-white transition-colors cursor-pointer"
           >
             Show more
           </button>

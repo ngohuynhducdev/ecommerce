@@ -121,17 +121,17 @@ export function ShopContent({
 
   const gridIconClass = (cols: GridCols) =>
     `p-1.5 rounded cursor-pointer transition-colors ${
-      gridCols === cols ? "text-[#1C1C1C]" : "text-[#C1C4C9] hover:text-[#1C1C1C]"
+      gridCols === cols ? "text-primary" : "text-[#C1C4C9] hover:text-primary"
     }`;
 
   return (
     <div>
       {/* Toolbar */}
-      <div className="border-y border-[#E8ECEF] flex items-center gap-4 py-3.5 mb-8">
+      <div className="border-y border-border flex items-center gap-4 py-3.5 mb-8">
         {/* Filter button — opens sheet on mobile, decorative label on desktop */}
         <Sheet>
           <SheetTrigger asChild>
-            <button className="flex items-center gap-2 text-sm font-medium text-[#1C1C1C] hover:text-[#B88E2F] transition-colors cursor-pointer">
+            <button className="flex items-center gap-2 text-sm font-medium text-primary hover:text-accent transition-colors cursor-pointer">
               <SlidersHorizontal className="w-4 h-4" />
               <span>Filter</span>
             </button>
@@ -146,19 +146,19 @@ export function ShopContent({
 
         {/* Desktop: divider + selected category name */}
         <div className="hidden lg:flex items-center gap-4">
-          <div className="w-px h-5 bg-[#E8ECEF]" />
-          <span className="text-sm font-medium text-[#1C1C1C]">{displayCategory}</span>
+          <div className="w-px h-5 bg-border" />
+          <span className="text-sm font-medium text-primary">{displayCategory}</span>
         </div>
 
         <div className="flex-1" />
 
         {/* Sort */}
         <div className="flex items-center gap-1">
-          <span className="text-sm text-[#1C1C1C] hidden sm:inline">Sort by</span>
+          <span className="text-sm text-primary hidden sm:inline">Sort by</span>
           <select
             value={currentSort ?? "default"}
             onChange={(e) => handleSort(e.target.value)}
-            className="text-sm text-[#1C1C1C] bg-transparent border-none outline-none cursor-pointer"
+            className="text-sm text-primary bg-transparent border-none outline-none cursor-pointer"
           >
             {SORT_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
@@ -169,7 +169,7 @@ export function ShopContent({
         </div>
 
         {/* Desktop grid toggles */}
-        <div className="hidden lg:flex items-center gap-0.5 border-l border-[#E8ECEF] pl-4">
+        <div className="hidden lg:flex items-center gap-0.5 border-l border-border pl-4">
           <button className={gridIconClass(4)} onClick={() => setGridCols(4)} aria-label="4 columns">
             <IconGrid4 />
           </button>

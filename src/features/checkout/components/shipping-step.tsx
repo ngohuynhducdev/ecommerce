@@ -111,7 +111,7 @@ export function ShippingStep() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      <h2 className="text-2xl font-semibold text-[#1C1C1C] mb-6">
+      <h2 className="text-2xl font-semibold text-primary mb-6">
         Shipping Address
       </h2>
 
@@ -203,12 +203,12 @@ export function ShippingStep() {
             id="notes"
             rows={3}
             {...register("notes")}
-            className="mt-1.5 flex w-full rounded-md border border-[#E8ECEF] bg-white px-3 py-2 text-sm outline-none focus:border-[#1C1C1C] transition-colors resize-none"
+            className="mt-1.5 flex w-full rounded-md border border-border bg-white px-3 py-2 text-sm outline-none focus:border-primary transition-colors resize-none"
           />
         </div>
       </div>
 
-      <h2 className="text-xl font-semibold text-[#1C1C1C] mt-10 mb-4">
+      <h2 className="text-xl font-semibold text-primary mt-10 mb-4">
         Shipping Method
       </h2>
       <div className="space-y-3">
@@ -221,8 +221,8 @@ export function ShippingStep() {
               className={cn(
                 "flex items-center gap-4 p-4 border rounded-xl cursor-pointer transition-colors",
                 selected
-                  ? "border-[#1C1C1C] bg-[#F3F5F7]"
-                  : "border-[#E8ECEF] hover:border-[#807D7E]"
+                  ? "border-primary bg-subtle"
+                  : "border-border hover:border-muted"
               )}
             >
               <input
@@ -231,14 +231,14 @@ export function ShippingStep() {
                 value={option.value}
                 checked={selected}
                 onChange={() => setShippingMethod(option.value)}
-                className="w-4 h-4 accent-[#1C1C1C]"
+                className="w-4 h-4 accent-primary"
               />
-              <option.Icon className="w-5 h-5 text-[#1C1C1C]" />
+              <option.Icon className="w-5 h-5 text-primary" />
               <div className="flex-1">
-                <p className="font-medium text-[#1C1C1C]">{option.label}</p>
-                <p className="text-sm text-[#807D7E]">{option.duration}</p>
+                <p className="font-medium text-primary">{option.label}</p>
+                <p className="text-sm text-muted">{option.duration}</p>
               </div>
-              <p className="font-medium text-[#1C1C1C]">
+              <p className="font-medium text-primary">
                 {price === 0 ? "Free" : formatPrice(price)}
               </p>
             </label>
@@ -248,7 +248,7 @@ export function ShippingStep() {
 
       <button
         type="submit"
-        className="w-full h-14 bg-[#1C1C1C] text-white text-sm font-medium mt-8 rounded-sm hover:bg-[#333] transition-colors cursor-pointer"
+        className="w-full h-14 bg-primary text-white text-sm font-medium mt-8 rounded-sm hover:bg-[#333] transition-colors cursor-pointer"
       >
         Continue to Payment
       </button>

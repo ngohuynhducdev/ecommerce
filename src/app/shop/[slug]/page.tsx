@@ -109,23 +109,23 @@ export default async function ProductDetailPage({ params }: PageProps) {
               </div>
               <a
                 href="#reviews"
-                className="text-sm text-[#807D7E] underline cursor-pointer hover:text-[#1C1C1C] transition-colors"
+                className="text-sm text-muted underline cursor-pointer hover:text-primary transition-colors"
               >
                 {product.reviewCount} Reviews
               </a>
             </div>
 
-            <h1 className="text-3xl font-semibold text-[#1C1C1C] mt-2">
+            <h1 className="text-3xl font-semibold text-primary mt-2">
               {product.name}
             </h1>
 
             <div className="flex items-center gap-3 mt-2">
-              <span className="text-2xl font-semibold text-[#1C1C1C]">
+              <span className="text-2xl font-semibold text-primary">
                 {formatPrice(product.price)}
               </span>
               {product.comparePrice && (
                 <>
-                  <span className="text-sm text-[#807D7E] line-through">
+                  <span className="text-sm text-muted line-through">
                     {formatPrice(product.comparePrice)}
                   </span>
                   <span className="bg-red-100 text-red-600 text-xs px-2 py-0.5 rounded">
@@ -135,7 +135,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
               )}
             </div>
 
-            <p className="text-[#807D7E] leading-relaxed mt-4 pb-4 border-b border-[#E8ECEF]">
+            <p className="text-muted leading-relaxed mt-4 pb-4 border-b border-border">
               {product.description}
             </p>
 

@@ -63,7 +63,7 @@ function formatExpiry(v: string) {
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs font-semibold text-[#1C1C1C] uppercase tracking-wider mb-1.5">
+    <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-1.5">
       {children}
     </p>
   );
@@ -73,7 +73,7 @@ function FieldInput({ className, ...props }: React.InputHTMLAttributes<HTMLInput
   return (
     <input
       className={cn(
-        "w-full h-11 border border-[#E8ECEF] rounded-sm px-3 text-sm outline-none focus:border-[#1C1C1C] transition-colors placeholder:text-[#807D7E]",
+        "w-full h-11 border border-border rounded-sm px-3 text-sm outline-none focus:border-primary transition-colors placeholder:text-muted",
         className
       )}
       {...props}
@@ -88,8 +88,8 @@ function FieldError({ message }: { message?: string }) {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="border border-[#E8ECEF] rounded-xl p-5 mb-4">
-      <h2 className="text-base font-semibold text-[#1C1C1C] mb-4">{title}</h2>
+    <div className="border border-border rounded-xl p-5 mb-4">
+      <h2 className="text-base font-semibold text-primary mb-4">{title}</h2>
       {children}
     </div>
   );
@@ -227,7 +227,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="px-8 lg:px-20 py-12">
-      <h1 className="text-4xl font-bold text-[#1C1C1C] text-center mb-8">Check Out</h1>
+      <h1 className="text-4xl font-bold text-primary text-center mb-8">Check Out</h1>
       <StepIndicator step={2} />
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -276,7 +276,7 @@ export default function CheckoutPage() {
                     <select
                       value={field.value}
                       onChange={field.onChange}
-                      className="w-full h-11 border border-[#E8ECEF] rounded-sm px-3 text-sm outline-none focus:border-[#1C1C1C] transition-colors bg-white"
+                      className="w-full h-11 border border-border rounded-sm px-3 text-sm outline-none focus:border-primary transition-colors bg-white"
                     >
                       {COUNTRIES.map((c) => (
                         <option key={c} value={c}>{c}</option>
@@ -304,9 +304,9 @@ export default function CheckoutPage() {
                 <input
                   {...register("differentBilling")}
                   type="checkbox"
-                  className="w-4 h-4 accent-[#1C1C1C]"
+                  className="w-4 h-4 accent-primary"
                 />
-                <span className="text-sm text-[#807D7E]">Use a different billing address (optional)</span>
+                <span className="text-sm text-muted">Use a different billing address (optional)</span>
               </label>
             </Section>
 
@@ -314,29 +314,29 @@ export default function CheckoutPage() {
             <Section title="Payment method">
               <label className={cn(
                 "flex items-center gap-3 p-4 border rounded-xl cursor-pointer mb-3 transition-colors",
-                paymentType === "card" ? "border-[#1C1C1C] bg-[#F3F5F7]" : "border-[#E8ECEF] hover:border-[#807D7E]"
+                paymentType === "card" ? "border-primary bg-subtle" : "border-border hover:border-muted"
               )}>
                 <input
                   type="radio"
                   checked={paymentType === "card"}
                   onChange={() => setPaymentType("card")}
-                  className="w-4 h-4 accent-[#1C1C1C]"
+                  className="w-4 h-4 accent-primary"
                 />
-                <span className="flex-1 text-sm font-medium text-[#1C1C1C]">Pay by Card Credit</span>
+                <span className="flex-1 text-sm font-medium text-primary">Pay by Card Credit</span>
                 <CreditCardIcon />
               </label>
 
               <label className={cn(
                 "flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-colors",
-                paymentType === "paypal" ? "border-[#1C1C1C] bg-[#F3F5F7]" : "border-[#E8ECEF] hover:border-[#807D7E]"
+                paymentType === "paypal" ? "border-primary bg-subtle" : "border-border hover:border-muted"
               )}>
                 <input
                   type="radio"
                   checked={paymentType === "paypal"}
                   onChange={() => setPaymentType("paypal")}
-                  className="w-4 h-4 accent-[#1C1C1C]"
+                  className="w-4 h-4 accent-primary"
                 />
-                <span className="flex-1 text-sm font-medium text-[#1C1C1C]">Paypal</span>
+                <span className="flex-1 text-sm font-medium text-primary">Paypal</span>
               </label>
 
               {paymentType === "card" && (
@@ -384,7 +384,7 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={isProcessing}
-              className="w-full h-14 bg-[#1C1C1C] text-white text-sm font-medium rounded-lg hover:bg-[#B88E2F] transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+              className="w-full h-14 bg-primary text-white text-sm font-medium rounded-lg hover:bg-accent transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
             >
               {isProcessing ? "Processing…" : "Place Order"}
             </button>
@@ -392,15 +392,15 @@ export default function CheckoutPage() {
 
           {/* RIGHT: Order Summary */}
           <aside className="mt-10 lg:mt-0">
-            <div className="border border-[#E8ECEF] rounded-xl p-5 lg:sticky lg:top-8">
-              <h2 className="text-base font-semibold text-[#1C1C1C] mb-5">Order summary</h2>
+            <div className="border border-border rounded-xl p-5 lg:sticky lg:top-8">
+              <h2 className="text-base font-semibold text-primary mb-5">Order summary</h2>
 
               {/* Items */}
               <div className="space-y-4 mb-5">
                 {items.map((item) => (
                   <div key={cartItemKey(item)}>
                     <div className="flex gap-3 items-start">
-                      <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-[#F3F5F7] shrink-0">
+                      <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-subtle shrink-0">
                         <SafeImage
                           src={item.product.images[0]}
                           alt={item.product.name}
@@ -412,23 +412,23 @@ export default function CheckoutPage() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-2">
                           <div>
-                            <p className="text-sm font-medium text-[#1C1C1C] leading-snug">
+                            <p className="text-sm font-medium text-primary leading-snug">
                               {item.product.name}
                             </p>
                             {item.variant && (
-                              <p className="text-xs text-[#807D7E] mt-0.5">
+                              <p className="text-xs text-muted mt-0.5">
                                 Color: {item.variant.value}
                               </p>
                             )}
                           </div>
                           <div className="flex items-center gap-1.5 shrink-0">
-                            <span className="text-sm font-medium text-[#1C1C1C]">
+                            <span className="text-sm font-medium text-primary">
                               {formatPrice(item.product.price * item.quantity)}
                             </span>
                             <button
                               type="button"
                               onClick={() => removeItem(item)}
-                              className="text-[#807D7E] hover:text-[#1C1C1C] transition-colors cursor-pointer text-lg leading-none"
+                              className="text-muted hover:text-primary transition-colors cursor-pointer text-lg leading-none"
                               aria-label="Remove"
                             >
                               ×
@@ -440,17 +440,17 @@ export default function CheckoutPage() {
                             type="button"
                             onClick={() => updateQuantity(item, item.quantity - 1)}
                             disabled={item.quantity <= 1}
-                            className="w-6 h-6 flex items-center justify-center border border-[#E8ECEF] rounded text-sm hover:bg-[#F3F5F7] disabled:opacity-40 cursor-pointer"
+                            className="w-6 h-6 flex items-center justify-center border border-border rounded text-sm hover:bg-subtle disabled:opacity-40 cursor-pointer"
                           >
                             −
                           </button>
-                          <span className="w-6 text-center text-sm text-[#1C1C1C]">
+                          <span className="w-6 text-center text-sm text-primary">
                             {item.quantity}
                           </span>
                           <button
                             type="button"
                             onClick={() => updateQuantity(item, item.quantity + 1)}
-                            className="w-6 h-6 flex items-center justify-center border border-[#E8ECEF] rounded text-sm hover:bg-[#F3F5F7] cursor-pointer"
+                            className="w-6 h-6 flex items-center justify-center border border-border rounded text-sm hover:bg-subtle cursor-pointer"
                           >
                             +
                           </button>
@@ -467,22 +467,22 @@ export default function CheckoutPage() {
                   <div className="flex items-center justify-between py-2">
                     <div className="flex items-center gap-2 text-sm">
                       <CouponIcon />
-                      <span className="text-[#1C1C1C] font-medium">{coupon.code}</span>
+                      <span className="text-primary font-medium">{coupon.code}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm text-[#23A18C]">-{formatPrice(discountAmount)}</span>
+                      <span className="text-sm text-sale-hover">-{formatPrice(discountAmount)}</span>
                       <button
                         type="button"
                         onClick={() => setCoupon(null)}
-                        className="text-xs text-[#807D7E] hover:text-[#1C1C1C] cursor-pointer underline"
+                        className="text-xs text-muted hover:text-primary cursor-pointer underline"
                       >
                         [Remove]
                       </button>
                     </div>
                   </div>
                 ) : (
-                  <div className="flex border border-[#E8ECEF] rounded-sm overflow-hidden">
-                    <div className="px-3 flex items-center text-[#807D7E] shrink-0">
+                  <div className="flex border border-border rounded-sm overflow-hidden">
+                    <div className="px-3 flex items-center text-muted shrink-0">
                       <CouponIcon />
                     </div>
                     <input
@@ -491,12 +491,12 @@ export default function CheckoutPage() {
                       onChange={(e) => setCouponInput(e.target.value)}
                       onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); applyCoupon(); } }}
                       placeholder="Coupon code"
-                      className="flex-1 py-2.5 text-sm outline-none bg-transparent placeholder:text-[#807D7E]"
+                      className="flex-1 py-2.5 text-sm outline-none bg-transparent placeholder:text-muted"
                     />
                     <button
                       type="button"
                       onClick={applyCoupon}
-                      className="px-4 bg-[#1C1C1C] text-white text-sm font-medium hover:bg-[#333] transition-colors cursor-pointer shrink-0"
+                      className="px-4 bg-primary text-white text-sm font-medium hover:bg-[#333] transition-colors cursor-pointer shrink-0"
                     >
                       Apply
                     </button>
@@ -505,20 +505,20 @@ export default function CheckoutPage() {
               </div>
 
               {/* Totals */}
-              <div className="border-t border-[#E8ECEF] pt-4 space-y-2.5">
+              <div className="border-t border-border pt-4 space-y-2.5">
                 <div className="flex justify-between text-sm">
-                  <span className="text-[#807D7E]">Shipping</span>
-                  <span className="text-[#1C1C1C]">
+                  <span className="text-muted">Shipping</span>
+                  <span className="text-primary">
                     {shippingCost === 0 ? "Free" : formatPrice(shippingCost)}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-[#807D7E]">Subtotal</span>
-                  <span className="text-[#1C1C1C]">{formatPrice(subtotal)}</span>
+                  <span className="text-muted">Subtotal</span>
+                  <span className="text-primary">{formatPrice(subtotal)}</span>
                 </div>
-                <div className="flex justify-between pt-3 border-t border-[#E8ECEF]">
-                  <span className="font-bold text-[#1C1C1C]">Total</span>
-                  <span className="font-bold text-[#1C1C1C]">{formatPrice(total)}</span>
+                <div className="flex justify-between pt-3 border-t border-border">
+                  <span className="font-bold text-primary">Total</span>
+                  <span className="font-bold text-primary">{formatPrice(total)}</span>
                 </div>
               </div>
             </div>

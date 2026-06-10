@@ -25,7 +25,7 @@ export function ImageGallery({ images, name, isNew, discountPercent }: ImageGall
   return (
     <div>
       {/* Main image */}
-      <div className="aspect-square rounded-2xl overflow-hidden relative bg-[#F3F5F7] group">
+      <div className="aspect-square rounded-2xl overflow-hidden relative bg-subtle group">
         <SafeImage
           src={images[selectedIndex]}
           alt={name}
@@ -38,7 +38,7 @@ export function ImageGallery({ images, name, isNew, discountPercent }: ImageGall
         {/* Badges */}
         <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
           {isNew && (
-            <span className="bg-white text-[#1C1C1C] text-xs uppercase font-medium px-2.5 py-1 rounded">
+            <span className="bg-white text-primary text-xs uppercase font-medium px-2.5 py-1 rounded">
               NEW
             </span>
           )}
@@ -53,7 +53,7 @@ export function ImageGallery({ images, name, isNew, discountPercent }: ImageGall
         <button
           onClick={handlePrev}
           aria-label="Previous image"
-          className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow flex items-center justify-center cursor-pointer hover:bg-[#F3F5F7] transition-colors z-10"
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow flex items-center justify-center cursor-pointer hover:bg-subtle transition-colors z-10"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
             <polyline points="15 18 9 12 15 6" />
@@ -64,7 +64,7 @@ export function ImageGallery({ images, name, isNew, discountPercent }: ImageGall
         <button
           onClick={handleNext}
           aria-label="Next image"
-          className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow flex items-center justify-center cursor-pointer hover:bg-[#F3F5F7] transition-colors z-10"
+          className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow flex items-center justify-center cursor-pointer hover:bg-subtle transition-colors z-10"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
             <polyline points="9 18 15 12 9 6" />
@@ -80,10 +80,10 @@ export function ImageGallery({ images, name, isNew, discountPercent }: ImageGall
               key={src}
               onClick={() => setSelectedIndex(index)}
               className={cn(
-                "w-20 h-20 rounded-lg overflow-hidden cursor-pointer relative bg-[#F3F5F7] transition-all shrink-0",
+                "w-20 h-20 rounded-lg overflow-hidden cursor-pointer relative bg-subtle transition-all shrink-0",
                 selectedIndex === index
-                  ? "ring-2 ring-[#1C1C1C]"
-                  : "ring-1 ring-transparent hover:ring-[#E8ECEF]"
+                  ? "ring-2 ring-primary"
+                  : "ring-1 ring-transparent hover:ring-border"
               )}
               aria-label={`View image ${index + 1}`}
             >

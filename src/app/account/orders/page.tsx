@@ -50,12 +50,12 @@ function OrderCard({ order }: { order: Order }) {
   const extraCount = order.items.length - visibleItems.length;
 
   return (
-    <div className="bg-white border border-[#E8ECEF] rounded-2xl p-5 mb-4">
+    <div className="bg-white border border-border rounded-2xl p-5 mb-4">
       {/* Header */}
       <div className="flex items-start justify-between gap-2">
         <div>
           <p className="font-medium text-sm">#{order.orderNumber}</p>
-          <p className="text-xs text-[#807D7E] mt-0.5">
+          <p className="text-xs text-muted mt-0.5">
             {formatDate(order.createdAt)}
           </p>
         </div>
@@ -73,7 +73,7 @@ function OrderCard({ order }: { order: Order }) {
         {visibleItems.map((item) => (
           <div
             key={item.product.id}
-            className="w-11 h-11 rounded-lg overflow-hidden relative shrink-0 bg-[#F3F5F7]"
+            className="w-11 h-11 rounded-lg overflow-hidden relative shrink-0 bg-subtle"
           >
             <SafeImage
               src={item.product.images[0]}
@@ -85,7 +85,7 @@ function OrderCard({ order }: { order: Order }) {
           </div>
         ))}
         {extraCount > 0 && (
-          <span className="text-xs text-[#807D7E] font-medium">
+          <span className="text-xs text-muted font-medium">
             +{extraCount} more
           </span>
         )}
@@ -95,10 +95,10 @@ function OrderCard({ order }: { order: Order }) {
       <div className="flex items-center justify-between mt-4">
         <p className="font-semibold text-sm">{formatPrice(order.total)}</p>
         <div className="flex gap-2">
-          <button className="h-8 px-3 border border-[#E8ECEF] rounded-lg text-xs font-medium text-[#1C1C1C] hover:bg-[#F3F5F7] transition-colors">
+          <button className="h-8 px-3 border border-border rounded-lg text-xs font-medium text-primary hover:bg-subtle transition-colors">
             View Details
           </button>
-          <button className="h-8 px-3 border border-[#E8ECEF] rounded-lg text-xs font-medium text-[#1C1C1C] hover:bg-[#F3F5F7] transition-colors">
+          <button className="h-8 px-3 border border-border rounded-lg text-xs font-medium text-primary hover:bg-subtle transition-colors">
             Track Order
           </button>
         </div>
@@ -127,8 +127,8 @@ export default function OrdersPage() {
             onClick={() => setActiveTab(tab)}
             className={`shrink-0 h-9 px-4 rounded-lg text-sm font-medium transition-colors ${
               activeTab === tab
-                ? "bg-[#1C1C1C] text-white"
-                : "bg-[#F3F5F7] text-[#807D7E] hover:text-[#1C1C1C]"
+                ? "bg-primary text-white"
+                : "bg-subtle text-muted hover:text-primary"
             }`}
           >
             {tab}
@@ -138,14 +138,14 @@ export default function OrdersPage() {
 
       {filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="text-[#E8ECEF] mb-4"><path d="M16.5 9.4 7.55 4.24" /><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /><polyline points="3.29 7 12 12 20.71 7" /><line x1="12" y1="22" x2="12" y2="12" /></svg>
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="text-border mb-4"><path d="M16.5 9.4 7.55 4.24" /><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /><polyline points="3.29 7 12 12 20.71 7" /><line x1="12" y1="22" x2="12" y2="12" /></svg>
           <p className="text-lg font-medium mb-2">No orders yet</p>
-          <p className="text-sm text-[#807D7E] mb-6">
+          <p className="text-sm text-muted mb-6">
             Your order history will appear here
           </p>
           <Link
             href="/shop"
-            className="h-11 px-6 bg-[#1C1C1C] text-white text-sm font-medium rounded-lg flex items-center hover:bg-[#B88E2F] transition-colors"
+            className="h-11 px-6 bg-primary text-white text-sm font-medium rounded-lg flex items-center hover:bg-accent transition-colors"
           >
             Start Shopping
           </Link>

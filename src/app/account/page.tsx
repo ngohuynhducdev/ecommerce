@@ -82,12 +82,12 @@ function InputField({
 }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-[#1C1C1C] mb-1.5">
+      <label className="block text-xs font-medium text-primary mb-1.5">
         {label}
       </label>
       <input
         {...props}
-        className="w-full h-11 border border-[#E8ECEF] rounded-lg px-4 text-sm outline-none focus:border-[#1C1C1C] transition-colors placeholder:text-[#807D7E]"
+        className="w-full h-11 border border-border rounded-lg px-4 text-sm outline-none focus:border-primary transition-colors placeholder:text-muted"
       />
       {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
     </div>
@@ -112,17 +112,17 @@ function PersonalInfoCard() {
   };
 
   return (
-    <div className="bg-white border border-[#E8ECEF] rounded-2xl p-6">
+    <div className="bg-white border border-border rounded-2xl p-6">
       <h2 className="text-base font-semibold mb-5">Personal Information</h2>
 
       {/* Avatar */}
       <div className="flex flex-col items-center mb-6">
-        <div className="w-20 h-20 rounded-full bg-[#F3F5F7] flex items-center justify-center font-semibold text-2xl text-[#1C1C1C] select-none">
+        <div className="w-20 h-20 rounded-full bg-subtle flex items-center justify-center font-semibold text-2xl text-primary select-none">
           {getInitials(firstName, lastName)}
         </div>
         <button
           type="button"
-          className="text-sm text-[#807D7E] mt-2 hover:text-[#1C1C1C] transition-colors"
+          className="text-sm text-muted mt-2 hover:text-primary transition-colors"
         >
           Change Photo
         </button>
@@ -163,7 +163,7 @@ function PersonalInfoCard() {
         />
         <button
           type="submit"
-          className="mt-4 h-11 px-6 bg-[#1C1C1C] text-white text-sm font-medium rounded-lg hover:bg-[#B88E2F] transition-colors"
+          className="mt-4 h-11 px-6 bg-primary text-white text-sm font-medium rounded-lg hover:bg-accent transition-colors"
         >
           Save Changes
         </button>
@@ -202,13 +202,13 @@ function ChangePasswordCard() {
   };
 
   return (
-    <div className="bg-white border border-[#E8ECEF] rounded-2xl p-6">
+    <div className="bg-white border border-border rounded-2xl p-6">
       <h2 className="text-base font-semibold mb-5">Change Password</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Current password */}
         <div>
-          <label className="block text-xs font-medium text-[#1C1C1C] mb-1.5">
+          <label className="block text-xs font-medium text-primary mb-1.5">
             Current Password
           </label>
           <div className="relative">
@@ -216,12 +216,12 @@ function ChangePasswordCard() {
               {...register("currentPassword")}
               type={showCurrent ? "text" : "password"}
               placeholder="••••••••"
-              className="w-full h-11 border border-[#E8ECEF] rounded-lg px-4 pr-12 text-sm outline-none focus:border-[#1C1C1C] transition-colors placeholder:text-[#807D7E]"
+              className="w-full h-11 border border-border rounded-lg px-4 pr-12 text-sm outline-none focus:border-primary transition-colors placeholder:text-muted"
             />
             <button
               type="button"
               onClick={() => setShowCurrent((v) => !v)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#807D7E] hover:text-[#1C1C1C] transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-primary transition-colors"
             >
               {showCurrent ? <EyeOffIcon /> : <EyeIcon />}
             </button>
@@ -235,7 +235,7 @@ function ChangePasswordCard() {
 
         {/* New password */}
         <div>
-          <label className="block text-xs font-medium text-[#1C1C1C] mb-1.5">
+          <label className="block text-xs font-medium text-primary mb-1.5">
             New Password
           </label>
           <div className="relative">
@@ -243,12 +243,12 @@ function ChangePasswordCard() {
               {...register("newPassword")}
               type={showNew ? "text" : "password"}
               placeholder="••••••••"
-              className="w-full h-11 border border-[#E8ECEF] rounded-lg px-4 pr-12 text-sm outline-none focus:border-[#1C1C1C] transition-colors placeholder:text-[#807D7E]"
+              className="w-full h-11 border border-border rounded-lg px-4 pr-12 text-sm outline-none focus:border-primary transition-colors placeholder:text-muted"
             />
             <button
               type="button"
               onClick={() => setShowNew((v) => !v)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#807D7E] hover:text-[#1C1C1C] transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-primary transition-colors"
             >
               {showNew ? <EyeOffIcon /> : <EyeIcon />}
             </button>
@@ -262,7 +262,7 @@ function ChangePasswordCard() {
 
         {/* Confirm password */}
         <div>
-          <label className="block text-xs font-medium text-[#1C1C1C] mb-1.5">
+          <label className="block text-xs font-medium text-primary mb-1.5">
             Confirm Password
           </label>
           <div className="relative">
@@ -270,12 +270,12 @@ function ChangePasswordCard() {
               {...register("confirmPassword")}
               type={showConfirm ? "text" : "password"}
               placeholder="••••••••"
-              className="w-full h-11 border border-[#E8ECEF] rounded-lg px-4 pr-12 text-sm outline-none focus:border-[#1C1C1C] transition-colors placeholder:text-[#807D7E]"
+              className="w-full h-11 border border-border rounded-lg px-4 pr-12 text-sm outline-none focus:border-primary transition-colors placeholder:text-muted"
             />
             <button
               type="button"
               onClick={() => setShowConfirm((v) => !v)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#807D7E] hover:text-[#1C1C1C] transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-primary transition-colors"
             >
               {showConfirm ? <EyeOffIcon /> : <EyeIcon />}
             </button>
@@ -294,13 +294,13 @@ function ChangePasswordCard() {
               <li
                 key={label}
                 className={`flex items-center gap-2 text-xs ${
-                  met ? "text-green-600" : "text-[#807D7E]"
+                  met ? "text-green-600" : "text-muted"
                 }`}
               >
                 {met ? (
                   <span className="text-green-600 shrink-0"><CheckIcon /></span>
                 ) : (
-                  <span className="text-[#807D7E] shrink-0"><XSmallIcon /></span>
+                  <span className="text-muted shrink-0"><XSmallIcon /></span>
                 )}
                 {label}
               </li>
@@ -310,7 +310,7 @@ function ChangePasswordCard() {
 
         <button
           type="submit"
-          className="mt-4 h-11 px-6 bg-[#1C1C1C] text-white text-sm font-medium rounded-lg hover:bg-[#B88E2F] transition-colors"
+          className="mt-4 h-11 px-6 bg-primary text-white text-sm font-medium rounded-lg hover:bg-accent transition-colors"
         >
           Update Password
         </button>

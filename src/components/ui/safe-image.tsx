@@ -11,7 +11,7 @@ export function SafeImage({ src, alt, ...props }: SafeImageProps) {
   if (!resolved) {
     return props.fill ? (
       <div
-        className="absolute inset-0 bg-[#F3F5F7] flex items-center justify-center"
+        className="absolute inset-0 bg-subtle flex items-center justify-center"
         aria-label={alt}
         role="img"
       >
@@ -19,7 +19,7 @@ export function SafeImage({ src, alt, ...props }: SafeImageProps) {
       </div>
     ) : (
       <div
-        className="bg-[#F3F5F7] flex items-center justify-center"
+        className="bg-subtle flex items-center justify-center"
         style={{ width: props.width, height: props.height }}
         aria-label={alt}
         role="img"

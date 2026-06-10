@@ -167,40 +167,40 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
     <div className="mt-6">
       {/* 1. Countdown timer */}
       <div>
-        <p className="text-sm text-[#807D7E] mb-3">Offer expires in:</p>
+        <p className="text-sm text-muted mb-3">Offer expires in:</p>
         <div className="flex gap-3">
           {timerUnits.map(({ label, value }) => (
             <div key={label} className="flex flex-col items-center gap-1">
-              <div className="w-14 h-14 bg-[#F3F5F7] rounded-lg flex items-center justify-center text-xl font-semibold tabular-nums text-[#1C1C1C]">
+              <div className="w-14 h-14 bg-subtle rounded-lg flex items-center justify-center text-xl font-semibold tabular-nums text-primary">
                 {String(value).padStart(2, "0")}
               </div>
-              <span className="text-xs text-[#807D7E] text-center">{label}</span>
+              <span className="text-xs text-muted text-center">{label}</span>
             </div>
           ))}
         </div>
       </div>
 
       {/* 2. Divider */}
-      <div className="h-px bg-[#E8ECEF] my-6" />
+      <div className="h-px bg-border my-6" />
 
       {/* 3. Measurements */}
       <div>
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-[#1C1C1C]">Measurements</span>
-          <span className="text-sm text-[#807D7E]">/</span>
+          <span className="text-sm font-medium text-primary">Measurements</span>
+          <span className="text-sm text-muted">/</span>
         </div>
-        <p className="text-sm text-[#807D7E] mt-1">17 1/2×20 5/8&quot;</p>
+        <p className="text-sm text-muted mt-1">17 1/2×20 5/8&quot;</p>
       </div>
 
       {/* 4. Choose Color */}
       {colorVariants.length > 0 && (
         <div className="mt-6">
           <div className="flex items-center">
-            <span className="text-sm font-medium text-[#1C1C1C]">Choose Color</span>
-            <span className="text-[#807D7E] ml-1">›</span>
+            <span className="text-sm font-medium text-primary">Choose Color</span>
+            <span className="text-muted ml-1">›</span>
           </div>
           {selectedColor && (
-            <p className="text-sm text-[#807D7E] capitalize mt-0.5">{selectedColor.value}</p>
+            <p className="text-sm text-muted capitalize mt-0.5">{selectedColor.value}</p>
           )}
           <div className="flex flex-wrap gap-2 mt-3">
             {colorVariants.map((variant) => {
@@ -215,8 +215,8 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
                   aria-label={variant.value}
                   className={cn(
                     "rounded-full w-9 h-9 border-2 transition-all cursor-pointer",
-                    hasBorder ? "border-[#E8ECEF]" : "border-transparent",
-                    isSelected && "ring-2 ring-offset-2 ring-[#1C1C1C]",
+                    hasBorder ? "border-border" : "border-transparent",
+                    isSelected && "ring-2 ring-offset-2 ring-primary",
                     isUnavailable && "opacity-40 cursor-not-allowed"
                   )}
                   style={{ backgroundColor: hex }}
@@ -231,8 +231,8 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
       {sizeVariants.length > 0 && (
         <div className="mt-6">
           <div className="flex items-center justify-between mb-2">
-            <p className="font-medium text-sm text-[#1C1C1C]">Size:</p>
-            <button className="text-xs text-[#807D7E] hover:text-[#1C1C1C] underline cursor-pointer">
+            <p className="font-medium text-sm text-primary">Size:</p>
+            <button className="text-xs text-muted hover:text-primary underline cursor-pointer">
               Size Guide
             </button>
           </div>
@@ -248,9 +248,9 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
                   className={cn(
                     "px-4 py-2 border rounded-sm text-sm transition-colors cursor-pointer",
                     isSelected
-                      ? "bg-[#1C1C1C] text-white border-[#1C1C1C]"
-                      : "bg-white text-[#1C1C1C] border-[#E8ECEF] hover:border-[#1C1C1C]",
-                    isUnavailable && "opacity-40 cursor-not-allowed hover:border-[#E8ECEF]"
+                      ? "bg-primary text-white border-primary"
+                      : "bg-white text-primary border-border hover:border-primary",
+                    isUnavailable && "opacity-40 cursor-not-allowed hover:border-border"
                   )}
                 >
                   {variant.value}
@@ -264,11 +264,11 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
       {/* 5. Quantity + Wishlist row */}
       <div className="flex gap-3 mt-6">
         {/* Qty stepper */}
-        <div className="flex items-center border border-[#1C1C1C] rounded-sm">
+        <div className="flex items-center border border-primary rounded-sm">
           <button
             onClick={() => handleQtyChange(quantity - 1)}
             disabled={quantity <= 1}
-            className="w-10 h-10 flex items-center justify-center text-[#1C1C1C] hover:bg-[#F3F5F7] transition-colors disabled:opacity-40 cursor-pointer"
+            className="w-10 h-10 flex items-center justify-center text-primary hover:bg-subtle transition-colors disabled:opacity-40 cursor-pointer"
             aria-label="Decrease quantity"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -288,7 +288,7 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
           <button
             onClick={() => handleQtyChange(quantity + 1)}
             disabled={quantity >= availableStock}
-            className="w-10 h-10 flex items-center justify-center text-[#1C1C1C] hover:bg-[#F3F5F7] transition-colors disabled:opacity-40 cursor-pointer"
+            className="w-10 h-10 flex items-center justify-center text-primary hover:bg-subtle transition-colors disabled:opacity-40 cursor-pointer"
             aria-label="Increase quantity"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -301,7 +301,7 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
         {/* Wishlist button */}
         <button
           onClick={handleToggleWishlist}
-          className="flex-1 border border-[#1C1C1C] rounded-sm flex items-center justify-center gap-2 text-sm font-medium text-[#1C1C1C] hover:bg-[#F3F5F7] transition-colors cursor-pointer"
+          className="flex-1 border border-primary rounded-sm flex items-center justify-center gap-2 text-sm font-medium text-primary hover:bg-subtle transition-colors cursor-pointer"
         >
           <svg
             width="16"
@@ -321,20 +321,20 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
       <button
         onClick={handleAddToCart}
         disabled={isOutOfStock}
-        className="w-full h-14 bg-[#1C1C1C] text-white text-sm font-medium mt-3 rounded-sm hover:bg-[#B88E2F] transition-colors disabled:opacity-40 cursor-pointer"
+        className="w-full h-14 bg-primary text-white text-sm font-medium mt-3 rounded-sm hover:bg-accent transition-colors disabled:opacity-40 cursor-pointer"
       >
         {isOutOfStock ? "Out of Stock" : "Add to Cart"}
       </button>
 
       {/* 7. SKU + Category meta */}
-      <div className="mt-6 pt-4 border-t border-[#E8ECEF] space-y-2">
+      <div className="mt-6 pt-4 border-t border-border space-y-2">
         <div className="flex items-center gap-8">
-          <span className="text-xs font-semibold uppercase tracking-widest text-[#807D7E] w-20">SKU</span>
-          <span className="text-xs text-[#1C1C1C]">{product.id.slice(0, 6)}</span>
+          <span className="text-xs font-semibold uppercase tracking-widest text-muted w-20">SKU</span>
+          <span className="text-xs text-primary">{product.id.slice(0, 6)}</span>
         </div>
         <div className="flex items-center gap-8">
-          <span className="text-xs font-semibold uppercase tracking-widest text-[#807D7E] w-20">Category</span>
-          <span className="text-xs text-[#1C1C1C]">{product.category.name}</span>
+          <span className="text-xs font-semibold uppercase tracking-widest text-muted w-20">Category</span>
+          <span className="text-xs text-primary">{product.category.name}</span>
         </div>
       </div>
     </div>

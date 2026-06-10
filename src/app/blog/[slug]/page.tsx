@@ -87,13 +87,13 @@ function ArticleSections({ sections }: { sections: ArticleSection[] }) {
       );
     } else if (section.type === "h2") {
       result.push(
-        <h2 key={i} id={section.id} className="text-2xl font-semibold text-[#1C1C1C] mt-10 mb-4">
+        <h2 key={i} id={section.id} className="text-2xl font-semibold text-primary mt-10 mb-4">
           {section.content}
         </h2>
       );
     } else {
       result.push(
-        <p key={i} className="text-[#807D7E] leading-8 mb-4">
+        <p key={i} className="text-muted leading-8 mb-4">
           {section.content}
         </p>
       );
@@ -120,27 +120,27 @@ export default async function BlogPostPage({ params }: Props) {
     <div>
       <div className="px-8 lg:px-20 py-8">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm text-[#807D7E] mb-6 flex-wrap">
-          <Link href="/" className="hover:text-[#1C1C1C] transition-colors">Home</Link>
+        <nav className="flex items-center gap-2 text-sm text-muted mb-6 flex-wrap">
+          <Link href="/" className="hover:text-primary transition-colors">Home</Link>
           <span>›</span>
-          <Link href="/blog" className="hover:text-[#1C1C1C] transition-colors">Blog</Link>
+          <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
           <span>›</span>
-          <span className="text-[#1C1C1C] line-clamp-1">{post.title}</span>
+          <span className="text-primary line-clamp-1">{post.title}</span>
         </nav>
 
         <div className="max-w-4xl">
           {/* Article label */}
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#807D7E] mb-4">
+          <p className="text-xs font-semibold uppercase tracking-widest text-muted mb-4">
             Article
           </p>
 
           {/* Title */}
-          <h1 className="text-3xl lg:text-5xl font-bold text-[#1C1C1C] leading-tight mb-6">
+          <h1 className="text-3xl lg:text-5xl font-bold text-primary leading-tight mb-6">
             {post.title}
           </h1>
 
           {/* Author + date */}
-          <div className="flex items-center gap-6 text-sm text-[#807D7E] mb-8">
+          <div className="flex items-center gap-6 text-sm text-muted mb-8">
             <span className="flex items-center gap-1.5">
               <PersonIcon />
               {post.author.name}
@@ -167,18 +167,18 @@ export default async function BlogPostPage({ params }: Props) {
         {/* Article body */}
         <article className="max-w-4xl">
           {post.excerpt && (
-            <p className="text-[#807D7E] leading-8 mb-4">{post.excerpt}</p>
+            <p className="text-muted leading-8 mb-4">{post.excerpt}</p>
           )}
           <ArticleSections sections={post.sections} />
         </article>
 
         {/* You might also like */}
-        <div className="mt-20 pt-10 border-t border-[#E8ECEF]">
+        <div className="mt-20 pt-10 border-t border-border">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-semibold text-[#1C1C1C]">You might also like</h2>
+            <h2 className="text-2xl font-semibold text-primary">You might also like</h2>
             <Link
               href="/blog"
-              className="text-sm font-medium text-[#1C1C1C] border-b border-[#1C1C1C] pb-0.5 hover:text-[#B88E2F] hover:border-[#B88E2F] transition-colors"
+              className="text-sm font-medium text-primary border-b border-primary pb-0.5 hover:text-accent hover:border-accent transition-colors"
             >
               More Articles →
             </Link>

@@ -41,7 +41,7 @@ export function WishlistCard({ item }: Props) {
   }
 
   return (
-    <div className="relative rounded-xl overflow-hidden bg-[#FAFAFA]">
+    <div className="relative rounded-xl overflow-hidden bg-surface">
       {/* Remove button */}
       <button
         onClick={handleRemove}
@@ -66,27 +66,27 @@ export function WishlistCard({ item }: Props) {
 
       {/* Info */}
       <div className="p-4">
-        <p className="text-xs text-[#807D7E] mb-1 capitalize">
+        <p className="text-xs text-muted mb-1 capitalize">
           {product.category.name}
         </p>
         <Link href={`/shop/${product.slug}`}>
-          <p className="font-medium text-sm leading-snug line-clamp-2 hover:text-[#B88E2F] transition-colors">
+          <p className="font-medium text-sm leading-snug line-clamp-2 hover:text-accent transition-colors">
             {product.name}
           </p>
         </Link>
         <div className="flex items-center gap-2 mt-2">
-          <span className="font-semibold text-sm text-[#1C1C1C]">
+          <span className="font-semibold text-sm text-primary">
             {formatPrice(product.price)}
           </span>
           {product.comparePrice && (
-            <span className="text-xs text-[#807D7E] line-through">
+            <span className="text-xs text-muted line-through">
               {formatPrice(product.comparePrice)}
             </span>
           )}
         </div>
         <button
           onClick={handleMoveToCart}
-          className="mt-3 w-full h-8 border border-[#1C1C1C] rounded-lg text-xs font-medium text-[#1C1C1C] hover:bg-[#1C1C1C] hover:text-white transition-colors"
+          className="mt-3 w-full h-8 border border-primary rounded-lg text-xs font-medium text-primary hover:bg-primary hover:text-white transition-colors"
         >
           Move to Cart
         </button>

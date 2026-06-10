@@ -82,70 +82,70 @@ export function ReviewStep() {
 
   return (
     <div>
-      <h2 className="text-2xl font-semibold text-[#1C1C1C] mb-6">
+      <h2 className="text-2xl font-semibold text-primary mb-6">
         Review Your Order
       </h2>
 
       {/* Shipping address card */}
-      <div className="border border-[#E8ECEF] rounded-xl p-5 mb-4">
+      <div className="border border-border rounded-xl p-5 mb-4">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="font-semibold text-sm uppercase tracking-wider text-[#1C1C1C]">
+          <h3 className="font-semibold text-sm uppercase tracking-wider text-primary">
             Shipping Address
           </h3>
           <button
             onClick={() => setStep(1)}
-            className="text-xs text-[#807D7E] underline hover:text-[#1C1C1C] cursor-pointer"
+            className="text-xs text-muted underline hover:text-primary cursor-pointer"
           >
             Edit
           </button>
         </div>
         {shipping ? (
-          <div className="text-sm text-[#1C1C1C] space-y-0.5">
+          <div className="text-sm text-primary space-y-0.5">
             <p className="font-medium">
               {shipping.firstName} {shipping.lastName}
             </p>
-            <p className="text-[#807D7E]">{shipping.address}</p>
-            <p className="text-[#807D7E]">
+            <p className="text-muted">{shipping.address}</p>
+            <p className="text-muted">
               {shipping.city}, {shipping.state} {shipping.zipCode}
             </p>
-            <p className="text-[#807D7E]">{shipping.country}</p>
-            <p className="text-[#807D7E] mt-2">
+            <p className="text-muted">{shipping.country}</p>
+            <p className="text-muted mt-2">
               {shipping.email} · {shipping.phone}
             </p>
-            <p className="text-xs text-[#807D7E] mt-2">
+            <p className="text-xs text-muted mt-2">
               Shipping: {SHIPPING_LABELS[shippingMethod]} ·{" "}
               {shippingCost === 0 ? "Free" : formatPrice(shippingCost)}
             </p>
           </div>
         ) : (
-          <p className="text-sm text-[#807D7E]">No shipping address set.</p>
+          <p className="text-sm text-muted">No shipping address set.</p>
         )}
       </div>
 
       {/* Payment summary */}
-      <div className="border border-[#E8ECEF] rounded-xl p-5 mb-4">
+      <div className="border border-border rounded-xl p-5 mb-4">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="font-semibold text-sm uppercase tracking-wider text-[#1C1C1C]">
+          <h3 className="font-semibold text-sm uppercase tracking-wider text-primary">
             Payment
           </h3>
           <button
             onClick={() => setStep(2)}
-            className="text-xs text-[#807D7E] underline hover:text-[#1C1C1C] cursor-pointer"
+            className="text-xs text-muted underline hover:text-primary cursor-pointer"
           >
             Edit
           </button>
         </div>
-        <p className="text-sm text-[#1C1C1C]">{paymentSummary}</p>
+        <p className="text-sm text-primary">{paymentSummary}</p>
         {payment?.type === "card" && payment.cardholderName && (
-          <p className="text-xs text-[#807D7E] mt-1">
+          <p className="text-xs text-muted mt-1">
             {payment.cardholderName}
           </p>
         )}
       </div>
 
       {/* Items list */}
-      <div className="border border-[#E8ECEF] rounded-xl p-5 mb-6">
-        <h3 className="font-semibold text-sm uppercase tracking-wider text-[#1C1C1C] mb-4">
+      <div className="border border-border rounded-xl p-5 mb-6">
+        <h3 className="font-semibold text-sm uppercase tracking-wider text-primary mb-4">
           Items ({items.length})
         </h3>
         <ul className="space-y-4">
@@ -154,7 +154,7 @@ export function ReviewStep() {
               key={`${item.product.id}-${item.variant?.id ?? "default"}`}
               className="flex gap-4"
             >
-              <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-[#FAFAFA] shrink-0">
+              <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-surface shrink-0">
                 <SafeImage
                   src={item.product.images[0]}
                   alt={item.product.name}
@@ -164,19 +164,19 @@ export function ReviewStep() {
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-[#1C1C1C]">
+                <p className="text-sm font-medium text-primary">
                   {item.product.name}
                 </p>
                 {item.variant && (
-                  <p className="text-xs text-[#807D7E]">
+                  <p className="text-xs text-muted">
                     {item.variant.name}: {item.variant.value}
                   </p>
                 )}
-                <p className="text-xs text-[#807D7E] mt-1">
+                <p className="text-xs text-muted mt-1">
                   Qty: {item.quantity}
                 </p>
               </div>
-              <p className="text-sm font-medium text-[#1C1C1C]">
+              <p className="text-sm font-medium text-primary">
                 {formatPrice(item.product.price * item.quantity)}
               </p>
             </li>
@@ -185,16 +185,16 @@ export function ReviewStep() {
       </div>
 
       {/* Price breakdown */}
-      <div className="border border-[#E8ECEF] rounded-xl p-5 mb-6 space-y-2">
+      <div className="border border-border rounded-xl p-5 mb-6 space-y-2">
         <div className="flex justify-between text-sm">
-          <span className="text-[#807D7E]">Subtotal</span>
-          <span className="text-[#1C1C1C]">{formatPrice(subtotal)}</span>
+          <span className="text-muted">Subtotal</span>
+          <span className="text-primary">{formatPrice(subtotal)}</span>
         </div>
         <div className="flex justify-between text-sm">
-          <span className="text-[#807D7E]">Shipping</span>
-          <span className="text-[#1C1C1C]">
+          <span className="text-muted">Shipping</span>
+          <span className="text-primary">
             {shippingCost === 0 ? (
-              <span className="text-[#2EC1AC]">Free</span>
+              <span className="text-sale">Free</span>
             ) : (
               formatPrice(shippingCost)
             )}
@@ -202,33 +202,33 @@ export function ReviewStep() {
         </div>
         {coupon && (
           <div className="flex justify-between text-sm">
-            <span className="text-[#807D7E]">Discount ({coupon.code})</span>
+            <span className="text-muted">Discount ({coupon.code})</span>
             <span className="text-red-500">
               -{formatPrice(discountAmount)}
             </span>
           </div>
         )}
-        <div className="flex justify-between pt-3 mt-2 border-t border-[#E8ECEF]">
-          <span className="font-bold text-[#1C1C1C]">Total</span>
-          <span className="font-bold text-[#1C1C1C]">{formatPrice(total)}</span>
+        <div className="flex justify-between pt-3 mt-2 border-t border-border">
+          <span className="font-bold text-primary">Total</span>
+          <span className="font-bold text-primary">{formatPrice(total)}</span>
         </div>
       </div>
 
       {/* Terms */}
-      <label className="flex items-start gap-2 cursor-pointer text-sm text-[#1C1C1C] mb-6">
+      <label className="flex items-start gap-2 cursor-pointer text-sm text-primary mb-6">
         <input
           type="checkbox"
           checked={termsAccepted}
           onChange={(e) => setTermsAccepted(e.target.checked)}
-          className="w-4 h-4 accent-[#1C1C1C] mt-0.5"
+          className="w-4 h-4 accent-primary mt-0.5"
         />
         <span>
           I agree to the{" "}
-          <a href="#" className="underline hover:text-[#B88E2F]">
+          <a href="#" className="underline hover:text-accent">
             terms and conditions
           </a>{" "}
           and acknowledge the{" "}
-          <a href="#" className="underline hover:text-[#B88E2F]">
+          <a href="#" className="underline hover:text-accent">
             privacy policy
           </a>
           .
@@ -240,7 +240,7 @@ export function ReviewStep() {
           type="button"
           onClick={() => setStep(2)}
           disabled={isProcessing}
-          className="flex items-center gap-2 px-6 h-12 border border-[#E8ECEF] rounded-sm text-sm text-[#1C1C1C] hover:border-[#1C1C1C] transition-colors cursor-pointer disabled:opacity-40"
+          className="flex items-center gap-2 px-6 h-12 border border-border rounded-sm text-sm text-primary hover:border-primary transition-colors cursor-pointer disabled:opacity-40"
         >
           <ArrowLeft className="w-4 h-4" />
           Back
@@ -249,7 +249,7 @@ export function ReviewStep() {
           type="button"
           onClick={handlePlaceOrder}
           disabled={!termsAccepted || isProcessing}
-          className="flex-1 h-14 bg-[#B88E2F] text-white text-sm font-medium rounded-sm hover:bg-[#A07A26] transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="flex-1 h-14 bg-accent text-white text-sm font-medium rounded-sm hover:bg-[#A07A26] transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {isProcessing && <Loader2 className="w-4 h-4 animate-spin" />}
           {isProcessing ? "Processing..." : "Place Order"}
