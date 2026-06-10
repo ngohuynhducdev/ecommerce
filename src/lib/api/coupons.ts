@@ -1,10 +1,4 @@
-const USE_STRAPI = process.env.NEXT_PUBLIC_USE_STRAPI === "true";
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? "";
-
-const strapiHeaders = {
-  Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
-  "Content-Type": "application/json",
-};
+import { USE_STRAPI, strapiGet } from "./strapi";
 
 export type CouponType = "percent" | "fixed";
 
@@ -33,15 +27,13 @@ export async function validateCoupon(code: string): Promise<CouponResult | null>
   const upper = code.trim().toUpperCase();
 
   if (USE_STRAPI) {
-    try {
-      const url = `${STRAPI_URL}/api/coupons?filters[code][$eq]=${upper}`;
-      const res = await fetch(url, { headers: strapiHeaders, cache: "no-store" });
-      if (!res.ok) return FALLBACK_COUPONS[upper] ?? null;
-
-      const json = (await res.json()) as { data: StrapiCouponItem[] };
-      const item = json.data[0];
+    const data = await strapiGet<StrapiCouponItem>(
+      `/api/coupons?filters[code][$eq]=${encodeURIComponent(upper)}`,
+      { cache: "no-store" },
+    );
+    if (data) {
+      const item = data[0];
       if (!item) return null;
-
       if (item.expiresAt && new Date(item.expiresAt) < new Date()) return null;
 
       return {
@@ -50,8 +42,6 @@ export async function validateCoupon(code: string): Promise<CouponResult | null>
         type: item.discountType === "fixed" ? "fixed" : "percent",
         minOrder: item.minOrder ?? 0,
       };
-    } catch {
-      return FALLBACK_COUPONS[upper] ?? null;
     }
   }
 

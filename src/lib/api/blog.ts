@@ -1,13 +1,6 @@
 import { MOCK_POSTS } from "@/features/blog/mock-data";
 import type { BlogPost, ArticleSection } from "@/features/blog/types";
-
-const USE_STRAPI = process.env.NEXT_PUBLIC_USE_STRAPI === "true";
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? "";
-
-const strapiHeaders = {
-  Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
-  "Content-Type": "application/json",
-};
+import { USE_STRAPI, resolveStrapiUrl, strapiGet } from "./strapi";
 
 // ── Strapi v5 Blocks (Rich Text) types ────────────────────────────────────────
 
@@ -49,11 +42,6 @@ interface StrapiBlogPostItem {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-function resolveUrl(url: string | undefined): string {
-  if (!url) return "";
-  return url.startsWith("http") ? url : `${STRAPI_URL}${url}`;
-}
-
 function blocksToSections(blocks: StrapiBlock[] | null | undefined): ArticleSection[] {
   if (!blocks?.length) return [];
   const sections: ArticleSection[] = [];
@@ -69,7 +57,7 @@ function blocksToSections(blocks: StrapiBlock[] | null | undefined): ArticleSect
     } else if (block.type === "paragraph" && text) {
       sections.push({ type: "p", content: text });
     } else if (block.type === "image" && block.image?.url) {
-      sections.push({ type: "img", content: resolveUrl(block.image.url) });
+      sections.push({ type: "img", content: resolveStrapiUrl(block.image.url) });
     } else if ((block.type === "list" || block.type === "quote") && text) {
       sections.push({ type: "p", content: text });
     }
@@ -89,7 +77,7 @@ function mapStrapiBlogPost(item: StrapiBlogPostItem): BlogPost {
       name: item.author ?? "",
       avatar: "",
     },
-    coverImage: resolveUrl(item.cover?.url),
+    coverImage: resolveStrapiUrl(item.cover?.url),
     publishedAt: item.publishedAt ?? new Date().toISOString(),
     readTime: "",
     sections: blocksToSections(item.content),
@@ -100,36 +88,22 @@ function mapStrapiBlogPost(item: StrapiBlogPostItem): BlogPost {
 
 export async function getPosts(): Promise<BlogPost[]> {
   if (USE_STRAPI) {
-    try {
-      const url = `${STRAPI_URL}/api/blog-posts?populate[0]=cover&sort=publishedAt:desc`;
-      const res = await fetch(url, { headers: strapiHeaders, next: { revalidate: 3600 } });
-      if (!res.ok) return MOCK_POSTS;
-      const json = (await res.json()) as { data: StrapiBlogPostItem[] };
-      return json.data.map(mapStrapiBlogPost);
-    } catch {
-      return MOCK_POSTS;
-    }
+    const data = await strapiGet<StrapiBlogPostItem>(
+      "/api/blog-posts?populate[0]=cover&sort=publishedAt:desc",
+      { next: { revalidate: 3600 } },
+    );
+    if (data) return data.map(mapStrapiBlogPost);
   }
   return MOCK_POSTS;
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | undefined> {
   if (USE_STRAPI) {
-    try {
-      const queryParts = [
-        `filters[slug][$eq]=${slug}`,
-        "populate[0]=cover",
-      ];
-      const res = await fetch(
-        `${STRAPI_URL}/api/blog-posts?${queryParts.join("&")}`,
-        { headers: strapiHeaders, next: { revalidate: 3600 } },
-      );
-      if (!res.ok) return MOCK_POSTS.find((p) => p.slug === slug);
-      const json = (await res.json()) as { data: StrapiBlogPostItem[] };
-      return json.data[0] ? mapStrapiBlogPost(json.data[0]) : undefined;
-    } catch {
-      return MOCK_POSTS.find((p) => p.slug === slug);
-    }
+    const data = await strapiGet<StrapiBlogPostItem>(
+      `/api/blog-posts?filters[slug][$eq]=${encodeURIComponent(slug)}&populate[0]=cover`,
+      { next: { revalidate: 3600 } },
+    );
+    if (data) return data[0] ? mapStrapiBlogPost(data[0]) : undefined;
   }
   return MOCK_POSTS.find((p) => p.slug === slug);
 }

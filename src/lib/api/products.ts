@@ -1,19 +1,7 @@
-console.log("=== API CONFIG ===");
-console.log("USE_STRAPI:", process.env.NEXT_PUBLIC_USE_STRAPI);
-console.log("STRAPI_URL:", process.env.NEXT_PUBLIC_STRAPI_URL);
-console.log("==================");
-
 import type { Product, Variant } from "@/features/products/types";
 import { mockProducts } from "@/features/products/mock-data";
 import { type StrapiCategoryItem, mapStrapiCategory } from "./categories";
-
-const USE_STRAPI = process.env.NEXT_PUBLIC_USE_STRAPI === "true";
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? "";
-
-const strapiHeaders = {
-  Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
-  "Content-Type": "application/json",
-};
+import { USE_STRAPI, resolveStrapiUrl, strapiGet } from "./strapi";
 
 export interface ProductFilters {
   category?: string;
@@ -23,6 +11,7 @@ export interface ProductFilters {
   color?: string;
   material?: string;
   minRating?: number;
+  search?: string;
 }
 
 // Strapi v5 response shapes
@@ -58,11 +47,6 @@ interface StrapiProductItem {
   reviewCount?: number;
 }
 
-function resolveImageUrl(url: string | undefined): string {
-  if (!url) return "";
-  return url.startsWith("http") ? url : `${STRAPI_URL}${url}`;
-}
-
 const SORT_MAP: Record<NonNullable<ProductFilters["sort"]>, string> = {
   "price-asc": "price:asc",
   "price-desc": "price:desc",
@@ -78,7 +62,7 @@ function mapStrapiProduct(item: StrapiProductItem): Product {
     description: item.description ?? "",
     price: item.price,
     comparePrice: item.comparePrice,
-    images: (item.images ?? []).map((img: StrapiImage) => resolveImageUrl(img.url)),
+    images: (item.images ?? []).map((img: StrapiImage) => resolveStrapiUrl(img.url)),
     category: mapStrapiCategory(item.category),
     tags: item.tags ?? [],
     variants: (item.variants ?? []).map(
@@ -101,6 +85,13 @@ function mapStrapiProduct(item: StrapiProductItem): Product {
 function applyFilters(products: Product[], filters: ProductFilters): Product[] {
   let result = [...products];
 
+  if (filters.search) {
+    const q = filters.search.toLowerCase();
+    result = result.filter((p) => {
+      const haystack = `${p.name} ${p.description} ${p.tags.join(" ")} ${p.category.name}`.toLowerCase();
+      return haystack.includes(q);
+    });
+  }
   if (filters.category) {
     result = result.filter((p) => p.category.slug === filters.category);
   }
@@ -147,62 +138,43 @@ function applyFilters(products: Product[], filters: ProductFilters): Product[] {
 export async function getProducts(
   filters: ProductFilters = {},
 ): Promise<Product[]> {
-  console.log("[getProducts] USE_STRAPI =", USE_STRAPI, "| filters =", filters);
-
   if (USE_STRAPI) {
-    try {
-      const queryParts: string[] = [
-        "populate[0]=images",
-        "populate[1]=category",
-      ];
-      if (filters.sort) queryParts.push(`sort=${SORT_MAP[filters.sort]}`);
-      if (filters.category) queryParts.push(`filters[category][slug][$eq]=${filters.category}`);
-      if (filters.minPrice !== undefined) queryParts.push(`filters[price][$gte]=${filters.minPrice}`);
-      if (filters.maxPrice !== undefined) queryParts.push(`filters[price][$lte]=${filters.maxPrice}`);
+    const queryParts: string[] = [
+      "populate[0]=images",
+      "populate[1]=category",
+    ];
+    if (filters.sort) queryParts.push(`sort=${SORT_MAP[filters.sort]}`);
+    if (filters.search)
+      queryParts.push(`filters[name][$containsi]=${encodeURIComponent(filters.search)}`);
+    if (filters.category)
+      queryParts.push(`filters[category][slug][$eq]=${encodeURIComponent(filters.category)}`);
+    if (filters.minPrice !== undefined)
+      queryParts.push(`filters[price][$gte]=${filters.minPrice}`);
+    if (filters.maxPrice !== undefined)
+      queryParts.push(`filters[price][$lte]=${filters.maxPrice}`);
 
-      const url = `${STRAPI_URL}/api/products?${queryParts.join("&")}`;
-      console.log("[getProducts] Fetching Strapi:", url);
-
-      const res = await fetch(url, { headers: strapiHeaders });
-      console.log("[getProducts] Strapi response status:", res.status, res.statusText);
-
-      if (!res.ok) {
-        console.warn("[getProducts] Strapi returned non-OK, falling back to mock data");
-        return applyFilters(mockProducts, filters);
-      }
-
-      const json = (await res.json()) as { data: StrapiProductItem[] };
-      console.log("[getProducts] Strapi returned", json.data.length, "products");
-      return json.data.map(mapStrapiProduct);
-    } catch (err) {
-      console.error("[getProducts] Fetch threw an error, falling back to mock data:", err);
-      return applyFilters(mockProducts, filters);
-    }
+    const data = await strapiGet<StrapiProductItem>(
+      `/api/products?${queryParts.join("&")}`,
+    );
+    if (data) return data.map(mapStrapiProduct);
   }
 
-  console.log("[getProducts] Strapi disabled, using mock data");
   return applyFilters(mockProducts, filters);
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   if (USE_STRAPI) {
-    try {
-      const queryParts = [
-        `filters[slug][$eq]=${slug}`,
-        "populate[0]=images",
-        "populate[1]=category",
-        "populate[2]=category.image",
-      ];
+    const queryParts = [
+      `filters[slug][$eq]=${encodeURIComponent(slug)}`,
+      "populate[0]=images",
+      "populate[1]=category",
+      "populate[2]=category.image",
+    ];
 
-      const res = await fetch(`${STRAPI_URL}/api/products?${queryParts.join("&")}`, {
-        headers: strapiHeaders,
-      });
-      if (!res.ok) return mockProducts.find((p) => p.slug === slug) ?? null;
-      const json = (await res.json()) as { data: StrapiProductItem[] };
-      return json.data[0] ? mapStrapiProduct(json.data[0]) : null;
-    } catch {
-      return mockProducts.find((p) => p.slug === slug) ?? null;
-    }
+    const data = await strapiGet<StrapiProductItem>(
+      `/api/products?${queryParts.join("&")}`,
+    );
+    if (data) return data[0] ? mapStrapiProduct(data[0]) : null;
   }
 
   return mockProducts.find((p) => p.slug === slug) ?? null;
@@ -210,23 +182,10 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
 
 export async function getFeaturedProducts(): Promise<Product[]> {
   if (USE_STRAPI) {
-    try {
-      const queryParts = [
-        "filters[isFeatured][$eq]=true",
-        "populate[0]=images",
-        "populate[1]=category",
-        "pagination[limit]=8",
-      ];
-
-      const res = await fetch(`${STRAPI_URL}/api/products?${queryParts.join("&")}`, {
-        headers: strapiHeaders,
-      });
-      if (!res.ok) return mockProducts.filter((p) => p.isFeatured);
-      const json = (await res.json()) as { data: StrapiProductItem[] };
-      return json.data.map(mapStrapiProduct);
-    } catch {
-      return mockProducts.filter((p) => p.isFeatured);
-    }
+    const data = await strapiGet<StrapiProductItem>(
+      "/api/products?filters[isFeatured][$eq]=true&populate[0]=images&populate[1]=category&pagination[limit]=8",
+    );
+    if (data) return data.map(mapStrapiProduct);
   }
 
   return mockProducts.filter((p) => p.isFeatured);
@@ -234,23 +193,10 @@ export async function getFeaturedProducts(): Promise<Product[]> {
 
 export async function getBestsellers(): Promise<Product[]> {
   if (USE_STRAPI) {
-    try {
-      const queryParts = [
-        "filters[isBestseller][$eq]=true",
-        "populate[0]=images",
-        "populate[1]=category",
-        "pagination[limit]=8",
-      ];
-
-      const res = await fetch(`${STRAPI_URL}/api/products?${queryParts.join("&")}`, {
-        headers: strapiHeaders,
-      });
-      if (!res.ok) return mockProducts.filter((p) => p.isBestseller);
-      const json = (await res.json()) as { data: StrapiProductItem[] };
-      return json.data.map(mapStrapiProduct);
-    } catch {
-      return mockProducts.filter((p) => p.isBestseller);
-    }
+    const data = await strapiGet<StrapiProductItem>(
+      "/api/products?filters[isBestseller][$eq]=true&populate[0]=images&populate[1]=category&pagination[limit]=8",
+    );
+    if (data) return data.map(mapStrapiProduct);
   }
 
   return mockProducts.filter((p) => p.isBestseller);
@@ -270,23 +216,10 @@ export async function getRelatedProducts(
   };
 
   if (USE_STRAPI) {
-    try {
-      const queryParts = [
-        `filters[id][$ne]=${productId}`,
-        "populate[0]=images",
-        "populate[1]=category",
-        "pagination[limit]=4",
-      ];
-
-      const res = await fetch(`${STRAPI_URL}/api/products?${queryParts.join("&")}`, {
-        headers: strapiHeaders,
-      });
-      if (!res.ok) return mockFallback();
-      const json = (await res.json()) as { data: StrapiProductItem[] };
-      return json.data.map(mapStrapiProduct);
-    } catch {
-      return mockFallback();
-    }
+    const data = await strapiGet<StrapiProductItem>(
+      `/api/products?filters[id][$ne]=${encodeURIComponent(productId)}&populate[0]=images&populate[1]=category&pagination[limit]=4`,
+    );
+    if (data) return data.map(mapStrapiProduct);
   }
 
   return mockFallback();
