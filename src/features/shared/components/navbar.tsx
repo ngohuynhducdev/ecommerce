@@ -10,6 +10,7 @@ import { cartCountAtom, cartOpenAtom } from "@/features/cart/atoms";
 import { wishlistCountAtom } from "@/features/wishlist/atoms";
 import { mobileMenuOpenAtom } from "../atoms";
 import { MegaMenu } from "./mega-menu";
+import { SearchForm } from "./search-form";
 
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 
@@ -61,7 +62,7 @@ function UserIcon({ size = 20 }: { size?: number }) {
 function CountBadge({ count }: { count: number }) {
   if (count === 0) return null;
   return (
-    <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-[#1C1C1C] text-white text-[10px] rounded-full flex items-center justify-center leading-none font-medium">
+    <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-primary text-white text-[10px] rounded-full flex items-center justify-center leading-none font-medium">
       {count > 9 ? "9+" : count}
     </span>
   );
@@ -116,6 +117,7 @@ export function Navbar() {
   );
 
   const [megaOpen, setMegaOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const hideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const openMega = () => {
@@ -129,11 +131,11 @@ export function Navbar() {
   return (
     <>
       {/* ── Desktop navbar ── */}
-      <nav className="relative hidden lg:block h-20 bg-white border-b border-[#E8ECEF]">
+      <nav className="relative hidden lg:block h-20 bg-white border-b border-border">
         <div className="px-8 lg:px-20 h-full flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="font-semibold text-xl tracking-tight text-[#1C1C1C] select-none">
-            3legant<span className="text-[#B88E2F]">.</span>
+          <Link href="/" className="font-semibold text-xl tracking-tight text-primary select-none">
+            3legant<span className="text-accent">.</span>
           </Link>
 
           {/* Nav links */}
@@ -153,8 +155,8 @@ export function Navbar() {
                     href={href}
                     className={`text-sm transition-colors ${
                       isActive
-                        ? "text-[#1C1C1C] font-semibold"
-                        : "text-[#807D7E] hover:text-[#1C1C1C]"
+                        ? "text-primary font-semibold"
+                        : "text-muted hover:text-primary"
                     }`}
                   >
                     {label}
@@ -167,20 +169,22 @@ export function Navbar() {
           {/* Actions */}
           <div className="flex items-center gap-5">
             <button
+              onClick={() => setSearchOpen((v) => !v)}
               aria-label="Search"
-              className="text-[#1C1C1C] hover:text-[#807D7E] transition-colors cursor-pointer"
+              aria-expanded={searchOpen}
+              className="text-primary hover:text-muted transition-colors cursor-pointer"
             >
-              <Search size={20} strokeWidth={1.5} />
+              {searchOpen ? <X size={20} strokeWidth={1.5} /> : <Search size={20} strokeWidth={1.5} />}
             </button>
 
-            <Link href="/account" aria-label="Account" className="text-[#1C1C1C] hover:text-[#807D7E] transition-colors">
+            <Link href="/account" aria-label="Account" className="text-primary hover:text-muted transition-colors">
               <UserIcon size={20} />
             </Link>
 
             <button
               onClick={() => setCartOpen(true)}
               aria-label="Cart"
-              className="relative text-[#1C1C1C] hover:text-[#807D7E] transition-colors cursor-pointer"
+              className="relative text-primary hover:text-muted transition-colors cursor-pointer"
             >
               <BagIcon size={20} />
               {mounted && <CountBadge count={cartCount} />}
@@ -191,21 +195,31 @@ export function Navbar() {
         {megaOpen && (
           <MegaMenu onMouseEnter={openMega} onMouseLeave={closeMega} />
         )}
+
+        {searchOpen && (
+          <div className="absolute left-0 right-0 top-full bg-white border-b border-border px-8 lg:px-20 py-4 z-50 animate-fade-in">
+            <SearchForm
+              autoFocus
+              onSubmitted={() => setSearchOpen(false)}
+              className="max-w-xl mx-auto"
+            />
+          </div>
+        )}
       </nav>
 
       {/* ── Mobile navbar bar ── */}
-      <div className="lg:hidden h-16 flex items-center justify-between px-5 bg-white border-b border-[#E8ECEF]">
+      <div className="lg:hidden h-16 flex items-center justify-between px-5 bg-white border-b border-border">
         {/* Left: hamburger + logo */}
         <div className="flex items-center gap-3">
           <button
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Open menu"
-            className="text-[#1C1C1C] cursor-pointer"
+            className="text-primary cursor-pointer"
           >
             <Menu size={22} strokeWidth={1.5} />
           </button>
-          <Link href="/" className="font-semibold text-xl tracking-tight text-[#1C1C1C] select-none">
-            3legant<span className="text-[#B88E2F]">.</span>
+          <Link href="/" className="font-semibold text-xl tracking-tight text-primary select-none">
+            3legant<span className="text-accent">.</span>
           </Link>
         </div>
 
@@ -213,7 +227,7 @@ export function Navbar() {
         <button
           onClick={() => setCartOpen(true)}
           aria-label="Cart"
-          className="relative text-[#1C1C1C] cursor-pointer"
+          className="relative text-primary cursor-pointer"
         >
           <BagIcon size={22} />
           {mounted && <CountBadge count={cartCount} />}
@@ -228,14 +242,14 @@ export function Navbar() {
             <Link
               href="/"
               onClick={() => setMobileMenuOpen(false)}
-              className="font-semibold text-xl tracking-tight text-[#1C1C1C] select-none"
+              className="font-semibold text-xl tracking-tight text-primary select-none"
             >
-              3legant<span className="text-[#B88E2F]">.</span>
+              3legant<span className="text-accent">.</span>
             </Link>
             <button
               onClick={() => setMobileMenuOpen(false)}
               aria-label="Close menu"
-              className="text-[#807D7E] hover:text-[#1C1C1C] transition-colors cursor-pointer"
+              className="text-muted hover:text-primary transition-colors cursor-pointer"
             >
               <X size={20} />
             </button>
@@ -243,14 +257,7 @@ export function Navbar() {
 
           {/* Search */}
           <div className="px-5 pb-4">
-            <div className="flex items-center gap-3 border border-[#E8ECEF] rounded-lg px-4 h-12">
-              <Search size={18} strokeWidth={1.5} className="text-[#807D7E] shrink-0" />
-              <input
-                type="text"
-                placeholder="Search"
-                className="flex-1 text-sm outline-none bg-transparent placeholder:text-[#807D7E]"
-              />
-            </div>
+            <SearchForm onSubmitted={() => setMobileMenuOpen(false)} />
           </div>
 
           {/* Nav links */}
@@ -262,11 +269,11 @@ export function Navbar() {
                   key={label}
                   href={href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between px-5 py-4 border-b border-[#E8ECEF] text-sm font-semibold text-[#1C1C1C] hover:text-[#B88E2F] transition-colors"
+                  className="flex items-center justify-between px-5 py-4 border-b border-border text-sm font-semibold text-primary hover:text-accent transition-colors"
                 >
                   {label}
                   {hasDropdown && (
-                    <ChevronDown size={18} className="text-[#807D7E]" />
+                    <ChevronDown size={18} className="text-muted" />
                   )}
                 </Link>
               );
@@ -281,13 +288,13 @@ export function Navbar() {
                 setMobileMenuOpen(false);
                 setCartOpen(true);
               }}
-              className="w-full flex items-center justify-between py-4 border-b border-[#E8ECEF] cursor-pointer"
+              className="w-full flex items-center justify-between py-4 border-b border-border cursor-pointer"
             >
-              <span className="text-sm text-[#807D7E]">Cart</span>
+              <span className="text-sm text-muted">Cart</span>
               <div className="flex items-center gap-2">
                 <BagIcon size={20} />
                 {mounted && cartCount > 0 && (
-                  <span className="w-6 h-6 bg-[#1C1C1C] text-white text-xs rounded-full flex items-center justify-center font-medium">
+                  <span className="w-6 h-6 bg-primary text-white text-xs rounded-full flex items-center justify-center font-medium">
                     {cartCount > 9 ? "9+" : cartCount}
                   </span>
                 )}
@@ -298,13 +305,13 @@ export function Navbar() {
             <Link
               href="/account/wishlist"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between py-4 border-b border-[#E8ECEF]"
+              className="flex items-center justify-between py-4 border-b border-border"
             >
-              <span className="text-sm text-[#807D7E]">Wishlist</span>
+              <span className="text-sm text-muted">Wishlist</span>
               <div className="flex items-center gap-2">
                 <HeartIcon size={20} />
                 {mounted && wishlistCount > 0 && (
-                  <span className="w-6 h-6 bg-[#1C1C1C] text-white text-xs rounded-full flex items-center justify-center font-medium">
+                  <span className="w-6 h-6 bg-primary text-white text-xs rounded-full flex items-center justify-center font-medium">
                     {wishlistCount > 9 ? "9+" : wishlistCount}
                   </span>
                 )}
@@ -315,20 +322,20 @@ export function Navbar() {
             <Link
               href="/auth/sign-in"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full h-14 bg-[#1C1C1C] text-white flex items-center justify-center rounded-lg text-sm font-medium hover:bg-[#B88E2F] transition-colors mt-5"
+              className="w-full h-14 bg-primary text-white flex items-center justify-center rounded-lg text-sm font-medium hover:bg-accent transition-colors mt-5"
             >
               Sign In
             </Link>
 
             {/* Social icons */}
             <div className="flex items-center gap-5 mt-5">
-              <a href="#" aria-label="Instagram" className="text-[#1C1C1C] hover:text-[#807D7E] transition-colors">
+              <a href="#" aria-label="Instagram" className="text-primary hover:text-muted transition-colors">
                 <InstagramIcon />
               </a>
-              <a href="#" aria-label="Facebook" className="text-[#1C1C1C] hover:text-[#807D7E] transition-colors">
+              <a href="#" aria-label="Facebook" className="text-primary hover:text-muted transition-colors">
                 <FacebookIcon />
               </a>
-              <a href="#" aria-label="YouTube" className="text-[#1C1C1C] hover:text-[#807D7E] transition-colors">
+              <a href="#" aria-label="YouTube" className="text-primary hover:text-muted transition-colors">
                 <YouTubeIcon />
               </a>
             </div>

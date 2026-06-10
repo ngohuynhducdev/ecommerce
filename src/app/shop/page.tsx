@@ -40,7 +40,10 @@ export default async function ShopPage({
     ? (rawSort as SortValue)
     : undefined;
 
+  const search = firstParam(sp.q)?.trim() || undefined;
+
   const filters: ProductFilters = {
+    search,
     category: firstParam(sp.category),
     minPrice: parseNumber(firstParam(sp.minPrice)),
     maxPrice: parseNumber(firstParam(sp.maxPrice)),
@@ -74,15 +77,15 @@ export default async function ShopPage({
         />
         <div className="absolute inset-0 bg-white/55" />
         <div className="relative h-full flex flex-col items-center justify-center text-center px-8">
-          <nav className="flex items-center gap-2 text-sm text-[#807D7E] mb-4">
-            <Link href="/" className="hover:text-[#1C1C1C] transition-colors">
+          <nav className="flex items-center gap-2 text-sm text-muted mb-4">
+            <Link href="/" className="hover:text-primary transition-colors">
               Home
             </Link>
             <span>›</span>
-            <span className="text-[#1C1C1C] font-medium">Shop</span>
+            <span className="text-primary font-medium">Shop</span>
           </nav>
-          <h1 className="text-4xl lg:text-5xl font-bold text-[#1C1C1C]">Shop Page</h1>
-          <p className="mt-3 text-[#807D7E] text-sm lg:text-base max-w-sm">
+          <h1 className="text-4xl lg:text-5xl font-bold text-primary">Shop Page</h1>
+          <p className="mt-3 text-muted text-sm lg:text-base max-w-sm">
             Let&apos;s design the place you always imagined.
           </p>
         </div>
@@ -90,6 +93,12 @@ export default async function ShopPage({
 
       {/* Content */}
       <div className="px-8 lg:px-20 py-10">
+        {search && (
+          <p className="mb-6 text-sm text-muted">
+            {products.length} result{products.length === 1 ? "" : "s"} for{" "}
+            <span className="font-medium text-primary">&ldquo;{search}&rdquo;</span>
+          </p>
+        )}
         <ShopContent
           products={products}
           categories={categoriesWithCounts}
