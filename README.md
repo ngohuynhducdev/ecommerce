@@ -1,6 +1,15 @@
-# 3legant Furniture Store
+# 3legant — Furniture E-Commerce
 
-A full-featured e-commerce storefront for a minimalist furniture brand, built with Next.js 16 App Router. Based on the [3legant Figma community design](https://www.figma.com/design/4wdIrC2NdJVK6VVFuWxtX7/).
+A full-featured e-commerce storefront for a minimalist furniture brand, built with **Next.js 16 (App Router)**. Pixel-matched to the [3legant Figma community design](https://www.figma.com/design/4wdIrC2NdJVK6VVFuWxtX7/).
+
+![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss&logoColor=white)
+![Strapi](https://img.shields.io/badge/Strapi-v5-4945FF?logo=strapi&logoColor=white)
+
+🔗 **Live demo:** _add your Vercel URL here_
+
+> A portfolio project demonstrating a production-grade storefront: type-safe data layer with a swappable CMS, persisted client state, URL-driven filters, validated forms, and full SEO. Cart, orders, and reviews are simulated client-side (no payment backend) by design.
 
 ## Tech Stack
 
@@ -34,6 +43,9 @@ Create a `.env.local` file in the project root:
 ```env
 # Auth (required)
 AUTH_SECRET=your-secret-here
+
+# Site URL (used for metadata, sitemap, robots, OG image)
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 # Strapi CMS (optional — defaults to mock data)
 NEXT_PUBLIC_USE_STRAPI=false
@@ -75,21 +87,24 @@ src/
 │   ├── account/          # AccountSidebar, WishlistCard
 │   └── shared/           # Navbar, Footer, Breadcrumb, AnnouncementBar
 └── lib/
-    ├── api/              # products.ts, categories.ts, blog.ts (Strapi-ready)
+    ├── api/              # products, categories, blog, coupons + strapi.ts (shared client)
+    ├── site.ts          # canonical URL + metadata constants
     └── utils.ts          # cn(), formatPrice(), generateOrderId()
 ```
 
 ## Features
 
+- **Search** — live product search from the navbar (desktop dropdown + mobile menu) routing to `/shop?q=`, matched against name, description, tags and category
 - **Shop** — product grid with filter sidebar (category, price range, color, material, rating), URL-param filters, sort, load more
-- **Product Detail** — image gallery with thumbnails, variant selector, quantity picker, Add to Cart, wishlist toggle, related products, tabbed reviews
+- **Product Detail** — image gallery with thumbnails, variant selector, quantity picker, Add to Cart, wishlist toggle, related products
+- **Reviews** — write a review (star rating + comment) with React Hook Form + Zod validation, persisted to localStorage and rendered above seed reviews
 - **Cart** — quantity controls, coupon codes (`SAVE10`, `FURNITURE20`), order summary, persistent via localStorage
 - **Checkout** — 3-step flow: shipping → payment → review → animated order success page
 - **Auth** — NextAuth v5 with mock credentials (any email + password ≥ 6 chars); protected `/account` routes via middleware
 - **Account** — profile editor, order history with status filters, wishlist management
 - **Blog** — featured post, article grid, full post with scroll-tracked table of contents, social share, related posts
 - **Contact** — info cards, validated contact form, map placeholder
-- **SEO** — `generateMetadata` on every page, `og:image` for product and blog pages, `generateStaticParams` for static generation
+- **SEO** — per-page `generateMetadata`, dynamic OG image (`next/og`), `sitemap.xml`, `robots.txt`, SVG favicon, `generateStaticParams` for static generation
 - **Performance** — `revalidate = 3600` on listing pages, skeleton loading states, fade-in page transitions
 - **Error handling** — global 404 / error pages, product-specific not-found
 
@@ -109,9 +124,26 @@ All data functions in `src/lib/api/` check `NEXT_PUBLIC_USE_STRAPI`:
 
 Switching to Strapi requires zero UI changes.
 
+## Architecture Highlights
+
+A few decisions worth calling out:
+
+- **Swappable data source** — every UI component imports from `lib/api/`; it never knows whether data comes from mock fixtures or Strapi. A single `NEXT_PUBLIC_USE_STRAPI` flag flips the whole app, and a shared `strapiGet()` helper handles fetch + graceful fallback to mock data.
+- **Design tokens, no hardcoded colors** — the palette lives in `@theme` in `globals.css`, so Tailwind generates `bg-primary` / `text-muted` / `border-border` utilities. Rebrand by editing one file.
+- **Server Components by default** — `"use client"` is added only where it's truly needed (Jotai reads, event handlers, browser APIs), keeping bundles lean.
+- **URL-driven filters** — shop filters, sort, and search live in the URL (`/shop?category=...&q=...`), so any result set is shareable and bookmarkable — not trapped in component state.
+- **Persisted client state** — cart, wishlist, orders, and reviews use Jotai `atomWithStorage`, surviving reloads without a backend.
+- **Type-safe throughout** — TypeScript strict mode, zero `any`, all forms validated with Zod schemas.
+
 ## Screenshots
 
-> _Add screenshots here_
+| Home | Shop | Product |
+|---|---|---|
+| _add image_ | _add image_ | _add image_ |
+
+| Cart | Checkout | Order Success |
+|---|---|---|
+| _add image_ | _add image_ | _add image_ |
 
 ## Deploy
 

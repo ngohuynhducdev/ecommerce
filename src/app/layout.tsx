@@ -8,6 +8,7 @@ import { BottomNav } from "@/features/shared/components/bottom-nav";
 import { CartFlyout } from "@/features/cart/components/cart-flyout";
 import { Footer } from "@/features/shared/components/footer";
 import { Toaster } from "@/components/ui/sonner";
+import { SITE_URL, SITE_DESCRIPTION } from "@/lib/site";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -16,14 +17,19 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     template: "%s | 3legant",
     default: "3legant — Furniture Store",
   },
-  description: "Simply Unique / Simply Better. Discover modern furniture.",
+  description: SITE_DESCRIPTION,
   openGraph: {
     type: "website",
-    images: ["/og-image.jpg"],
+    siteName: "3legant",
+    url: SITE_URL,
+  },
+  twitter: {
+    card: "summary_large_image",
   },
 };
 
