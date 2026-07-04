@@ -81,7 +81,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
 
   return (
     <div>
-      <div className="px-8 lg:px-20 py-12">
+      <div className="px-5 lg:px-20 py-12">
         <Breadcrumb
           items={[
             { label: "Home", href: "/" },
@@ -126,25 +126,20 @@ export default async function ProductDetailPage({ params }: PageProps) {
               {product.name}
             </h1>
 
-            <div className="flex items-center gap-3 mt-2">
+            <p className="text-[#807D7E] leading-relaxed mt-4">
+              {product.description}
+            </p>
+
+            <div className="flex items-center gap-3 mt-4 pb-6 border-b border-[#E8ECEF]">
               <span className="text-2xl font-semibold text-[#1C1C1C]">
                 {formatPrice(product.price)}
               </span>
               {product.comparePrice && (
-                <>
-                  <span className="text-sm text-[#807D7E] line-through">
-                    {formatPrice(product.comparePrice)}
-                  </span>
-                  <span className="bg-red-100 text-red-600 text-xs px-2 py-0.5 rounded">
-                    Save {discountPercent}%
-                  </span>
-                </>
+                <span className="text-lg text-[#807D7E] line-through">
+                  {formatPrice(product.comparePrice)}
+                </span>
               )}
             </div>
-
-            <p className="text-[#807D7E] leading-relaxed mt-4 pb-4 border-b border-[#E8ECEF]">
-              {product.description}
-            </p>
 
             <AddToCartSection product={product} />
           </div>
