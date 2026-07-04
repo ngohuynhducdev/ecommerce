@@ -8,6 +8,7 @@ import { BottomNav } from "@/features/shared/components/bottom-nav";
 import { CartFlyout } from "@/features/cart/components/cart-flyout";
 import { Footer } from "@/features/shared/components/footer";
 import { Toaster } from "@/components/ui/sonner";
+import { SITE_URL } from "@/lib/site";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -16,6 +17,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     template: "%s | 3legant",
     default: "3legant — Furniture Store",
