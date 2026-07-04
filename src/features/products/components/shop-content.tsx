@@ -124,83 +124,93 @@ export function ShopContent({
       gridCols === cols ? "text-[#1C1C1C]" : "text-[#C1C4C9] hover:text-[#1C1C1C]"
     }`;
 
+  const sortControl = (
+    <div className="flex items-center gap-1">
+      <span className="text-sm text-[#1C1C1C]">Sort by</span>
+      <select
+        value={currentSort ?? "default"}
+        onChange={(e) => handleSort(e.target.value)}
+        className="text-sm text-[#1C1C1C] bg-transparent border-none outline-none cursor-pointer"
+      >
+        {SORT_OPTIONS.map((o) => (
+          <option key={o.value} value={o.value}>
+            {o.label}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+
   return (
     <div>
-      {/* Toolbar */}
-      <div className="border-y border-[#E8ECEF] flex items-center gap-4 py-3.5 mb-8">
-        {/* Filter button — opens sheet on mobile, decorative label on desktop */}
-        <Sheet>
-          <SheetTrigger asChild>
-            <button className="flex items-center gap-2 text-sm font-medium text-[#1C1C1C] hover:text-[#B88E2F] transition-colors cursor-pointer">
-              <SlidersHorizontal className="w-4 h-4" />
-              <span>Filter</span>
+      {/* Mobile toolbar — Filter + view toggles, then category + sort */}
+      <div className="lg:hidden mb-6">
+        <div className="flex items-center justify-between border-b border-[#E8ECEF] py-3">
+          <Sheet>
+            <SheetTrigger asChild>
+              <button className="flex items-center gap-2 text-sm font-medium text-[#1C1C1C] cursor-pointer">
+                <SlidersHorizontal className="w-4 h-4" />
+                <span>Filter</span>
+              </button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[300px] overflow-y-auto">
+              <SheetHeader className="mb-6">
+                <SheetTitle>Filters</SheetTitle>
+              </SheetHeader>
+              <FilterSidebar categories={categories} currentFilters={currentFilters} />
+            </SheetContent>
+          </Sheet>
+          <div className="flex items-center gap-0.5">
+            <button className={gridIconClass(2)} onClick={() => setGridCols(2)} aria-label="2 columns">
+              <IconGrid2 />
             </button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-[300px] overflow-y-auto lg:hidden">
-            <SheetHeader className="mb-6">
-              <SheetTitle>Filters</SheetTitle>
-            </SheetHeader>
-            <FilterSidebar categories={categories} currentFilters={currentFilters} />
-          </SheetContent>
-        </Sheet>
-
-        {/* Desktop: divider + selected category name */}
-        <div className="hidden lg:flex items-center gap-4">
-          <div className="w-px h-5 bg-[#E8ECEF]" />
-          <span className="text-sm font-medium text-[#1C1C1C]">{displayCategory}</span>
+            <button className={gridIconClass(1)} onClick={() => setGridCols(1)} aria-label="List view">
+              <IconList />
+            </button>
+          </div>
         </div>
-
-        <div className="flex-1" />
-
-        {/* Sort */}
-        <div className="flex items-center gap-1">
-          <span className="text-sm text-[#1C1C1C] hidden sm:inline">Sort by</span>
-          <select
-            value={currentSort ?? "default"}
-            onChange={(e) => handleSort(e.target.value)}
-            className="text-sm text-[#1C1C1C] bg-transparent border-none outline-none cursor-pointer"
-          >
-            {SORT_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Desktop grid toggles */}
-        <div className="hidden lg:flex items-center gap-0.5 border-l border-[#E8ECEF] pl-4">
-          <button className={gridIconClass(4)} onClick={() => setGridCols(4)} aria-label="4 columns">
-            <IconGrid4 />
-          </button>
-          <button className={gridIconClass(3)} onClick={() => setGridCols(3)} aria-label="3 columns">
-            <IconGrid3 />
-          </button>
-          <button className={gridIconClass(2)} onClick={() => setGridCols(2)} aria-label="2 columns">
-            <IconGrid2 />
-          </button>
-          <button className={gridIconClass(1)} onClick={() => setGridCols(1)} aria-label="List view">
-            <IconList />
-          </button>
-        </div>
-
-        {/* Mobile grid toggles (2-col / list) */}
-        <div className="flex lg:hidden items-center gap-0.5">
-          <button className={gridIconClass(2)} onClick={() => setGridCols(2)} aria-label="2 columns">
-            <IconGrid2 />
-          </button>
-          <button className={gridIconClass(1)} onClick={() => setGridCols(1)} aria-label="List view">
-            <IconList />
-          </button>
+        <div className="flex items-center justify-between py-3">
+          <span className="text-base font-medium text-[#1C1C1C]">{displayCategory}</span>
+          {sortControl}
         </div>
       </div>
 
-      {/* Sidebar + Grid */}
-      <div className="lg:grid lg:grid-cols-[220px_1fr] lg:gap-12">
+      {/* Two-column: filter sidebar + product area */}
+      <div className="lg:grid lg:grid-cols-[240px_1fr] lg:gap-14">
+        {/* Sidebar (desktop) */}
         <div className="hidden lg:block">
+          <div className="flex items-center gap-2 text-[#1C1C1C] mb-8">
+            <SlidersHorizontal className="w-4 h-4" />
+            <span className="text-base font-medium">Filter</span>
+          </div>
           <FilterSidebar categories={categories} currentFilters={currentFilters} />
         </div>
-        <ShopProductGrid products={products} gridCols={gridCols} />
+
+        {/* Product area */}
+        <div>
+          {/* Desktop toolbar — category name + sort + view toggles */}
+          <div className="hidden lg:flex items-center justify-between mb-8">
+            <span className="text-base font-medium text-[#1C1C1C]">{displayCategory}</span>
+            <div className="flex items-center gap-6">
+              {sortControl}
+              <div className="flex items-center gap-0.5">
+                <button className={gridIconClass(4)} onClick={() => setGridCols(4)} aria-label="4 columns">
+                  <IconGrid4 />
+                </button>
+                <button className={gridIconClass(3)} onClick={() => setGridCols(3)} aria-label="3 columns">
+                  <IconGrid3 />
+                </button>
+                <button className={gridIconClass(2)} onClick={() => setGridCols(2)} aria-label="2 columns">
+                  <IconGrid2 />
+                </button>
+                <button className={gridIconClass(1)} onClick={() => setGridCols(1)} aria-label="List view">
+                  <IconList />
+                </button>
+              </div>
+            </div>
+          </div>
+          <ShopProductGrid products={products} gridCols={gridCols} />
+        </div>
       </div>
     </div>
   );

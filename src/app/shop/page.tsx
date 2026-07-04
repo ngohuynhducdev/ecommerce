@@ -89,7 +89,7 @@ export default async function ShopPage({
       </section>
 
       {/* Content */}
-      <div className="px-8 lg:px-20 py-10">
+      <div className="px-5 lg:px-20 py-10">
         <ShopContent
           products={products}
           categories={categoriesWithCounts}
