@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { SiteHeader, SiteFooter } from "@/features/shared/components/site-chrome";
 import { CartFlyout } from "@/features/cart/components/cart-flyout";
+import { AuthModal } from "@/features/auth/components/auth-modal";
 import { Toaster } from "@/components/ui/sonner";
 import { SITE_URL } from "@/lib/site";
 
@@ -43,6 +44,9 @@ export default function RootLayout({
 
         {/* Global cart flyout — rendered once, controlled by cartOpenAtom */}
         <CartFlyout />
+
+        {/* Global auth modal — controlled by authModalOpenAtom */}
+        <AuthModal />
 
         <Toaster position="top-right" richColors />
       </body>
