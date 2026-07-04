@@ -68,7 +68,7 @@ export default async function HomePage() {
       <FeaturesStrip />
 
       {/* ── Sale Banner ── */}
-      <section className="mx-8 lg:mx-20 rounded-2xl overflow-hidden grid lg:grid-cols-2 bg-[#F3F5F7] lg:min-h-140">
+      <section className="grid lg:grid-cols-2 bg-[#F3F5F7] lg:min-h-140">
         {/* Image */}
         <div className="relative h-80 lg:h-auto">
           <Image
@@ -82,7 +82,7 @@ export default async function HomePage() {
 
         {/* Text */}
         <div className="flex flex-col justify-center px-10 py-14 lg:px-16 lg:py-20">
-          <span className="text-xs font-semibold uppercase tracking-widest text-[#2EC1AC] mb-4">
+          <span className="text-xs font-semibold uppercase tracking-widest text-[#377DFF] mb-4">
             Sale up to 35% off
           </span>
           <h2 className="text-3xl lg:text-5xl font-bold text-[#1C1C1C] leading-tight">
