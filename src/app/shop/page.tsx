@@ -62,31 +62,33 @@ export default async function ShopPage({
 
   return (
     <div>
-      {/* Hero */}
-      <section className="relative h-64 lg:h-80 overflow-hidden">
-        <Image
-          src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1600&h=640&fit=crop&auto=format&q=80"
-          alt="Shop"
-          fill
-          sizes="100vw"
-          className="object-cover"
-          fetchPriority="high"
-        />
-        <div className="absolute inset-0 bg-white/55" />
-        <div className="relative h-full flex flex-col items-center justify-center text-center px-8">
-          <nav className="flex items-center gap-2 text-sm text-[#807D7E] mb-4">
-            <Link href="/" className="hover:text-[#1C1C1C] transition-colors">
-              Home
-            </Link>
-            <span>›</span>
-            <span className="text-[#1C1C1C] font-medium">Shop</span>
-          </nav>
-          <h1 className="text-4xl lg:text-5xl font-bold text-[#1C1C1C]">Shop Page</h1>
-          <p className="mt-3 text-[#807D7E] text-sm lg:text-base max-w-sm">
-            Let&apos;s design the place you always imagined.
-          </p>
-        </div>
-      </section>
+      {/* Hero — contained within page gutters per design */}
+      <div className="px-5 lg:px-20 pt-6">
+        <section className="relative h-64 lg:h-80 overflow-hidden">
+          <Image
+            src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1600&h=640&fit=crop&auto=format&q=80"
+            alt="Shop"
+            fill
+            sizes="(max-width: 1024px) 100vw, calc(100vw - 10rem)"
+            className="object-cover"
+            fetchPriority="high"
+          />
+          <div className="absolute inset-0 bg-white/45" />
+          <div className="relative h-full flex flex-col items-center justify-center text-center px-8">
+            <nav className="flex items-center gap-2 text-sm text-[#807D7E] mb-4">
+              <Link href="/" className="hover:text-[#1C1C1C] transition-colors">
+                Home
+              </Link>
+              <span>›</span>
+              <span className="text-[#1C1C1C] font-medium">Shop</span>
+            </nav>
+            <h1 className="text-4xl lg:text-5xl font-bold text-[#1C1C1C]">Shop Page</h1>
+            <p className="mt-3 text-[#807D7E] text-sm lg:text-base max-w-sm">
+              Let&apos;s design the place you always imagined.
+            </p>
+          </div>
+        </section>
+      </div>
 
       {/* Content */}
       <div className="px-5 lg:px-20 py-10">
