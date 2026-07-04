@@ -101,7 +101,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── Blog Preview ── */}
-      <section className="py-20 px-8 lg:px-20">
+      <section className="py-16 lg:py-20 px-5 lg:px-20">
         <div className="flex justify-between items-center mb-10">
           <h2 className="text-3xl font-semibold text-[#1C1C1C]">Articles</h2>
           <Link
