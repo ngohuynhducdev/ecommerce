@@ -96,10 +96,14 @@ export function ProductCard({ product }: ProductCardProps) {
           )}
         </div>
 
-        {/* Heart */}
+        {/* Heart — hover-reveal on desktop, always on touch; stays shown once wishlisted */}
         <button
           onClick={handleToggleWishlist}
-          className="absolute top-3 right-3 z-10 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors"
+          className={`absolute top-3 right-3 z-10 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-opacity ${
+            isWishlisted
+              ? "opacity-100 pointer-events-auto"
+              : "opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto max-lg:opacity-100 max-lg:pointer-events-auto"
+          }`}
           aria-label="Add to wishlist"
         >
           <HeartIcon filled={isWishlisted} />
