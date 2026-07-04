@@ -72,7 +72,7 @@ export default function SignUpPage() {
       {/* Left / Top — Gray image panel */}
       <div className="bg-[#F3F5F7] flex flex-col min-h-72 lg:min-h-screen">
         {/* Logo */}
-        <div className="px-8 pt-8 lg:px-10 flex lg:justify-start justify-center">
+        <div className="px-8 pt-8 lg:px-10 flex justify-center">
           <Link
             href="/"
             className="font-semibold text-xl tracking-tight text-[#1C1C1C] select-none"
@@ -85,7 +85,7 @@ export default function SignUpPage() {
         <div className="flex-1 flex items-center justify-center px-8 py-8 lg:py-16">
           <div className="relative w-full max-w-sm lg:max-w-lg aspect-square">
             <Image
-              src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&h=800&fit=crop&auto=format&q=80"
+              src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=800&fit=crop&auto=format&q=80"
               alt="Elegant furniture"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"

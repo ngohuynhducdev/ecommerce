@@ -2,11 +2,8 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 
-import { AnnouncementBar } from "@/features/shared/components/announcement-bar";
-import { Navbar } from "@/features/shared/components/navbar";
-import { BottomNav } from "@/features/shared/components/bottom-nav";
+import { SiteHeader, SiteFooter } from "@/features/shared/components/site-chrome";
 import { CartFlyout } from "@/features/cart/components/cart-flyout";
-import { Footer } from "@/features/shared/components/footer";
 import { Toaster } from "@/components/ui/sonner";
 import { SITE_URL } from "@/lib/site";
 
@@ -37,18 +34,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${poppins.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-(family-name:--font-poppins)">
-        {/* Sticky header: announcement collapses → navbar naturally rises to top-0 */}
-        <div className="sticky top-0 z-40">
-          <AnnouncementBar />
-          <Navbar />
-        </div>
+        {/* Header + footer are hidden on bare routes (auth) — see site-chrome */}
+        <SiteHeader />
 
         <main className="flex-1 pb-16 lg:pb-0 animate-fade-in">{children}</main>
 
-        <Footer />
-
-        {/* Fixed bottom nav — mobile only */}
-        <BottomNav />
+        <SiteFooter />
 
         {/* Global cart flyout — rendered once, controlled by cartOpenAtom */}
         <CartFlyout />

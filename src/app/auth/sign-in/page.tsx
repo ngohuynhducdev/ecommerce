@@ -71,7 +71,7 @@ function SignInForm() {
       {/* Left / Top — Gray image panel */}
       <div className="bg-[#F3F5F7] flex flex-col min-h-72 lg:min-h-screen">
         {/* Logo */}
-        <div className="px-8 pt-8 lg:px-10 flex lg:justify-start justify-center">
+        <div className="px-8 pt-8 lg:px-10 flex justify-center">
           <Link
             href="/"
             className="font-semibold text-xl tracking-tight text-[#1C1C1C] select-none"
