@@ -43,23 +43,19 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── Browse The Range ── */}
-      <section className="py-20 px-8 lg:px-20">
-        <div className="text-center">
-          <h2 className="text-3xl font-semibold text-[#1C1C1C]">Browse The Range</h2>
-          <p className="text-[#807D7E] mt-2">
-            Explore the possibilities of our diverse furniture collection
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+      {/* ── Category Showcase ── */}
+      <section className="px-5 lg:px-20 pb-16 lg:pb-24">
+        <div className="grid gap-6 md:grid-cols-2 md:h-155">
           {showcaseCategories[0] && (
-            <div className="h-100 md:h-155">
+            <div className="h-96 md:h-full">
               <CategoryCard category={showcaseCategories[0]} large />
             </div>
           )}
-          <div className="grid grid-rows-2 gap-6 h-100 md:h-155">
+          <div className="grid gap-6 md:grid-rows-2 md:h-full">
             {showcaseCategories.slice(1, 3).map((category) => (
-              <CategoryCard key={category.id} category={category} />
+              <div key={category.id} className="h-56 md:h-full">
+                <CategoryCard category={category} />
+              </div>
             ))}
           </div>
         </div>
