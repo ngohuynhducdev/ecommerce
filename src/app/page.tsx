@@ -26,8 +26,8 @@ export default async function HomePage() {
       <HeroCarousel />
 
       {/* ── Hero Text ── */}
-      <section className="px-8 lg:px-20 py-12 lg:py-16 grid lg:grid-cols-2 gap-8 lg:gap-20 items-end">
-        <h1 className="font-bold text-5xl lg:text-7xl leading-tight text-[#1C1C1C]">
+      <section className="px-5 lg:px-20 py-12 lg:py-16 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-end">
+        <h1 className="font-bold text-[2.5rem] lg:text-7xl leading-[1.1] text-[#1C1C1C]">
           Simply Unique/<br />Simply Better.
         </h1>
         <div>
