@@ -5,12 +5,14 @@ import { notFound } from "next/navigation";
 import {
   getProductBySlug,
   getProducts,
+  getRelatedProducts,
 } from "@/lib/api/products";
 import { formatPrice } from "@/lib/utils";
 import { Breadcrumb } from "@/features/shared/components/breadcrumb";
 import { ImageGallery } from "@/features/products/components/image-gallery";
 import { AddToCartSection } from "@/features/products/components/add-to-cart-section";
 import { ProductTabs } from "@/features/products/components/product-tabs";
+import { RelatedProducts } from "@/features/products/components/related-products";
 import { NewsletterSection } from "@/features/shared/components/newsletter-section";
 
 interface PageProps {
@@ -67,6 +69,11 @@ export default async function ProductDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
   if (!product) notFound();
+
+  const relatedProducts = await getRelatedProducts(
+    product.id,
+    product.category.slug,
+  );
 
   const discountPercent = product.comparePrice
     ? Math.round((1 - product.price / product.comparePrice) * 100)
@@ -144,6 +151,8 @@ export default async function ProductDetailPage({ params }: PageProps) {
         </div>
 
         <ProductTabs product={product} />
+
+        <RelatedProducts products={relatedProducts} />
       </div>
       <NewsletterSection />
     </div>

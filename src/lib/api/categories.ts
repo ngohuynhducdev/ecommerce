@@ -38,6 +38,8 @@ export async function getCategories(): Promise<Category[]> {
     try {
       const res = await fetch(`${STRAPI_URL}/api/categories?populate[0]=image`, {
         headers: strapiHeaders,
+        // Categories change rarely — cache for 1h (same as products/blog)
+        next: { revalidate: 3600 },
       });
       if (!res.ok) return mockCategories;
       const json = (await res.json()) as { data: StrapiCategoryItem[] };

@@ -14,6 +14,7 @@ import {
 } from "@/features/checkout/atoms";
 import { StepIndicator } from "@/features/checkout/components/step-indicator";
 import type { CartItem } from "@/features/products/types";
+import { validateCouponClient } from "@/lib/api/coupons-client";
 import { formatPrice, cn } from "@/lib/utils";
 
 
@@ -85,12 +86,11 @@ export default function CartPage() {
     if (!code) return;
 
     startTransition(async () => {
-      const res = await fetch(`/api/coupons/validate?code=${encodeURIComponent(code)}`);
-      if (!res.ok) {
+      const data = await validateCouponClient(code);
+      if (!data) {
         setCouponError("Invalid coupon code");
         return;
       }
-      const data = (await res.json()) as { code: string; discount: number; type: "percent" | "fixed"; minOrder: number };
       setCoupon({ code: data.code, discount: data.discount, type: data.type });
       setCouponSuccess(`${data.code} applied — ${data.discount}${data.type === "percent" ? "%" : "$"} off`);
       setCouponInput("");
