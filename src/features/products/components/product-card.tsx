@@ -83,7 +83,7 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="flex flex-col">
       {/* Image card */}
-      <div className="relative rounded-xl bg-[#F3F5F7] overflow-hidden flex flex-col">
+      <div className="group relative aspect-square rounded-xl bg-[#F3F5F7] overflow-hidden">
         {/* Badges */}
         <div className="absolute top-3 left-3 z-10 flex flex-col gap-1">
           <span className="bg-white text-[#1C1C1C] text-xs font-bold uppercase px-2.5 py-1 rounded">
@@ -106,8 +106,8 @@ export function ProductCard({ product }: ProductCardProps) {
         </button>
 
         {/* Product image */}
-        <Link href={`/shop/${product.slug}`} className="block">
-          <div className="aspect-square relative">
+        <Link href={`/shop/${product.slug}`} className="block h-full">
+          <div className="relative h-full">
             <SafeImage
               src={product.images[0]}
               alt={product.name}
@@ -118,10 +118,10 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
         </Link>
 
-        {/* Add to cart button */}
+        {/* Add to cart — hover-reveal on desktop, always visible on touch */}
         <button
           onClick={handleAddToCart}
-          className="w-full bg-[#1C1C1C] text-white text-sm font-medium py-3.5 hover:bg-[#B88E2F] transition-colors mt-auto"
+          className="absolute inset-x-3 bottom-3 z-10 rounded-lg bg-[#1C1C1C] text-white text-sm font-medium py-3 transition-all duration-200 hover:bg-[#B88E2F] opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto max-lg:opacity-100 max-lg:translate-y-0 max-lg:pointer-events-auto"
         >
           Add to cart
         </button>

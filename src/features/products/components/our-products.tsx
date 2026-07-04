@@ -65,7 +65,7 @@ export function OurProducts({ products }: OurProductsProps) {
   }
 
   return (
-    <section className="py-20 px-8 lg:px-20">
+    <section className="py-16 lg:py-20 px-5 lg:px-20">
       {/* Header */}
       <div className="flex justify-between items-start mb-8">
         <h2 className="text-4xl lg:text-5xl font-bold text-[#1C1C1C] leading-tight">
