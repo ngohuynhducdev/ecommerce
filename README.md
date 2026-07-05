@@ -100,6 +100,17 @@ src/
 | `SAVE10` | 10% off |
 | `FURNITURE20` | 20% off |
 
+## Testing
+
+Unit tests run on [Vitest](https://vitest.dev) and cover the data layer
+(`lib/api` filtering/sorting/fallbacks), Jotai atoms (cart totals,
+localStorage persistence), and utilities.
+
+```bash
+yarn test        # run once
+yarn test:watch  # watch mode
+```
+
 ## Strapi CMS Integration
 
 All data functions in `src/lib/api/` check `NEXT_PUBLIC_USE_STRAPI`:
