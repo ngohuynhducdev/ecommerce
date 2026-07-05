@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -126,10 +126,17 @@ export default function CheckoutPage() {
   const [cvc, setCvc] = useState("");
   const [couponInput, setCouponInput] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   useEffect(() => {
-    if (items.length === 0) router.replace("/cart");
-  }, [items.length, router]);
+    // isProcessing guards the moment the order is placed: the cart empties
+    // right before we push /order-success, which must not bounce to /cart.
+    if (mounted && !isProcessing && items.length === 0) router.replace("/cart");
+  }, [mounted, isProcessing, items.length, router]);
 
   const {
     register,
@@ -141,7 +148,7 @@ export default function CheckoutPage() {
     defaultValues: { country: "United States" },
   });
 
-  if (items.length === 0) return null;
+  if (!mounted || (items.length === 0 && !isProcessing)) return null;
 
   const shippingCost = SHIPPING_COSTS[shippingMethod];
   const discountAmount = coupon
@@ -226,14 +233,23 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="px-8 lg:px-20 py-12">
+    <div className="px-5 lg:px-20 py-8 lg:py-12">
+      {/* Mobile back link */}
+      <button
+        type="button"
+        onClick={() => router.back()}
+        className="lg:hidden flex items-center gap-1 text-sm text-[#807D7E] hover:text-[#1C1C1C] transition-colors mb-4 cursor-pointer"
+      >
+        ‹ back
+      </button>
+
       <h1 className="text-4xl font-bold text-[#1C1C1C] text-center mb-8">Check Out</h1>
       <StepIndicator step={2} />
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <div className="lg:grid lg:grid-cols-[1fr_380px] lg:gap-12">
+        <div className="grid gap-8 lg:grid-cols-[1fr_380px] lg:gap-x-12 lg:gap-y-8">
           {/* LEFT: Forms */}
-          <div>
+          <div className="order-1 lg:col-start-1 lg:row-start-1">
             {/* Contact Information */}
             <Section title="Contact Information">
               <div className="grid grid-cols-2 gap-4">
@@ -380,18 +396,10 @@ export default function CheckoutPage() {
               )}
             </Section>
 
-            {/* Place Order */}
-            <button
-              type="submit"
-              disabled={isProcessing}
-              className="w-full h-14 bg-[#1C1C1C] text-white text-sm font-medium rounded-lg hover:bg-[#B88E2F] transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
-            >
-              {isProcessing ? "Processing…" : "Place Order"}
-            </button>
           </div>
 
           {/* RIGHT: Order Summary */}
-          <aside className="mt-10 lg:mt-0">
+          <aside className="order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2">
             <div className="border border-[#E8ECEF] rounded-xl p-5 lg:sticky lg:top-8">
               <h2 className="text-base font-semibold text-[#1C1C1C] mb-5">Order summary</h2>
 
@@ -523,6 +531,17 @@ export default function CheckoutPage() {
               </div>
             </div>
           </aside>
+
+          {/* Place Order — under the form on desktop, last on mobile */}
+          <div className="order-3 lg:col-start-1 lg:row-start-2">
+            <button
+              type="submit"
+              disabled={isProcessing}
+              className="w-full h-14 bg-[#1C1C1C] text-white text-sm font-medium rounded-lg hover:bg-[#B88E2F] transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+            >
+              {isProcessing ? "Processing…" : "Place Order"}
+            </button>
+          </div>
         </div>
       </form>
     </div>

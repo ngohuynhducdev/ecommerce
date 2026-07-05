@@ -2,7 +2,11 @@ import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import type { CartItem } from "@/features/products/types";
 
-export const cartItemsAtom = atomWithStorage<CartItem[]>("cart", []);
+// getOnInit reads localStorage on the first client render so guards like the
+// checkout "empty cart" redirect see the real cart instead of the empty default.
+export const cartItemsAtom = atomWithStorage<CartItem[]>("cart", [], undefined, {
+  getOnInit: true,
+});
 export const cartOpenAtom = atom(false);
 
 export const cartCountAtom = atom((get) =>

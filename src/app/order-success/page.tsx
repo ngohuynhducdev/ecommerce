@@ -25,7 +25,14 @@ function OrderSuccessContent() {
   const order = orders.find((o) => o.id === orderId);
 
   return (
-    <div className="px-8 lg:px-20 py-12">
+    <div className="px-5 lg:px-20 py-8 lg:py-12">
+      <Link
+        href="/"
+        className="lg:hidden flex items-center gap-1 text-sm text-[#807D7E] hover:text-[#1C1C1C] transition-colors mb-4"
+      >
+        ‹ back to home
+      </Link>
+
       <h1 className="text-4xl font-bold text-[#1C1C1C] text-center mb-8">Complete!</h1>
       <StepIndicator step={3} />
 
