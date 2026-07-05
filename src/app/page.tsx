@@ -26,8 +26,8 @@ export default async function HomePage() {
       <HeroCarousel />
 
       {/* ── Hero Text ── */}
-      <section className="px-8 lg:px-20 py-12 lg:py-16 grid lg:grid-cols-2 gap-8 lg:gap-20 items-end">
-        <h1 className="font-bold text-5xl lg:text-7xl leading-tight text-[#1C1C1C]">
+      <section className="px-5 lg:px-20 py-12 lg:py-16 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-end">
+        <h1 className="font-bold text-[2.5rem] lg:text-7xl leading-[1.1] text-[#1C1C1C]">
           Simply Unique/<br />Simply Better.
         </h1>
         <div>
@@ -43,23 +43,19 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── Browse The Range ── */}
-      <section className="py-20 px-8 lg:px-20">
-        <div className="text-center">
-          <h2 className="text-3xl font-semibold text-[#1C1C1C]">Browse The Range</h2>
-          <p className="text-[#807D7E] mt-2">
-            Explore the possibilities of our diverse furniture collection
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+      {/* ── Category Showcase ── */}
+      <section className="px-5 lg:px-20 pb-16 lg:pb-24">
+        <div className="grid gap-6 md:grid-cols-2 md:h-155">
           {showcaseCategories[0] && (
-            <div className="h-100 md:h-155">
+            <div className="h-96 md:h-full">
               <CategoryCard category={showcaseCategories[0]} large />
             </div>
           )}
-          <div className="grid grid-rows-2 gap-6 h-100 md:h-155">
+          <div className="grid gap-6 md:grid-rows-2 md:h-full">
             {showcaseCategories.slice(1, 3).map((category) => (
-              <CategoryCard key={category.id} category={category} />
+              <div key={category.id} className="h-56 md:h-full">
+                <CategoryCard category={category} />
+              </div>
             ))}
           </div>
         </div>
@@ -72,7 +68,7 @@ export default async function HomePage() {
       <FeaturesStrip />
 
       {/* ── Sale Banner ── */}
-      <section className="mx-8 lg:mx-20 rounded-2xl overflow-hidden grid lg:grid-cols-2 bg-[#F3F5F7] lg:min-h-140">
+      <section className="grid lg:grid-cols-2 bg-[#F3F5F7] lg:min-h-140">
         {/* Image */}
         <div className="relative h-80 lg:h-auto">
           <Image
@@ -86,7 +82,7 @@ export default async function HomePage() {
 
         {/* Text */}
         <div className="flex flex-col justify-center px-10 py-14 lg:px-16 lg:py-20">
-          <span className="text-xs font-semibold uppercase tracking-widest text-[#2EC1AC] mb-4">
+          <span className="text-xs font-semibold uppercase tracking-widest text-[#377DFF] mb-4">
             Sale up to 35% off
           </span>
           <h2 className="text-3xl lg:text-5xl font-bold text-[#1C1C1C] leading-tight">
@@ -105,7 +101,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── Blog Preview ── */}
-      <section className="py-20 px-8 lg:px-20">
+      <section className="py-16 lg:py-20 px-5 lg:px-20">
         <div className="flex justify-between items-center mb-10">
           <h2 className="text-3xl font-semibold text-[#1C1C1C]">Articles</h2>
           <Link

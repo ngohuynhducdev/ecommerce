@@ -8,6 +8,7 @@ import { useRef, useState, useSyncExternalStore } from "react";
 
 import { cartCountAtom, cartOpenAtom } from "@/features/cart/atoms";
 import { wishlistCountAtom } from "@/features/wishlist/atoms";
+import { authModalOpenAtom, authModalViewAtom } from "@/features/auth/atoms";
 import { mobileMenuOpenAtom } from "../atoms";
 import { MegaMenu } from "./mega-menu";
 
@@ -107,7 +108,14 @@ export function Navbar() {
   const cartCount = useAtomValue(cartCountAtom);
   const wishlistCount = useAtomValue(wishlistCountAtom);
   const setCartOpen = useSetAtom(cartOpenAtom);
+  const setAuthOpen = useSetAtom(authModalOpenAtom);
+  const setAuthView = useSetAtom(authModalViewAtom);
   const [mobileMenuOpen, setMobileMenuOpen] = useAtom(mobileMenuOpenAtom);
+
+  const openSignIn = () => {
+    setAuthView("sign-in");
+    setAuthOpen(true);
+  };
 
   const mounted = useSyncExternalStore(
     () => () => {},
@@ -173,9 +181,9 @@ export function Navbar() {
               <Search size={20} strokeWidth={1.5} />
             </button>
 
-            <Link href="/account" aria-label="Account" className="text-[#1C1C1C] hover:text-[#807D7E] transition-colors">
+            <button onClick={openSignIn} aria-label="Sign in" className="text-[#1C1C1C] hover:text-[#807D7E] transition-colors cursor-pointer">
               <UserIcon size={20} />
-            </Link>
+            </button>
 
             <button
               onClick={() => setCartOpen(true)}
@@ -312,13 +320,15 @@ export function Navbar() {
             </Link>
 
             {/* Sign In button */}
-            <Link
-              href="/auth/sign-in"
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-full h-14 bg-[#1C1C1C] text-white flex items-center justify-center rounded-lg text-sm font-medium hover:bg-[#B88E2F] transition-colors mt-5"
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                openSignIn();
+              }}
+              className="w-full h-14 bg-[#1C1C1C] text-white flex items-center justify-center rounded-lg text-sm font-medium hover:bg-[#B88E2F] transition-colors mt-5 cursor-pointer"
             >
               Sign In
-            </Link>
+            </button>
 
             {/* Social icons */}
             <div className="flex items-center gap-5 mt-5">

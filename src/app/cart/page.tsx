@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { SafeImage } from "@/components/ui/safe-image";
 import Link from "next/link";
 import { useAtom, useAtomValue } from "jotai";
@@ -14,6 +15,7 @@ import {
 } from "@/features/checkout/atoms";
 import { StepIndicator } from "@/features/checkout/components/step-indicator";
 import type { CartItem } from "@/features/products/types";
+import { validateCouponClient } from "@/lib/api/coupons-client";
 import { formatPrice, cn } from "@/lib/utils";
 
 
@@ -57,6 +59,7 @@ function EmptyCartIcon() {
 }
 
 export default function CartPage() {
+  const router = useRouter();
   const [items, setItems] = useAtom(cartItemsAtom);
   const subtotal = useAtomValue(cartSubtotalAtom);
   const [coupon, setCoupon] = useAtom(couponAtom);
@@ -85,12 +88,11 @@ export default function CartPage() {
     if (!code) return;
 
     startTransition(async () => {
-      const res = await fetch(`/api/coupons/validate?code=${encodeURIComponent(code)}`);
-      if (!res.ok) {
+      const data = await validateCouponClient(code);
+      if (!data) {
         setCouponError("Invalid coupon code");
         return;
       }
-      const data = (await res.json()) as { code: string; discount: number; type: "percent" | "fixed"; minOrder: number };
       setCoupon({ code: data.code, discount: data.discount, type: data.type });
       setCouponSuccess(`${data.code} applied — ${data.discount}${data.type === "percent" ? "%" : "$"} off`);
       setCouponInput("");
@@ -101,7 +103,15 @@ export default function CartPage() {
   const total = subtotal + shippingCost;
 
   return (
-    <div className="px-8 lg:px-20 py-12">
+    <div className="px-5 lg:px-20 py-8 lg:py-12">
+      {/* Mobile back link */}
+      <button
+        onClick={() => router.back()}
+        className="lg:hidden flex items-center gap-1 text-sm text-[#807D7E] hover:text-[#1C1C1C] transition-colors mb-4 cursor-pointer"
+      >
+        ‹ back
+      </button>
+
       <h1 className="text-4xl font-bold text-[#1C1C1C] text-center mb-8">Cart</h1>
       <StepIndicator step={1} />
 

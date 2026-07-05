@@ -45,7 +45,7 @@ export function Footer() {
   return (
     <footer className="bg-[#1C1C1C]">
       {/* Main row */}
-      <div className="px-8 lg:px-20 pt-10 pb-8">
+      <div className="px-5 lg:px-20 pt-10 pb-8">
         {/* Desktop: single row — Logo | divider | tagline | nav links */}
         <div className="hidden lg:flex items-center gap-8">
           <Link href="/" className="flex items-baseline gap-0.5 shrink-0">
@@ -89,14 +89,14 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Bottom bar */}
-      <div className="border-t border-[#6C7275]/30 px-8 lg:px-20 py-5">
+      {/* Bottom bar — extra bottom padding on mobile clears the fixed bottom nav */}
+      <div className="border-t border-[#6C7275]/30 px-5 lg:px-20 pt-5 pb-24 lg:pb-5">
         {/* Desktop */}
         <div className="hidden lg:flex items-center justify-between">
-          <p className="text-sm text-[#6C7275]">
-            Copyright © 2023 3legant. All rights reserved
-          </p>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-8">
+            <p className="text-sm text-[#6C7275]">
+              Copyright © 2023 3legant. All rights reserved
+            </p>
             <Link href="/privacy" className="text-sm font-semibold text-white hover:text-[#B88E2F] transition-colors">
               Privacy Policy
             </Link>
@@ -104,13 +104,13 @@ export function Footer() {
               Terms of Use
             </Link>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             {socialLinks.map(({ icon, href, label }) => (
               <Link
                 key={label}
                 href={href}
                 aria-label={label}
-                className="text-white hover:text-[#B88E2F] transition-colors"
+                className="w-9 h-9 flex items-center justify-center border border-[#6C7275]/60 rounded-md text-white hover:text-[#B88E2F] hover:border-[#B88E2F] transition-colors"
               >
                 {icon}
               </Link>
@@ -121,13 +121,13 @@ export function Footer() {
         {/* Mobile */}
         <div className="lg:hidden flex flex-col items-center gap-5">
           <div className="w-full h-px bg-[#6C7275]/30" />
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
             {socialLinks.map(({ icon, href, label }) => (
               <Link
                 key={label}
                 href={href}
                 aria-label={label}
-                className="text-white hover:text-[#B88E2F] transition-colors"
+                className="w-9 h-9 flex items-center justify-center border border-[#6C7275]/60 rounded-md text-white hover:text-[#B88E2F] hover:border-[#B88E2F] transition-colors"
               >
                 {icon}
               </Link>

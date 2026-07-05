@@ -6,6 +6,7 @@ import type { BlogPost } from "@/features/blog/types";
 
 type Tab = "all" | "featured";
 type GridCols = 1 | 2 | 3 | 4;
+type SortBy = "newest" | "oldest" | "title";
 
 const INITIAL_COUNT = 9;
 const INCREMENT = 6;
@@ -78,10 +79,17 @@ export function BlogContent({ posts }: BlogContentProps) {
   const [activeTab, setActiveTab] = useState<Tab>("all");
   const [gridCols, setGridCols] = useState<GridCols>(3);
   const [visible, setVisible] = useState(INITIAL_COUNT);
+  const [sortBy, setSortBy] = useState<SortBy>("newest");
 
   const filtered = activeTab === "featured" ? posts.slice(0, 3) : posts;
-  const shown = filtered.slice(0, visible);
-  const hasMore = visible < filtered.length;
+  const sorted = [...filtered].sort((a, b) => {
+    if (sortBy === "title") return a.title.localeCompare(b.title);
+    const diff =
+      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+    return sortBy === "newest" ? diff : -diff;
+  });
+  const shown = sorted.slice(0, visible);
+  const hasMore = visible < sorted.length;
 
   function handleTabChange(tab: Tab) {
     setActiveTab(tab);
@@ -138,9 +146,15 @@ export function BlogContent({ posts }: BlogContentProps) {
         {/* Sort by (desktop) */}
         <div className="hidden md:flex items-center gap-1 text-sm text-[#1C1C1C]">
           <span>Sort by</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="text-[#807D7E]">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as SortBy)}
+            className="text-sm text-[#1C1C1C] bg-transparent border-none outline-none cursor-pointer"
+          >
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="title">Title A–Z</option>
+          </select>
         </div>
 
         {/* Grid view toggles (desktop) */}

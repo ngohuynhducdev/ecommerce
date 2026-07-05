@@ -96,13 +96,13 @@ UI : announcementVisibleAtom (bool)
 
 ## Key Components (update as built)
 
-[ ] Navbar features/shared/components/navbar.tsx
-[ ] Footer features/shared/components/footer.tsx
-[ ] ProductCard features/products/components/product-card.tsx
-[ ] CartFlyout features/cart/components/cart-flyout.tsx
-[ ] ImageGallery features/products/components/image-gallery.tsx
-[ ] FilterSidebar features/products/components/filter-sidebar.tsx
-[ ] AddToCartSection features/products/components/add-to-cart-section.tsx
+[x] Navbar features/shared/components/navbar.tsx
+[x] Footer features/shared/components/footer.tsx
+[x] ProductCard features/products/components/product-card.tsx
+[x] CartFlyout features/cart/components/cart-flyout.tsx
+[x] ImageGallery features/products/components/image-gallery.tsx
+[x] FilterSidebar features/products/components/filter-sidebar.tsx
+[x] AddToCartSection features/products/components/add-to-cart-section.tsx
 
 ## Environment Variables
 
@@ -112,6 +112,7 @@ STRAPI_API_TOKEN=
 AUTH_SECRET=
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
+NEXT_PUBLIC_SITE_URL=          # canonical URL for metadataBase / sitemap / robots
 
 ## Sitemap
 
@@ -132,29 +133,29 @@ GOOGLE_CLIENT_SECRET=
 
 ## Current Phase
 
-⏳ Phase 00 — Project Init + Design System
+✅ All phases (00–17) complete — project in maintenance/polish mode
 (Update this after completing each phase)
 
 ## Phase Progress
 
-[ ] Phase 00 — Project Init + Design System branch: feat/project-setup
-[ ] Phase 01 — TypeScript Types + Mock Data branch: feat/data-layer
-[ ] Phase 02 — Navbar Desktop + Mega Menu branch: feat/navbar-desktop
-[ ] Phase 03 — Navbar Mobile + Cart Flyout branch: feat/navbar-mobile-cart
-[ ] Phase 04 — Footer branch: feat/footer
-[ ] Phase 05 — Homepage Hero + Features + Categories branch: feat/home-hero
-[ ] Phase 06 — Homepage Products + Blog + Newsletter branch: feat/home-sections
-[ ] Phase 07 — Shop Page + Filter branch: feat/shop-filter
-[ ] Phase 08 — Product Detail Page branch: feat/product-detail
-[ ] Phase 09 — Cart Page branch: feat/cart
-[ ] Phase 10 — Checkout Multi Step branch: feat/checkout
-[ ] Phase 11 — Order Success + Auth branch: feat/auth-order-success
-[ ] Phase 12 — My Account branch: feat/account
-[ ] Phase 13 — Blog + Contact branch: feat/blog-contact
-[ ] Phase 14 — Skeleton + Error + SEO branch: feat/polish
-[ ] Phase 15 — Final Cleanup branch: feat/cleanup
-[ ] Phase 16 — Strapi CMS Setup branch: feat/strapi-setup
-[ ] Phase 17 — Strapi Integration branch: feat/strapi-integration
+[x] Phase 00 — Project Init + Design System branch: feat/project-setup
+[x] Phase 01 — TypeScript Types + Mock Data branch: feat/data-layer
+[x] Phase 02 — Navbar Desktop + Mega Menu branch: feat/navbar-desktop
+[x] Phase 03 — Navbar Mobile + Cart Flyout branch: feat/navbar-mobile-cart
+[x] Phase 04 — Footer branch: feat/footer
+[x] Phase 05 — Homepage Hero + Features + Categories branch: feat/home-hero
+[x] Phase 06 — Homepage Products + Blog + Newsletter branch: feat/home-sections
+[x] Phase 07 — Shop Page + Filter branch: feat/shop-filter
+[x] Phase 08 — Product Detail Page branch: feat/product-detail
+[x] Phase 09 — Cart Page branch: feat/cart
+[x] Phase 10 — Checkout Multi Step branch: feat/checkout
+[x] Phase 11 — Order Success + Auth branch: feat/auth-order-success
+[x] Phase 12 — My Account branch: feat/account
+[x] Phase 13 — Blog + Contact branch: feat/blog-contact
+[x] Phase 14 — Skeleton + Error + SEO branch: feat/polish
+[x] Phase 15 — Final Cleanup branch: feat/cleanup
+[x] Phase 16 — Strapi CMS Setup branch: feat/strapi-setup
+[x] Phase 17 — Strapi Integration branch: feat/strapi-integration
 
 ## Notes
 

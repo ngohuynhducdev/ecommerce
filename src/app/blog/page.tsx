@@ -17,34 +17,36 @@ export default async function BlogPage() {
 
   return (
     <div>
-      {/* Hero */}
-      <section className="relative h-64 lg:h-80 overflow-hidden">
-        <Image
-          src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=1600&h=640&fit=crop&auto=format&q=80"
-          alt="Our Blog"
-          fill
-          sizes="100vw"
-          className="object-cover"
-          fetchPriority="high"
-        />
-        <div className="absolute inset-0 bg-white/60" />
-        <div className="relative h-full flex flex-col items-center justify-center text-center px-8">
-          <nav className="flex items-center gap-2 text-sm text-[#807D7E] mb-4">
-            <Link href="/" className="hover:text-[#1C1C1C] transition-colors">
-              Home
-            </Link>
-            <span>›</span>
-            <span className="text-[#1C1C1C] font-medium">Blog</span>
-          </nav>
-          <h1 className="text-4xl lg:text-5xl font-bold text-[#1C1C1C]">Our Blog</h1>
-          <p className="mt-3 text-[#807D7E] text-sm lg:text-base">
-            Home ideas and design inspiration
-          </p>
-        </div>
-      </section>
+      {/* Hero — contained within page gutters per design */}
+      <div className="px-5 lg:px-20 pt-6">
+        <section className="relative h-64 lg:h-80 overflow-hidden">
+          <Image
+            src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=1600&h=640&fit=crop&auto=format&q=80"
+            alt="Our Blog"
+            fill
+            sizes="(max-width: 1024px) 100vw, calc(100vw - 10rem)"
+            className="object-cover"
+            fetchPriority="high"
+          />
+          <div className="absolute inset-0 bg-white/60" />
+          <div className="relative h-full flex flex-col items-center justify-center text-center px-8">
+            <nav className="flex items-center gap-2 text-sm text-[#807D7E] mb-4">
+              <Link href="/" className="hover:text-[#1C1C1C] transition-colors">
+                Home
+              </Link>
+              <span>›</span>
+              <span className="text-[#1C1C1C] font-medium">Blog</span>
+            </nav>
+            <h1 className="text-4xl lg:text-5xl font-bold text-[#1C1C1C]">Our Blog</h1>
+            <p className="mt-3 text-[#807D7E] text-sm lg:text-base">
+              Home ideas and design inspiration
+            </p>
+          </div>
+        </section>
+      </div>
 
       {/* Blog content */}
-      <div className="px-8 lg:px-20 py-10">
+      <div className="px-5 lg:px-20 py-10">
         <BlogContent posts={posts} />
       </div>
 

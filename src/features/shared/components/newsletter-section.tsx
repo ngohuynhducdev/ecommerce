@@ -22,15 +22,27 @@ export function NewsletterSection() {
 
   return (
     <section className="relative overflow-hidden bg-[#F3F5F7]">
-      <Image
-        src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=1600&h=600&fit=crop&auto=format&q=80"
-        alt=""
-        fill
-        sizes="100vw"
-        className="object-cover opacity-20"
-        aria-hidden="true"
-      />
-      <div className="relative py-16 lg:py-24 px-8 flex flex-col items-center text-center">
+      {/* Flanking furniture images — desktop only */}
+      <div className="hidden lg:block absolute inset-y-0 left-0 w-[20%]" aria-hidden="true">
+        <Image
+          src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=600&h=900&fit=crop&auto=format&q=80"
+          alt=""
+          fill
+          sizes="20vw"
+          className="object-cover"
+        />
+      </div>
+      <div className="hidden lg:block absolute inset-y-0 right-0 w-[24%]" aria-hidden="true">
+        <Image
+          src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=900&fit=crop&auto=format&q=80"
+          alt=""
+          fill
+          sizes="24vw"
+          className="object-cover"
+        />
+      </div>
+
+      <div className="relative py-16 lg:py-28 px-8 flex flex-col items-center text-center">
         <h2 className="text-3xl lg:text-4xl font-bold text-[#1C1C1C]">
           Join Our Newsletter
         </h2>

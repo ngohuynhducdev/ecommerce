@@ -1,51 +1,104 @@
 "use client";
 
 import Link from "next/link";
-import { Heart } from "lucide-react";
-import { useAtom } from "jotai";
+import { SafeImage } from "@/components/ui/safe-image";
+import { useAtom, useSetAtom } from "jotai";
+import { toast } from "sonner";
+
 import { wishlistAtom } from "@/features/wishlist/atoms";
-import { WishlistCard } from "@/features/account/components/wishlist-card";
+import { cartItemsAtom } from "@/features/cart/atoms";
+import { mockProducts } from "@/features/products/mock-data";
+import type { Product } from "@/features/products/types";
+import { formatPrice } from "@/lib/utils";
+
+// Shown until the visitor saves real items (demo parity with design).
+const SAMPLE = mockProducts.slice(0, 4).map((product) => ({ product, addedAt: "" }));
 
 export default function WishlistPage() {
   const [wishlist, setWishlist] = useAtom(wishlistAtom);
+  const setCartItems = useSetAtom(cartItemsAtom);
+  const items = wishlist.length > 0 ? wishlist : SAMPLE;
+
+  function removeItem(productId: string) {
+    setWishlist((prev) => prev.filter((w) => w.product.id !== productId));
+  }
+
+  function addToCart(product: Product) {
+    setCartItems((prev) => {
+      const existing = prev.find((i) => i.product.id === product.id && !i.variant);
+      if (existing) {
+        return prev.map((i) =>
+          i.product.id === product.id && !i.variant
+            ? { ...i, quantity: i.quantity + 1 }
+            : i,
+        );
+      }
+      return [...prev, { product, quantity: 1 }];
+    });
+    toast.success("Added to cart");
+  }
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-semibold">
-          My Wishlist ({wishlist.length})
-        </h1>
-        {wishlist.length > 0 && (
-          <button
-            onClick={() => setWishlist([])}
-            className="text-sm text-[#807D7E] hover:text-red-500 transition-colors"
-          >
-            Clear All
-          </button>
-        )}
+      <h2 className="text-xl font-semibold text-[#1C1C1C] mb-6">Your Wishlist</h2>
+
+      {/* Column headers — desktop */}
+      <div className="hidden md:grid grid-cols-[1fr_auto_160px] gap-4 border-b border-[#E8ECEF] pb-3 text-sm font-medium text-[#1C1C1C]">
+        <span>Product</span>
+        <span className="text-right w-24">Price</span>
+        <span className="text-right">Action</span>
       </div>
 
-      {wishlist.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-center">
-          <Heart size={48} className="text-[#E8ECEF] mb-4" />
-          <p className="text-lg font-medium mb-2">Your wishlist is empty</p>
-          <p className="text-sm text-[#807D7E] mb-6">
-            Save items you love and find them here later
-          </p>
-          <Link
-            href="/shop"
-            className="h-11 px-6 bg-[#1C1C1C] text-white text-sm font-medium rounded-sm flex items-center hover:bg-[#2d2d2d] transition-colors"
+      <div className="divide-y divide-[#E8ECEF]">
+        {items.map(({ product }) => (
+          <div
+            key={product.id}
+            className="py-5 grid grid-cols-[auto_1fr_auto] md:grid-cols-[1fr_auto_160px] gap-4 items-center"
           >
-            Browse Products
-          </Link>
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          {wishlist.map((item) => (
-            <WishlistCard key={item.product.id} item={item} />
-          ))}
-        </div>
-      )}
+            {/* Product cell */}
+            <div className="flex items-center gap-3 md:gap-4 col-span-2 md:col-span-1 min-w-0">
+              <button
+                onClick={() => removeItem(product.id)}
+                aria-label="Remove"
+                className="text-[#807D7E] hover:text-[#1C1C1C] transition-colors cursor-pointer text-lg leading-none shrink-0"
+              >
+                ×
+              </button>
+              <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-[#F3F5F7] shrink-0">
+                <SafeImage
+                  src={product.images[0]}
+                  alt={product.name}
+                  fill
+                  sizes="64px"
+                  className="object-cover"
+                />
+              </div>
+              <div className="min-w-0">
+                <Link
+                  href={`/shop/${product.slug}`}
+                  className="font-semibold text-sm text-[#1C1C1C] hover:text-[#B88E2F] transition-colors line-clamp-1"
+                >
+                  {product.name}
+                </Link>
+                <p className="text-xs text-[#807D7E] mt-0.5">{product.category.name}</p>
+              </div>
+            </div>
+
+            {/* Price */}
+            <div className="text-sm font-semibold text-[#1C1C1C] text-right md:w-24 md:justify-self-end">
+              {formatPrice(product.price)}
+            </div>
+
+            {/* Action */}
+            <button
+              onClick={() => addToCart(product)}
+              className="col-span-3 md:col-span-1 h-11 px-6 bg-[#1C1C1C] text-white text-sm font-medium rounded-lg hover:bg-[#B88E2F] transition-colors cursor-pointer"
+            >
+              Add to cart
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

@@ -118,7 +118,8 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <div>
-      <div className="px-8 lg:px-20 py-8">
+      <div className="px-5 lg:px-20 py-8">
+        <div className="max-w-4xl mx-auto">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-[#807D7E] mb-6 flex-wrap">
           <Link href="/" className="hover:text-[#1C1C1C] transition-colors">Home</Link>
@@ -152,16 +153,18 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Cover image */}
-        <div className="relative w-full h-72 lg:h-120 overflow-hidden mb-8">
-          <SafeImage
-            src={post.coverImage}
-            alt={post.title}
-            fill
-            sizes="100vw"
-            className="object-cover"
-            fetchPriority="high"
-          />
+        {/* Cover image — same column width as the article text */}
+        <div className="max-w-4xl">
+          <div className="relative w-full h-72 lg:h-120 overflow-hidden mb-8">
+            <SafeImage
+              src={post.coverImage}
+              alt={post.title}
+              fill
+              sizes="(max-width: 1024px) 100vw, 896px"
+              className="object-cover"
+              fetchPriority="high"
+            />
+          </div>
         </div>
 
         {/* Article body */}
@@ -188,6 +191,7 @@ export default async function BlogPostPage({ params }: Props) {
               <BlogCard key={p.id} post={p} />
             ))}
           </div>
+        </div>
         </div>
       </div>
 
