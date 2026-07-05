@@ -1,5 +1,7 @@
 # 3legant Furniture Store
 
+[![CI](https://github.com/ngohuynhducdev/ecommerce/actions/workflows/ci.yml/badge.svg)](https://github.com/ngohuynhducdev/ecommerce/actions/workflows/ci.yml)
+
 A full-featured e-commerce storefront for a minimalist furniture brand, built with Next.js 16 App Router. Based on the [3legant Figma community design](https://www.figma.com/design/4wdIrC2NdJVK6VVFuWxtX7/).
 
 ## Tech Stack
