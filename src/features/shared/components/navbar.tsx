@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { Search, Menu, X, ChevronDown } from "lucide-react";
 import { useRef, useState, useSyncExternalStore } from "react";
@@ -105,6 +105,7 @@ function YouTubeIcon() {
 
 export function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const cartCount = useAtomValue(cartCountAtom);
   const wishlistCount = useAtomValue(wishlistCountAtom);
   const setCartOpen = useSetAtom(cartOpenAtom);
@@ -115,6 +116,19 @@ export function Navbar() {
   const openSignIn = () => {
     setAuthView("sign-in");
     setAuthOpen(true);
+  };
+
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const submitSearch = (term: string) => {
+    const q = term.trim();
+    if (!q) return;
+    setSearchOpen(false);
+    setSearchTerm("");
+    setMobileMenuOpen(false);
+    router.push(`/shop?search=${encodeURIComponent(q)}`);
   };
 
   const mounted = useSyncExternalStore(
@@ -174,8 +188,27 @@ export function Navbar() {
 
           {/* Actions */}
           <div className="flex items-center gap-5">
+            {searchOpen && (
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") submitSearch(searchTerm);
+                  if (e.key === "Escape") setSearchOpen(false);
+                }}
+                placeholder="Search products…"
+                className="w-56 h-9 border-b border-[#1C1C1C] bg-transparent text-sm outline-none placeholder:text-[#807D7E] animate-fade-in"
+              />
+            )}
             <button
               aria-label="Search"
+              onClick={() => {
+                setSearchOpen((v) => !v);
+                // focus after the input mounts
+                setTimeout(() => searchInputRef.current?.focus(), 0);
+              }}
               className="text-[#1C1C1C] hover:text-[#807D7E] transition-colors cursor-pointer"
             >
               <Search size={20} strokeWidth={1.5} />
@@ -255,6 +288,11 @@ export function Navbar() {
               <Search size={18} strokeWidth={1.5} className="text-[#807D7E] shrink-0" />
               <input
                 type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") submitSearch(searchTerm);
+                }}
                 placeholder="Search"
                 className="flex-1 text-sm outline-none bg-transparent placeholder:text-[#807D7E]"
               />

@@ -52,6 +52,23 @@ describe("getProducts", () => {
     expect(ratings).toEqual([...ratings].sort((a, b) => b - a));
   });
 
+  it("filters by search term against name, case-insensitively", async () => {
+    const products = await getProducts({ search: "SOFA" });
+    expect(products.length).toBeGreaterThan(0);
+    expect(
+      products.every(
+        (p) =>
+          p.name.toLowerCase().includes("sofa") ||
+          p.tags.some((t) => t.toLowerCase().includes("sofa")),
+      ),
+    ).toBe(true);
+  });
+
+  it("returns empty for a search with no matches", async () => {
+    const products = await getProducts({ search: "zzz-no-match" });
+    expect(products).toEqual([]);
+  });
+
   it("combines category and price filters", async () => {
     const products = await getProducts({ category: "living-room", maxPrice: 500 });
     expect(

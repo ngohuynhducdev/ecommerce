@@ -44,6 +44,7 @@ export default async function ShopPage({
     category: firstParam(sp.category),
     minPrice: parseNumber(firstParam(sp.minPrice)),
     maxPrice: parseNumber(firstParam(sp.maxPrice)),
+    search: firstParam(sp.search)?.trim() || undefined,
     sort,
   };
 
@@ -95,7 +96,11 @@ export default async function ShopPage({
         <ShopContent
           products={products}
           categories={categoriesWithCounts}
-          selectedCategoryName={selectedCategory?.name}
+          selectedCategoryName={
+            filters.search
+              ? `Search: “${filters.search}”`
+              : selectedCategory?.name
+          }
           currentSort={sort}
           currentFilters={{
             category: filters.category,
