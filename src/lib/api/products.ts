@@ -21,6 +21,7 @@ export interface ProductFilters {
   color?: string;
   material?: string;
   minRating?: number;
+  search?: string;
 }
 
 // Strapi v5 response shapes
@@ -99,6 +100,14 @@ function mapStrapiProduct(item: StrapiProductItem): Product {
 function applyFilters(products: Product[], filters: ProductFilters): Product[] {
   let result = [...products];
 
+  if (filters.search) {
+    const q = filters.search.toLowerCase();
+    result = result.filter(
+      (p) =>
+        p.name.toLowerCase().includes(q) ||
+        p.tags.some((t) => t.toLowerCase().includes(q)),
+    );
+  }
   if (filters.category) {
     result = result.filter((p) => p.category.slug === filters.category);
   }
@@ -152,6 +161,7 @@ export async function getProducts(
         "populate[1]=category",
       ];
       if (filters.sort) queryParts.push(`sort=${SORT_MAP[filters.sort]}`);
+      if (filters.search) queryParts.push(`filters[name][$containsi]=${encodeURIComponent(filters.search)}`);
       if (filters.category) queryParts.push(`filters[category][slug][$eq]=${encodeURIComponent(filters.category)}`);
       if (filters.minPrice !== undefined) queryParts.push(`filters[price][$gte]=${filters.minPrice}`);
       if (filters.maxPrice !== undefined) queryParts.push(`filters[price][$lte]=${filters.maxPrice}`);
