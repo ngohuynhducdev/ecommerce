@@ -68,12 +68,12 @@ export function OurProducts({ products }: OurProductsProps) {
     <section className="py-16 lg:py-20 px-5 lg:px-20">
       {/* Header */}
       <div className="flex justify-between items-start mb-8">
-        <h2 className="text-4xl lg:text-5xl font-bold text-[#1C1C1C] leading-tight">
+        <h2 className="text-4xl lg:text-5xl font-bold text-ink leading-tight">
           New<br />Arrivals
         </h2>
         <Link
           href="/shop"
-          className="hidden lg:inline-flex items-center gap-1 text-sm font-medium text-[#1C1C1C] border-b border-[#1C1C1C] pb-0.5 hover:text-[#B88E2F] hover:border-[#B88E2F] transition-colors self-end"
+          className="hidden lg:inline-flex items-center gap-1 text-sm font-medium text-ink border-b border-ink pb-0.5 hover:text-gold hover:border-gold transition-colors self-end"
         >
           More Products →
         </Link>
@@ -99,9 +99,9 @@ export function OurProducts({ products }: OurProductsProps) {
       </div>
 
       {/* Progress bar */}
-      <div className="mt-6 h-0.5 bg-[#E8ECEF] rounded-full overflow-hidden">
+      <div className="mt-6 h-0.5 bg-line rounded-full overflow-hidden">
         <div
-          className="h-full bg-[#1C1C1C] rounded-full transition-all duration-150"
+          className="h-full bg-ink rounded-full transition-all duration-150"
           style={{ width: `${progressPct}%` }}
         />
       </div>
@@ -110,7 +110,7 @@ export function OurProducts({ products }: OurProductsProps) {
       <div className="mt-6 flex justify-center lg:hidden">
         <Link
           href="/shop"
-          className="inline-flex items-center gap-1 text-sm font-medium text-[#1C1C1C] border-b border-[#1C1C1C] pb-0.5 hover:text-[#B88E2F] hover:border-[#B88E2F] transition-colors"
+          className="inline-flex items-center gap-1 text-sm font-medium text-ink border-b border-ink pb-0.5 hover:text-gold hover:border-gold transition-colors"
         >
           More Products →
         </Link>

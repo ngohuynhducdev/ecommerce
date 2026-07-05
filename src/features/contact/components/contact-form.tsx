@@ -30,39 +30,39 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-widest text-[#1C1C1C] mb-2">
+        <label className="block text-xs font-semibold uppercase tracking-widest text-ink mb-2">
           Full Name
         </label>
         <input
           {...register("name")}
           placeholder="Your Name"
-          className="w-full h-12 border border-[#E8ECEF] rounded-lg px-4 text-sm outline-none focus:border-[#1C1C1C] transition-colors placeholder:text-[#807D7E]"
+          className="w-full h-12 border border-line rounded-lg px-4 text-sm outline-none focus:border-ink transition-colors placeholder:text-subtle"
         />
         {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-widest text-[#1C1C1C] mb-2">
+        <label className="block text-xs font-semibold uppercase tracking-widest text-ink mb-2">
           Email Address
         </label>
         <input
           {...register("email")}
           type="email"
           placeholder="Your Email"
-          className="w-full h-12 border border-[#E8ECEF] rounded-lg px-4 text-sm outline-none focus:border-[#1C1C1C] transition-colors placeholder:text-[#807D7E]"
+          className="w-full h-12 border border-line rounded-lg px-4 text-sm outline-none focus:border-ink transition-colors placeholder:text-subtle"
         />
         {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
       </div>
 
       <div>
-        <label className="block text-xs font-semibold uppercase tracking-widest text-[#1C1C1C] mb-2">
+        <label className="block text-xs font-semibold uppercase tracking-widest text-ink mb-2">
           Message
         </label>
         <textarea
           {...register("message")}
           rows={6}
           placeholder="Your message"
-          className="w-full border border-[#E8ECEF] rounded-lg px-4 py-3 text-sm outline-none focus:border-[#1C1C1C] transition-colors placeholder:text-[#807D7E] resize-none"
+          className="w-full border border-line rounded-lg px-4 py-3 text-sm outline-none focus:border-ink transition-colors placeholder:text-subtle resize-none"
         />
         {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message.message}</p>}
       </div>
@@ -70,7 +70,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="bg-[#1C1C1C] text-white text-sm font-medium px-10 py-3.5 rounded-sm hover:bg-[#B88E2F] transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+        className="bg-ink text-white text-sm font-medium px-10 py-3.5 rounded-sm hover:bg-gold transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
       >
         {isSubmitting ? "Sending…" : "Send Message"}
       </button>

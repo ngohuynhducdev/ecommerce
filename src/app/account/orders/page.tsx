@@ -43,32 +43,32 @@ export default function OrdersPage() {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold text-[#1C1C1C] mb-6">Orders History</h2>
+      <h2 className="text-xl font-semibold text-ink mb-6">Orders History</h2>
 
       {/* Desktop table */}
       <table className="hidden md:table w-full">
         <thead>
-          <tr className="border-b border-[#E8ECEF] text-left">
-            <th className="pb-3 text-sm font-medium text-[#1C1C1C]">Number ID</th>
-            <th className="pb-3 text-sm font-medium text-[#1C1C1C]">Dates</th>
-            <th className="pb-3 text-sm font-medium text-[#1C1C1C]">Status</th>
-            <th className="pb-3 text-sm font-medium text-[#1C1C1C]">Price</th>
+          <tr className="border-b border-line text-left">
+            <th className="pb-3 text-sm font-medium text-ink">Number ID</th>
+            <th className="pb-3 text-sm font-medium text-ink">Dates</th>
+            <th className="pb-3 text-sm font-medium text-ink">Status</th>
+            <th className="pb-3 text-sm font-medium text-ink">Price</th>
           </tr>
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr key={row.number} className="border-b border-[#E8ECEF]">
-              <td className="py-5 text-sm text-[#1C1C1C]">{row.number}</td>
-              <td className="py-5 text-sm text-[#807D7E]">{row.date}</td>
-              <td className="py-5 text-sm text-[#807D7E]">{row.status}</td>
-              <td className="py-5 text-sm text-[#1C1C1C]">{row.price}</td>
+            <tr key={row.number} className="border-b border-line">
+              <td className="py-5 text-sm text-ink">{row.number}</td>
+              <td className="py-5 text-sm text-subtle">{row.date}</td>
+              <td className="py-5 text-sm text-subtle">{row.status}</td>
+              <td className="py-5 text-sm text-ink">{row.price}</td>
             </tr>
           ))}
         </tbody>
       </table>
 
       {/* Mobile stacked list */}
-      <div className="md:hidden divide-y divide-[#E8ECEF]">
+      <div className="md:hidden divide-y divide-line">
         {rows.map((row) => (
           <div key={row.number} className="py-5 space-y-2">
             <Row label="Number ID" value={row.number} />
@@ -85,8 +85,8 @@ export default function OrdersPage() {
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-xs text-[#807D7E]">{label}</p>
-      <p className="text-sm font-medium text-[#1C1C1C] mt-0.5">{value}</p>
+      <p className="text-xs text-subtle">{label}</p>
+      <p className="text-sm font-medium text-ink mt-0.5">{value}</p>
     </div>
   );
 }

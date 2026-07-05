@@ -40,15 +40,15 @@ export function FilterChips({ chips }: FilterChipsProps) {
         <button
           key={chip.keys.join(",")}
           onClick={() => removeChip(chip.keys)}
-          className="flex items-center gap-1 bg-[#F3F5F7] px-3 py-1.5 rounded-full text-sm text-[#1C1C1C] hover:bg-[#E8ECEF] transition-colors cursor-pointer"
+          className="flex items-center gap-1 bg-mist px-3 py-1.5 rounded-full text-sm text-ink hover:bg-line transition-colors cursor-pointer"
         >
           <span>{chip.label}</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="text-[#807D7E]"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="text-subtle"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
         </button>
       ))}
       <button
         onClick={clearAll}
-        className="text-sm text-[#807D7E] hover:text-[#1C1C1C] underline ml-2 cursor-pointer"
+        className="text-sm text-subtle hover:text-ink underline ml-2 cursor-pointer"
       >
         Clear All
       </button>

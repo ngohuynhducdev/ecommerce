@@ -121,16 +121,16 @@ export function ShopContent({
 
   const gridIconClass = (cols: GridCols) =>
     `p-1.5 rounded cursor-pointer transition-colors ${
-      gridCols === cols ? "text-[#1C1C1C]" : "text-[#C1C4C9] hover:text-[#1C1C1C]"
+      gridCols === cols ? "text-ink" : "text-subtle-light hover:text-ink"
     }`;
 
   const sortControl = (
     <div className="flex items-center gap-1">
-      <span className="text-sm text-[#1C1C1C]">Sort by</span>
+      <span className="text-sm text-ink">Sort by</span>
       <select
         value={currentSort ?? "default"}
         onChange={(e) => handleSort(e.target.value)}
-        className="text-sm text-[#1C1C1C] bg-transparent border-none outline-none cursor-pointer"
+        className="text-sm text-ink bg-transparent border-none outline-none cursor-pointer"
       >
         {SORT_OPTIONS.map((o) => (
           <option key={o.value} value={o.value}>
@@ -145,10 +145,10 @@ export function ShopContent({
     <div>
       {/* Mobile toolbar — Filter + view toggles, then category + sort */}
       <div className="lg:hidden mb-6">
-        <div className="flex items-center justify-between border-b border-[#E8ECEF] py-3">
+        <div className="flex items-center justify-between border-b border-line py-3">
           <Sheet>
             <SheetTrigger asChild>
-              <button className="flex items-center gap-2 text-sm font-medium text-[#1C1C1C] cursor-pointer">
+              <button className="flex items-center gap-2 text-sm font-medium text-ink cursor-pointer">
                 <SlidersHorizontal className="w-4 h-4" />
                 <span>Filter</span>
               </button>
@@ -170,7 +170,7 @@ export function ShopContent({
           </div>
         </div>
         <div className="flex items-center justify-between py-3">
-          <span className="text-base font-medium text-[#1C1C1C]">{displayCategory}</span>
+          <span className="text-base font-medium text-ink">{displayCategory}</span>
           {sortControl}
         </div>
       </div>
@@ -179,7 +179,7 @@ export function ShopContent({
       <div className="lg:grid lg:grid-cols-[240px_1fr] lg:gap-14">
         {/* Sidebar (desktop) */}
         <div className="hidden lg:block">
-          <div className="flex items-center gap-2 text-[#1C1C1C] mb-8">
+          <div className="flex items-center gap-2 text-ink mb-8">
             <SlidersHorizontal className="w-4 h-4" />
             <span className="text-base font-medium">Filter</span>
           </div>
@@ -190,7 +190,7 @@ export function ShopContent({
         <div>
           {/* Desktop toolbar — category name + sort + view toggles */}
           <div className="hidden lg:flex items-center justify-between mb-8">
-            <span className="text-base font-medium text-[#1C1C1C]">{displayCategory}</span>
+            <span className="text-base font-medium text-ink">{displayCategory}</span>
             <div className="flex items-center gap-6">
               {sortControl}
               <div className="flex items-center gap-0.5">

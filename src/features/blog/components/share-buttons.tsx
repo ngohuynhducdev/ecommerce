@@ -48,32 +48,32 @@ export function ShareButtons() {
   }
 
   return (
-    <div className="flex items-center gap-3 mt-10 pt-8 border-t border-[#E8ECEF]">
-      <span className="text-sm text-[#807D7E]">Share:</span>
+    <div className="flex items-center gap-3 mt-10 pt-8 border-t border-line">
+      <span className="text-sm text-subtle">Share:</span>
       <button
         onClick={() => handleShare("twitter")}
-        className="w-9 h-9 flex items-center justify-center border border-[#E8ECEF] rounded-full text-[#807D7E] hover:border-[#1C1C1C] hover:text-[#1C1C1C] transition-colors"
+        className="w-9 h-9 flex items-center justify-center border border-line rounded-full text-subtle hover:border-ink hover:text-ink transition-colors"
         aria-label="Share on Twitter"
       >
         <TwitterIcon />
       </button>
       <button
         onClick={() => handleShare("facebook")}
-        className="w-9 h-9 flex items-center justify-center border border-[#E8ECEF] rounded-full text-[#807D7E] hover:border-[#1C1C1C] hover:text-[#1C1C1C] transition-colors"
+        className="w-9 h-9 flex items-center justify-center border border-line rounded-full text-subtle hover:border-ink hover:text-ink transition-colors"
         aria-label="Share on Facebook"
       >
         <FacebookIcon />
       </button>
       <button
         onClick={() => handleShare("pinterest")}
-        className="w-9 h-9 flex items-center justify-center border border-[#E8ECEF] rounded-full text-[#807D7E] hover:border-[#1C1C1C] hover:text-[#1C1C1C] transition-colors"
+        className="w-9 h-9 flex items-center justify-center border border-line rounded-full text-subtle hover:border-ink hover:text-ink transition-colors"
         aria-label="Share on Pinterest"
       >
         <PinterestIcon />
       </button>
       <button
         onClick={handleCopy}
-        className="w-9 h-9 flex items-center justify-center border border-[#E8ECEF] rounded-full text-[#807D7E] hover:border-[#1C1C1C] hover:text-[#1C1C1C] transition-colors"
+        className="w-9 h-9 flex items-center justify-center border border-line rounded-full text-subtle hover:border-ink hover:text-ink transition-colors"
         aria-label="Copy link"
       >
         {copied ? <Check size={15} className="text-green-500" /> : <Link2 size={15} />}

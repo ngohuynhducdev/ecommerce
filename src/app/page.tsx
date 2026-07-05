@@ -27,16 +27,16 @@ export default async function HomePage() {
 
       {/* ── Hero Text ── */}
       <section className="px-5 lg:px-20 py-12 lg:py-16 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-end">
-        <h1 className="font-bold text-[2.5rem] lg:text-7xl leading-[1.1] text-[#1C1C1C]">
+        <h1 className="font-bold text-[2.5rem] lg:text-7xl leading-[1.1] text-ink">
           Simply Unique/<br />Simply Better.
         </h1>
         <div>
-          <p className="text-[#807D7E] text-base lg:text-lg leading-relaxed">
-            <span className="font-semibold text-[#1C1C1C]">3legant</span> is a gift &amp; decorations store based in HCMC, Vietnam. Est since 2019.
+          <p className="text-subtle text-base lg:text-lg leading-relaxed">
+            <span className="font-semibold text-ink">3legant</span> is a gift &amp; decorations store based in HCMC, Vietnam. Est since 2019.
           </p>
           <Link
             href="/shop"
-            className="inline-flex items-center gap-1 mt-6 text-sm font-medium text-[#1C1C1C] border-b border-[#1C1C1C] pb-0.5 hover:text-[#B88E2F] hover:border-[#B88E2F] transition-colors"
+            className="inline-flex items-center gap-1 mt-6 text-sm font-medium text-ink border-b border-ink pb-0.5 hover:text-gold hover:border-gold transition-colors"
           >
             Shop Now →
           </Link>
@@ -68,7 +68,7 @@ export default async function HomePage() {
       <FeaturesStrip />
 
       {/* ── Sale Banner ── */}
-      <section className="grid lg:grid-cols-2 bg-[#F3F5F7] lg:min-h-140">
+      <section className="grid lg:grid-cols-2 bg-mist lg:min-h-140">
         {/* Image */}
         <div className="relative h-80 lg:h-auto">
           <Image
@@ -82,18 +82,18 @@ export default async function HomePage() {
 
         {/* Text */}
         <div className="flex flex-col justify-center px-10 py-14 lg:px-16 lg:py-20">
-          <span className="text-xs font-semibold uppercase tracking-widest text-[#377DFF] mb-4">
+          <span className="text-xs font-semibold uppercase tracking-widest text-sky mb-4">
             Sale up to 35% off
           </span>
-          <h2 className="text-3xl lg:text-5xl font-bold text-[#1C1C1C] leading-tight">
+          <h2 className="text-3xl lg:text-5xl font-bold text-ink leading-tight">
             HUNDREDS of<br />New lower prices!
           </h2>
-          <p className="text-[#807D7E] mt-5 max-w-sm leading-relaxed">
+          <p className="text-subtle mt-5 max-w-sm leading-relaxed">
             It&apos;s more affordable than ever to give every room in your home a stylish makeover.
           </p>
           <Link
             href="/shop"
-            className="inline-flex items-center gap-1 mt-8 text-sm font-medium text-[#1C1C1C] border-b border-[#1C1C1C] pb-0.5 self-start hover:text-[#B88E2F] hover:border-[#B88E2F] transition-colors"
+            className="inline-flex items-center gap-1 mt-8 text-sm font-medium text-ink border-b border-ink pb-0.5 self-start hover:text-gold hover:border-gold transition-colors"
           >
             Shop Now →
           </Link>
@@ -103,10 +103,10 @@ export default async function HomePage() {
       {/* ── Blog Preview ── */}
       <section className="py-16 lg:py-20 px-5 lg:px-20">
         <div className="flex justify-between items-center mb-10">
-          <h2 className="text-3xl font-semibold text-[#1C1C1C]">Articles</h2>
+          <h2 className="text-3xl font-semibold text-ink">Articles</h2>
           <Link
             href="/blog"
-            className="text-sm font-medium text-[#1C1C1C] border-b border-[#1C1C1C] pb-0.5 hover:text-[#B88E2F] hover:border-[#B88E2F] transition-colors"
+            className="text-sm font-medium text-ink border-b border-ink pb-0.5 hover:text-gold hover:border-gold transition-colors"
           >
             More Articles →
           </Link>
@@ -123,10 +123,10 @@ export default async function HomePage() {
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
-              <p className="font-semibold text-lg mt-4 line-clamp-2 group-hover:text-[#B88E2F] transition-colors">
+              <p className="font-semibold text-lg mt-4 line-clamp-2 group-hover:text-gold transition-colors">
                 {post.title}
               </p>
-              <span className="inline-flex items-center gap-1 mt-3 text-sm font-medium text-[#1C1C1C] border-b border-[#1C1C1C] pb-0.5 group-hover:text-[#B88E2F] group-hover:border-[#B88E2F] transition-colors">
+              <span className="inline-flex items-center gap-1 mt-3 text-sm font-medium text-ink border-b border-ink pb-0.5 group-hover:text-gold group-hover:border-gold transition-colors">
                 Read More →
               </span>
             </Link>

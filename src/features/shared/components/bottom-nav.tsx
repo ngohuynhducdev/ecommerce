@@ -86,7 +86,7 @@ export function BottomNav() {
   };
 
   return (
-    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 h-16 bg-white border-t border-[#E8ECEF] grid grid-cols-4">
+    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 h-16 bg-white border-t border-line grid grid-cols-4">
       {tabs.map(({ label, href, action, icon, badgeAtom: badgeKey }) => {
         const isActive = href
           ? href === "/"
@@ -100,7 +100,7 @@ export function BottomNav() {
             <div className="relative inline-flex">
               {icon(isActive)}
               {badgeCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-[#1C1C1C] text-white text-[10px] rounded-full flex items-center justify-center leading-none">
+                <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-ink text-white text-[10px] rounded-full flex items-center justify-center leading-none">
                   {badgeCount > 9 ? "9+" : badgeCount}
                 </span>
               )}
@@ -110,7 +110,7 @@ export function BottomNav() {
         );
 
         const cls = `flex flex-col items-center justify-center gap-0 transition-colors ${
-          isActive ? "text-[#1C1C1C] font-medium" : "text-[#807D7E]"
+          isActive ? "text-ink font-medium" : "text-subtle"
         }`;
 
         if (action) {

@@ -32,20 +32,20 @@ const ADDRESSES: Address[] = [
 export default function AddressesPage() {
   return (
     <div>
-      <h2 className="text-xl font-semibold text-[#1C1C1C] mb-6">Address</h2>
+      <h2 className="text-xl font-semibold text-ink mb-6">Address</h2>
 
       <div className="grid gap-6 md:grid-cols-2">
         {ADDRESSES.map((addr) => (
-          <div key={addr.title} className="border border-[#E8ECEF] rounded-xl p-6">
+          <div key={addr.title} className="border border-line rounded-xl p-6">
             <div className="flex items-start justify-between">
-              <h3 className="font-semibold text-[#1C1C1C]">{addr.title}</h3>
-              <button className="flex items-center gap-1 text-sm text-[#807D7E] hover:text-[#1C1C1C] transition-colors cursor-pointer">
+              <h3 className="font-semibold text-ink">{addr.title}</h3>
+              <button className="flex items-center gap-1 text-sm text-subtle hover:text-ink transition-colors cursor-pointer">
                 <EditIcon />
                 Edit
               </button>
             </div>
-            <div className="mt-4 space-y-1 text-sm text-[#807D7E]">
-              <p className="font-medium text-[#1C1C1C]">{addr.name}</p>
+            <div className="mt-4 space-y-1 text-sm text-subtle">
+              <p className="font-medium text-ink">{addr.name}</p>
               <p>{addr.phone}</p>
               <p>{addr.line}</p>
             </div>

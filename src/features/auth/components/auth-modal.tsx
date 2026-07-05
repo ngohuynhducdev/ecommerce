@@ -31,10 +31,10 @@ export function AuthModal() {
 
         <div className="grid lg:grid-cols-2 max-h-[90vh] overflow-y-auto">
           {/* Gray image panel — desktop only */}
-          <div className="hidden lg:flex bg-[#F3F5F7] flex-col">
+          <div className="hidden lg:flex bg-mist flex-col">
             <div className="pt-8 flex justify-center">
-              <span className="font-semibold text-xl tracking-tight text-[#1C1C1C] select-none">
-                3legant<span className="text-[#B88E2F]">.</span>
+              <span className="font-semibold text-xl tracking-tight text-ink select-none">
+                3legant<span className="text-gold">.</span>
               </span>
             </div>
             <div className="flex-1 flex items-center justify-center p-10">

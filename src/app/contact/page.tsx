@@ -57,25 +57,25 @@ export default function ContactPage() {
   return (
     <div>
       {/* Breadcrumb */}
-      <nav className="px-5 lg:px-20 py-4 flex items-center gap-2 text-sm text-[#807D7E]">
-        <Link href="/" className="hover:text-[#1C1C1C] transition-colors">Home</Link>
+      <nav className="px-5 lg:px-20 py-4 flex items-center gap-2 text-sm text-subtle">
+        <Link href="/" className="hover:text-ink transition-colors">Home</Link>
         <span>›</span>
-        <span className="text-[#1C1C1C] font-medium">Contact Us</span>
+        <span className="text-ink font-medium">Contact Us</span>
       </nav>
 
       {/* Hero */}
       <section className="bg-white px-5 lg:px-20 pt-8 pb-14">
-        <h1 className="text-4xl lg:text-6xl font-bold text-[#1C1C1C] leading-tight max-w-3xl">
+        <h1 className="text-4xl lg:text-6xl font-bold text-ink leading-tight max-w-3xl">
           We believe in sustainable decor. We&apos;re passionate about life at home.
         </h1>
-        <p className="mt-6 text-[#807D7E] leading-relaxed max-w-2xl">
+        <p className="mt-6 text-subtle leading-relaxed max-w-2xl">
           Our features timeless furniture, with natural fabrics, curved lines, plenty of mirrors and classic design, which can be incorporated into any decor project. The pieces enchant for their sobriety, to last for generations, faithful to the shapes of each period, with a touch of the present
         </p>
       </section>
 
       {/* About Us card */}
       <section className="bg-white px-5 lg:px-20 pb-16">
-        <div className="grid lg:grid-cols-2 rounded-2xl overflow-hidden border border-[#E8ECEF]">
+        <div className="grid lg:grid-cols-2 rounded-2xl overflow-hidden border border-line">
           <div className="relative h-72 lg:h-auto min-h-72">
             <Image
               src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&h=600&fit=crop&auto=format&q=80"
@@ -85,15 +85,15 @@ export default function ContactPage() {
               className="object-cover"
             />
           </div>
-          <div className="bg-[#F3F5F7] flex flex-col justify-center px-10 py-12 lg:px-16">
-            <h2 className="text-2xl lg:text-3xl font-semibold text-[#1C1C1C]">About Us</h2>
-            <p className="text-[#807D7E] mt-4 leading-relaxed">
+          <div className="bg-mist flex flex-col justify-center px-10 py-12 lg:px-16">
+            <h2 className="text-2xl lg:text-3xl font-semibold text-ink">About Us</h2>
+            <p className="text-subtle mt-4 leading-relaxed">
               3legant is a gift &amp; decorations store based in HCMC, Vietnam. Est since 2019.<br />
               Our customer service is always prepared to support you 24/7
             </p>
             <Link
               href="/shop"
-              className="inline-flex items-center gap-1 mt-6 text-sm font-medium text-[#1C1C1C] border-b border-[#1C1C1C] pb-0.5 self-start hover:text-[#B88E2F] hover:border-[#B88E2F] transition-colors"
+              className="inline-flex items-center gap-1 mt-6 text-sm font-medium text-ink border-b border-ink pb-0.5 self-start hover:text-gold hover:border-gold transition-colors"
             >
               Shop Now →
             </Link>
@@ -103,13 +103,13 @@ export default function ContactPage() {
 
       {/* Contact info */}
       <section className="bg-white px-5 lg:px-20 py-16">
-        <h2 className="text-3xl font-semibold text-[#1C1C1C] text-center">Contact Us</h2>
+        <h2 className="text-3xl font-semibold text-ink text-center">Contact Us</h2>
         <div className="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-6">
           {INFO_CARDS.map(({ icon, label, value }) => (
-            <div key={label} className="bg-[#F3F5F7] rounded-lg py-10 px-6 flex flex-col items-center text-center">
-              <span className="text-[#1C1C1C] mb-5">{icon}</span>
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#807D7E]">{label}</p>
-              <p className="font-bold text-[#1C1C1C] mt-3 whitespace-pre-line leading-relaxed">{value}</p>
+            <div key={label} className="bg-mist rounded-lg py-10 px-6 flex flex-col items-center text-center">
+              <span className="text-ink mb-5">{icon}</span>
+              <p className="text-xs font-semibold uppercase tracking-widest text-subtle">{label}</p>
+              <p className="font-bold text-ink mt-3 whitespace-pre-line leading-relaxed">{value}</p>
             </div>
           ))}
         </div>

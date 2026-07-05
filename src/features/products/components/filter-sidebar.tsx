@@ -78,7 +78,7 @@ export function FilterSidebar({ categories, currentFilters }: FilterSidebarProps
     <aside className="space-y-8">
       {/* Categories */}
       <div>
-        <h3 className="text-xs font-semibold uppercase tracking-widest text-[#1C1C1C] mb-4">
+        <h3 className="text-xs font-semibold uppercase tracking-widest text-ink mb-4">
           Categories
         </h3>
         <ul className="space-y-3">
@@ -87,8 +87,8 @@ export function FilterSidebar({ categories, currentFilters }: FilterSidebarProps
               onClick={() => selectCategory(undefined)}
               className={`text-sm transition-colors cursor-pointer ${
                 !currentFilters.category
-                  ? "font-semibold text-[#1C1C1C]"
-                  : "text-[#807D7E] hover:text-[#1C1C1C]"
+                  ? "font-semibold text-ink"
+                  : "text-subtle hover:text-ink"
               }`}
             >
               All Rooms
@@ -102,8 +102,8 @@ export function FilterSidebar({ categories, currentFilters }: FilterSidebarProps
                   onClick={() => selectCategory(cat.slug)}
                   className={`text-sm transition-colors cursor-pointer ${
                     active
-                      ? "font-semibold text-[#1C1C1C] underline underline-offset-2"
-                      : "text-[#807D7E] hover:text-[#1C1C1C]"
+                      ? "font-semibold text-ink underline underline-offset-2"
+                      : "text-subtle hover:text-ink"
                   }`}
                 >
                   {cat.name}
@@ -116,7 +116,7 @@ export function FilterSidebar({ categories, currentFilters }: FilterSidebarProps
 
       {/* Price */}
       <div>
-        <h3 className="text-xs font-semibold uppercase tracking-widest text-[#1C1C1C] mb-4">
+        <h3 className="text-xs font-semibold uppercase tracking-widest text-ink mb-4">
           Price
         </h3>
         <ul className="space-y-3">
@@ -131,8 +131,8 @@ export function FilterSidebar({ categories, currentFilters }: FilterSidebarProps
                     onClick={() => selectPriceRange(undefined, undefined)}
                     className={`text-sm transition-colors cursor-pointer ${
                       active
-                        ? "font-semibold text-[#1C1C1C]"
-                        : "text-[#807D7E] hover:text-[#1C1C1C]"
+                        ? "font-semibold text-ink"
+                        : "text-subtle hover:text-ink"
                     }`}
                   >
                     {label}
@@ -147,8 +147,8 @@ export function FilterSidebar({ categories, currentFilters }: FilterSidebarProps
                   <span
                     className={`text-sm transition-colors ${
                       active
-                        ? "font-medium text-[#1C1C1C]"
-                        : "text-[#807D7E] group-hover:text-[#1C1C1C]"
+                        ? "font-medium text-ink"
+                        : "text-subtle group-hover:text-ink"
                     }`}
                   >
                     {label}
@@ -157,7 +157,7 @@ export function FilterSidebar({ categories, currentFilters }: FilterSidebarProps
                     type="checkbox"
                     checked={active}
                     onChange={() => selectPriceRange(active ? undefined : min, active ? undefined : max)}
-                    className="w-4 h-4 accent-[#1C1C1C] cursor-pointer"
+                    className="w-4 h-4 accent-ink cursor-pointer"
                   />
                 </label>
               </li>

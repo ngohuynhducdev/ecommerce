@@ -98,7 +98,7 @@ export function BlogContent({ posts }: BlogContentProps) {
 
   const iconClass = (cols: GridCols) =>
     `p-1.5 rounded cursor-pointer transition-colors ${
-      gridCols === cols ? "text-[#1C1C1C]" : "text-[#C1C4C9] hover:text-[#1C1C1C]"
+      gridCols === cols ? "text-ink" : "text-subtle-light hover:text-ink"
     }`;
 
   const gridClass: Record<GridCols, string> = {
@@ -111,7 +111,7 @@ export function BlogContent({ posts }: BlogContentProps) {
   return (
     <div>
       {/* Toolbar: tabs + sort + grid toggles */}
-      <div className="flex items-center gap-6 border-b border-[#E8ECEF] mb-8">
+      <div className="flex items-center gap-6 border-b border-line mb-8">
         {/* Desktop tabs */}
         <div className="hidden md:flex items-center gap-6">
           {(["all", "featured"] as Tab[]).map((tab) => (
@@ -120,8 +120,8 @@ export function BlogContent({ posts }: BlogContentProps) {
               onClick={() => handleTabChange(tab)}
               className={`pb-3 text-sm font-medium capitalize transition-colors cursor-pointer border-b-2 -mb-px ${
                 activeTab === tab
-                  ? "border-[#1C1C1C] text-[#1C1C1C]"
-                  : "border-transparent text-[#807D7E] hover:text-[#1C1C1C]"
+                  ? "border-ink text-ink"
+                  : "border-transparent text-subtle hover:text-ink"
               }`}
             >
               {tab === "all" ? "All Blog" : "Featured"}
@@ -134,7 +134,7 @@ export function BlogContent({ posts }: BlogContentProps) {
           <select
             value={activeTab}
             onChange={(e) => handleTabChange(e.target.value as Tab)}
-            className="text-sm font-medium text-[#1C1C1C] bg-transparent border border-[#E8ECEF] rounded px-3 py-1.5 cursor-pointer outline-none"
+            className="text-sm font-medium text-ink bg-transparent border border-line rounded px-3 py-1.5 cursor-pointer outline-none"
           >
             <option value="all">All Blog</option>
             <option value="featured">Featured</option>
@@ -144,12 +144,12 @@ export function BlogContent({ posts }: BlogContentProps) {
         <div className="flex-1" />
 
         {/* Sort by (desktop) */}
-        <div className="hidden md:flex items-center gap-1 text-sm text-[#1C1C1C]">
+        <div className="hidden md:flex items-center gap-1 text-sm text-ink">
           <span>Sort by</span>
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as SortBy)}
-            className="text-sm text-[#1C1C1C] bg-transparent border-none outline-none cursor-pointer"
+            className="text-sm text-ink bg-transparent border-none outline-none cursor-pointer"
           >
             <option value="newest">Newest</option>
             <option value="oldest">Oldest</option>
@@ -158,7 +158,7 @@ export function BlogContent({ posts }: BlogContentProps) {
         </div>
 
         {/* Grid view toggles (desktop) */}
-        <div className="hidden md:flex items-center gap-0.5 border-l border-[#E8ECEF] pl-4">
+        <div className="hidden md:flex items-center gap-0.5 border-l border-line pl-4">
           <button className={iconClass(4)} onClick={() => setGridCols(4)} aria-label="4 columns"><IconGrid4 /></button>
           <button className={iconClass(3)} onClick={() => setGridCols(3)} aria-label="3 columns"><IconGrid3 /></button>
           <button className={iconClass(2)} onClick={() => setGridCols(2)} aria-label="2 columns"><IconGrid2 /></button>
@@ -178,7 +178,7 @@ export function BlogContent({ posts }: BlogContentProps) {
         <div className="flex justify-center mt-12">
           <button
             onClick={() => setVisible((v) => v + INCREMENT)}
-            className="border border-[#1C1C1C] text-[#1C1C1C] px-12 py-3 rounded-full text-sm hover:bg-[#1C1C1C] hover:text-white transition-colors cursor-pointer"
+            className="border border-ink text-ink px-12 py-3 rounded-full text-sm hover:bg-ink hover:text-white transition-colors cursor-pointer"
           >
             Show more
           </button>
