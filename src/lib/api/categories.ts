@@ -1,13 +1,6 @@
 import type { Category } from "@/features/products/types";
 import { mockCategories } from "@/features/products/mock-data";
-
-const USE_STRAPI = process.env.NEXT_PUBLIC_USE_STRAPI === "true";
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? "";
-
-const strapiHeaders = {
-  Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
-  "Content-Type": "application/json",
-};
+import { USE_STRAPI, STRAPI_URL, strapiHeaders, resolveStrapiImage } from "./strapi";
 
 export interface StrapiCategoryItem {
   id: number;
@@ -18,17 +11,12 @@ export interface StrapiCategoryItem {
   image?: { url: string } | null;
 }
 
-function resolveImageUrl(url: string | undefined, strapiUrl: string): string {
-  if (!url) return "";
-  return url.startsWith("http") ? url : `${strapiUrl}${url}`;
-}
-
 export function mapStrapiCategory(item: StrapiCategoryItem | null | undefined): Category {
   return {
     id: String(item?.id ?? ""),
     slug: item?.slug ?? "",
     name: item?.name ?? "",
-    image: resolveImageUrl(item?.image?.url, STRAPI_URL),
+    image: resolveStrapiImage(item?.image?.url),
     description: item?.description ?? "",
   };
 }
