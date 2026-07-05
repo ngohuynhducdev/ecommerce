@@ -1,162 +1,92 @@
 "use client";
 
-import { useState } from "react";
-import { SafeImage } from "@/components/ui/safe-image";
-import Link from "next/link";
 import { useAtomValue } from "jotai";
+
 import { ordersAtom } from "@/features/checkout/atoms";
-import type { Order } from "@/features/products/types";
 import { formatPrice } from "@/lib/utils";
 
-// ── Types & constants ─────────────────────────────────────────────────────────
+interface OrderRow {
+  number: string;
+  date: string;
+  status: string;
+  price: string;
+}
 
-type Tab = "All" | "Pending" | "Processing" | "Delivered" | "Cancelled";
-const TABS: Tab[] = ["All", "Pending", "Processing", "Delivered", "Cancelled"];
-
-const STATUS_STYLES: Record<Order["status"], string> = {
-  pending: "bg-amber-100 text-amber-700",
-  processing: "bg-blue-100 text-blue-700",
-  shipped: "bg-purple-100 text-purple-700",
-  delivered: "bg-green-100 text-green-700",
-  cancelled: "bg-red-100 text-red-700",
-};
-
-const STATUS_LABELS: Record<Order["status"], string> = {
-  pending: "Pending",
-  processing: "Processing",
-  shipped: "Shipped",
-  delivered: "Delivered",
-  cancelled: "Cancelled",
-};
+// Sample history shown until the visitor places real orders (demo parity with design).
+const SAMPLE_ROWS: OrderRow[] = [
+  { number: "#3456_768", date: "October 17, 2023", status: "Delivered", price: "$1234.00" },
+  { number: "#3456_980", date: "October 11, 2022", status: "Delivered", price: "$345.00" },
+  { number: "#3456_120", date: "August 24, 2023", status: "Delivered", price: "$2345.00" },
+  { number: "#3456_030", date: "August 12, 2023", status: "Delivered", price: "$845.00" },
+];
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString("en-US", {
     year: "numeric",
-    month: "short",
+    month: "long",
     day: "numeric",
   });
 }
 
-function tabMatchesStatus(tab: Tab, status: Order["status"]): boolean {
-  if (tab === "All") return true;
-  if (tab === "Delivered") return status === "delivered" || status === "shipped";
-  return status === tab.toLowerCase();
-}
+export default function OrdersPage() {
+  const orders = useAtomValue(ordersAtom);
 
-// ── Order card ────────────────────────────────────────────────────────────────
-
-function OrderCard({ order }: { order: Order }) {
-  const visibleItems = order.items.slice(0, 3);
-  const extraCount = order.items.length - visibleItems.length;
+  const rows: OrderRow[] =
+    orders.length > 0
+      ? orders.map((o) => ({
+          number: `#${o.orderNumber}`,
+          date: formatDate(o.createdAt),
+          status: o.status.charAt(0).toUpperCase() + o.status.slice(1),
+          price: formatPrice(o.total),
+        }))
+      : SAMPLE_ROWS;
 
   return (
-    <div className="bg-white border border-[#E8ECEF] rounded-2xl p-5 mb-4">
-      {/* Header */}
-      <div className="flex items-start justify-between gap-2">
-        <div>
-          <p className="font-medium text-sm">#{order.orderNumber}</p>
-          <p className="text-xs text-[#807D7E] mt-0.5">
-            {formatDate(order.createdAt)}
-          </p>
-        </div>
-        <span
-          className={`text-xs font-medium px-2.5 py-1 rounded-full shrink-0 ${
-            STATUS_STYLES[order.status]
-          }`}
-        >
-          {STATUS_LABELS[order.status]}
-        </span>
-      </div>
+    <div>
+      <h2 className="text-xl font-semibold text-[#1C1C1C] mb-6">Orders History</h2>
 
-      {/* Product thumbnails */}
-      <div className="flex items-center gap-2 mt-3">
-        {visibleItems.map((item) => (
-          <div
-            key={item.product.id}
-            className="w-11 h-11 rounded-lg overflow-hidden relative shrink-0 bg-[#F3F5F7]"
-          >
-            <SafeImage
-              src={item.product.images[0]}
-              alt={item.product.name}
-              fill
-              sizes="44px"
-              className="object-cover"
-            />
+      {/* Desktop table */}
+      <table className="hidden md:table w-full">
+        <thead>
+          <tr className="border-b border-[#E8ECEF] text-left">
+            <th className="pb-3 text-sm font-medium text-[#1C1C1C]">Number ID</th>
+            <th className="pb-3 text-sm font-medium text-[#1C1C1C]">Dates</th>
+            <th className="pb-3 text-sm font-medium text-[#1C1C1C]">Status</th>
+            <th className="pb-3 text-sm font-medium text-[#1C1C1C]">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row.number} className="border-b border-[#E8ECEF]">
+              <td className="py-5 text-sm text-[#1C1C1C]">{row.number}</td>
+              <td className="py-5 text-sm text-[#807D7E]">{row.date}</td>
+              <td className="py-5 text-sm text-[#807D7E]">{row.status}</td>
+              <td className="py-5 text-sm text-[#1C1C1C]">{row.price}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* Mobile stacked list */}
+      <div className="md:hidden divide-y divide-[#E8ECEF]">
+        {rows.map((row) => (
+          <div key={row.number} className="py-5 space-y-2">
+            <Row label="Number ID" value={row.number} />
+            <Row label="Dates" value={row.date} />
+            <Row label="Status" value={row.status} />
+            <Row label="Price" value={row.price} />
           </div>
         ))}
-        {extraCount > 0 && (
-          <span className="text-xs text-[#807D7E] font-medium">
-            +{extraCount} more
-          </span>
-        )}
-      </div>
-
-      {/* Footer */}
-      <div className="flex items-center justify-between mt-4">
-        <p className="font-semibold text-sm">{formatPrice(order.total)}</p>
-        <div className="flex gap-2">
-          <button className="h-8 px-3 border border-[#E8ECEF] rounded-lg text-xs font-medium text-[#1C1C1C] hover:bg-[#F3F5F7] transition-colors">
-            View Details
-          </button>
-          <button className="h-8 px-3 border border-[#E8ECEF] rounded-lg text-xs font-medium text-[#1C1C1C] hover:bg-[#F3F5F7] transition-colors">
-            Track Order
-          </button>
-        </div>
       </div>
     </div>
   );
 }
 
-// ── Page ──────────────────────────────────────────────────────────────────────
-
-export default function OrdersPage() {
-  const orders = useAtomValue(ordersAtom);
-  const [activeTab, setActiveTab] = useState<Tab>("All");
-
-  const filtered = orders.filter((o) => tabMatchesStatus(activeTab, o.status));
-
+function Row({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <h1 className="text-2xl font-semibold mb-6">My Orders</h1>
-
-      {/* Filter tabs */}
-      <div className="flex gap-2 mb-6 overflow-x-auto pb-1">
-        {TABS.map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`shrink-0 h-9 px-4 rounded-lg text-sm font-medium transition-colors ${
-              activeTab === tab
-                ? "bg-[#1C1C1C] text-white"
-                : "bg-[#F3F5F7] text-[#807D7E] hover:text-[#1C1C1C]"
-            }`}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
-
-      {filtered.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-center">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="text-[#E8ECEF] mb-4"><path d="M16.5 9.4 7.55 4.24" /><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" /><polyline points="3.29 7 12 12 20.71 7" /><line x1="12" y1="22" x2="12" y2="12" /></svg>
-          <p className="text-lg font-medium mb-2">No orders yet</p>
-          <p className="text-sm text-[#807D7E] mb-6">
-            Your order history will appear here
-          </p>
-          <Link
-            href="/shop"
-            className="h-11 px-6 bg-[#1C1C1C] text-white text-sm font-medium rounded-lg flex items-center hover:bg-[#B88E2F] transition-colors"
-          >
-            Start Shopping
-          </Link>
-        </div>
-      ) : (
-        <div>
-          {filtered.map((order) => (
-            <OrderCard key={order.id} order={order} />
-          ))}
-        </div>
-      )}
+      <p className="text-xs text-[#807D7E]">{label}</p>
+      <p className="text-sm font-medium text-[#1C1C1C] mt-0.5">{value}</p>
     </div>
   );
 }
