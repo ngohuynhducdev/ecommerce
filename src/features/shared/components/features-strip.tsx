@@ -48,10 +48,10 @@ export function FeaturesStrip() {
     <section className="py-12 px-5 lg:px-20 bg-white">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         {features.map((feature) => (
-          <div key={feature.label} className="bg-[#F3F5F7] rounded-2xl p-8 flex flex-col">
-            <span className="text-[#1C1C1C] mb-6">{feature.icon}</span>
-            <p className="font-semibold text-base text-[#1C1C1C]">{feature.label}</p>
-            <p className="text-sm text-[#807D7E] mt-1.5">{feature.description}</p>
+          <div key={feature.label} className="bg-mist rounded-2xl p-8 flex flex-col">
+            <span className="text-ink mb-6">{feature.icon}</span>
+            <p className="font-semibold text-base text-ink">{feature.label}</p>
+            <p className="text-sm text-subtle mt-1.5">{feature.description}</p>
           </div>
         ))}
       </div>

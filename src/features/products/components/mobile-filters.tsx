@@ -33,7 +33,7 @@ export function MobileFilters({ categories, currentFilters }: MobileFiltersProps
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <button className="lg:hidden flex items-center gap-2 border border-[#E8ECEF] px-4 py-2 rounded-sm text-sm text-[#1C1C1C] hover:border-[#1C1C1C] transition-colors cursor-pointer">
+        <button className="lg:hidden flex items-center gap-2 border border-line px-4 py-2 rounded-sm text-sm text-ink hover:border-ink transition-colors cursor-pointer">
           <SlidersHorizontal className="w-4 h-4" />
           Filters
         </button>

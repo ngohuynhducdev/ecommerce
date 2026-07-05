@@ -69,13 +69,13 @@ export function SignUpForm({ onSwitch, onSuccess }: SignUpFormProps) {
 
   return (
     <div className="w-full">
-      <h1 className="text-4xl font-bold text-[#1C1C1C]">Sign up</h1>
-      <p className="text-sm text-[#807D7E] mt-3 mb-10">
+      <h1 className="text-4xl font-bold text-ink">Sign up</h1>
+      <p className="text-sm text-subtle mt-3 mb-10">
         Already have an account?{" "}
         <button
           type="button"
           onClick={onSwitch}
-          className="text-[#2EC1AC] font-medium hover:underline cursor-pointer"
+          className="text-teal font-medium hover:underline cursor-pointer"
         >
           Sign in
         </button>
@@ -87,7 +87,7 @@ export function SignUpForm({ onSwitch, onSuccess }: SignUpFormProps) {
             {...register("name")}
             placeholder="Your name"
             autoComplete="name"
-            className="w-full border-0 border-b border-[#E8ECEF] bg-transparent pb-3 text-sm outline-none focus:border-[#1C1C1C] transition-colors placeholder:text-[#807D7E]"
+            className="w-full border-0 border-b border-line bg-transparent pb-3 text-sm outline-none focus:border-ink transition-colors placeholder:text-subtle"
           />
           {errors.name && (
             <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
@@ -99,7 +99,7 @@ export function SignUpForm({ onSwitch, onSuccess }: SignUpFormProps) {
             {...register("username")}
             placeholder="Username"
             autoComplete="username"
-            className="w-full border-0 border-b border-[#E8ECEF] bg-transparent pb-3 text-sm outline-none focus:border-[#1C1C1C] transition-colors placeholder:text-[#807D7E]"
+            className="w-full border-0 border-b border-line bg-transparent pb-3 text-sm outline-none focus:border-ink transition-colors placeholder:text-subtle"
           />
           {errors.username && (
             <p className="text-red-500 text-xs mt-1">{errors.username.message}</p>
@@ -112,7 +112,7 @@ export function SignUpForm({ onSwitch, onSuccess }: SignUpFormProps) {
             type="email"
             placeholder="Email address"
             autoComplete="email"
-            className="w-full border-0 border-b border-[#E8ECEF] bg-transparent pb-3 text-sm outline-none focus:border-[#1C1C1C] transition-colors placeholder:text-[#807D7E]"
+            className="w-full border-0 border-b border-line bg-transparent pb-3 text-sm outline-none focus:border-ink transition-colors placeholder:text-subtle"
           />
           {errors.email && (
             <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
@@ -126,12 +126,12 @@ export function SignUpForm({ onSwitch, onSuccess }: SignUpFormProps) {
               type={showPassword ? "text" : "password"}
               placeholder="Password"
               autoComplete="new-password"
-              className="w-full border-0 border-b border-[#E8ECEF] bg-transparent pb-3 pr-8 text-sm outline-none focus:border-[#1C1C1C] transition-colors placeholder:text-[#807D7E]"
+              className="w-full border-0 border-b border-line bg-transparent pb-3 pr-8 text-sm outline-none focus:border-ink transition-colors placeholder:text-subtle"
             />
             <button
               type="button"
               onClick={() => setShowPassword((v) => !v)}
-              className="absolute right-0 top-0 text-[#807D7E] hover:text-[#1C1C1C] transition-colors cursor-pointer"
+              className="absolute right-0 top-0 text-subtle hover:text-ink transition-colors cursor-pointer"
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? <EyeOffIcon /> : <EyeIcon />}
@@ -147,15 +147,15 @@ export function SignUpForm({ onSwitch, onSuccess }: SignUpFormProps) {
             <input
               {...register("terms")}
               type="checkbox"
-              className="mt-0.5 w-4 h-4 border border-[#E8ECEF] rounded-sm accent-[#1C1C1C] cursor-pointer shrink-0"
+              className="mt-0.5 w-4 h-4 border border-line rounded-sm accent-ink cursor-pointer shrink-0"
             />
-            <span className="text-sm text-[#807D7E] leading-relaxed">
+            <span className="text-sm text-subtle leading-relaxed">
               I agree with{" "}
-              <a href="#" className="font-bold text-[#1C1C1C] hover:underline">
+              <a href="#" className="font-bold text-ink hover:underline">
                 Privacy Policy
               </a>{" "}
               and{" "}
-              <a href="#" className="font-bold text-[#1C1C1C] hover:underline">
+              <a href="#" className="font-bold text-ink hover:underline">
                 Terms of Use
               </a>
             </span>
@@ -168,7 +168,7 @@ export function SignUpForm({ onSwitch, onSuccess }: SignUpFormProps) {
         <button
           type="submit"
           disabled={loading}
-          className="w-full h-14 bg-[#1C1C1C] text-white rounded-lg text-sm font-medium hover:bg-[#B88E2F] transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+          className="w-full h-14 bg-ink text-white rounded-lg text-sm font-medium hover:bg-gold transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
         >
           {loading ? "Creating account…" : "Sign Up"}
         </button>

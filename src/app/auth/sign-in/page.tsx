@@ -18,13 +18,13 @@ function SignInContent() {
   return (
     <div className="min-h-screen flex flex-col lg:grid lg:grid-cols-2">
       {/* Left / Top — Gray image panel */}
-      <div className="bg-[#F3F5F7] flex flex-col min-h-72 lg:min-h-screen">
+      <div className="bg-mist flex flex-col min-h-72 lg:min-h-screen">
         <div className="px-8 pt-8 lg:px-10 flex justify-center">
           <Link
             href="/"
-            className="font-semibold text-xl tracking-tight text-[#1C1C1C] select-none"
+            className="font-semibold text-xl tracking-tight text-ink select-none"
           >
-            3legant<span className="text-[#B88E2F]">.</span>
+            3legant<span className="text-gold">.</span>
           </Link>
         </div>
         <div className="flex-1 flex items-center justify-center px-8 py-8 lg:py-16">
@@ -59,7 +59,7 @@ function SignInContent() {
 
 export default function SignInPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#F3F5F7]" />}>
+    <Suspense fallback={<div className="min-h-screen bg-mist" />}>
       <SignInContent />
     </Suspense>
   );

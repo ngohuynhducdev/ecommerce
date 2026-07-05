@@ -32,20 +32,20 @@ const MOCK_REVIEWS = [
 ];
 
 const triggerClass =
-  "rounded-none px-0 pb-3 text-sm data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-[#1C1C1C] data-[state=active]:text-[#1C1C1C] data-[state=inactive]:text-[#807D7E] shadow-none";
+  "rounded-none px-0 pb-3 text-sm data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-ink data-[state=active]:text-ink data-[state=inactive]:text-subtle shadow-none";
 
 export function ProductTabs({ product }: ProductTabsProps) {
   const specRow = (label: string, value: string) => (
-    <tr className="border-b border-[#E8ECEF]">
-      <td className="py-3 pr-6 text-sm text-[#807D7E] w-40">{label}</td>
-      <td className="py-3 text-sm text-[#1C1C1C]">{value}</td>
+    <tr className="border-b border-line">
+      <td className="py-3 pr-6 text-sm text-subtle w-40">{label}</td>
+      <td className="py-3 text-sm text-ink">{value}</td>
     </tr>
   );
 
   return (
     <section id="reviews" className="mt-20">
       <Tabs defaultValue="reviews">
-        <TabsList className="bg-transparent p-0 gap-6 h-auto border-b border-[#E8ECEF] rounded-none w-full justify-start">
+        <TabsList className="bg-transparent p-0 gap-6 h-auto border-b border-line rounded-none w-full justify-start">
           <TabsTrigger value="additional" className={triggerClass}>
             Additional Info
           </TabsTrigger>
@@ -75,14 +75,14 @@ export function ProductTabs({ product }: ProductTabsProps) {
 
         {/* Questions */}
         <TabsContent value="questions">
-          <p className="text-[#807D7E] text-sm pt-8">No questions yet. Be the first to ask!</p>
+          <p className="text-subtle text-sm pt-8">No questions yet. Be the first to ask!</p>
         </TabsContent>
 
         {/* Reviews */}
         <TabsContent value="reviews">
           <div className="pt-8">
             {/* Heading */}
-            <h2 className="text-2xl font-semibold text-[#1C1C1C] mb-2">Customer Reviews</h2>
+            <h2 className="text-2xl font-semibold text-ink mb-2">Customer Reviews</h2>
 
             {/* Overall rating row */}
             <div className="flex items-center gap-3 mb-1">
@@ -91,36 +91,36 @@ export function ProductTabs({ product }: ProductTabsProps) {
                   <StarIcon key={s} filled={s <= Math.round(product.rating)} size={16} />
                 ))}
               </div>
-              <span className="text-sm text-[#807D7E]">{product.reviewCount} Reviews</span>
+              <span className="text-sm text-subtle">{product.reviewCount} Reviews</span>
             </div>
-            <p className="text-sm text-[#807D7E] mb-6">{product.name}</p>
+            <p className="text-sm text-subtle mb-6">{product.name}</p>
 
             {/* Input + emoji + Write Review */}
             <div className="flex items-center gap-3 mb-4">
-              <div className="flex-1 border border-[#E8ECEF] rounded-lg px-4 h-11 flex items-center">
+              <div className="flex-1 border border-line rounded-lg px-4 h-11 flex items-center">
                 <input
                   type="text"
                   placeholder="Share your thoughts"
-                  className="flex-1 text-sm outline-none bg-transparent placeholder:text-[#807D7E]"
+                  className="flex-1 text-sm outline-none bg-transparent placeholder:text-subtle"
                 />
               </div>
               {/* Emoji row */}
-              <div className="hidden sm:flex items-center gap-1.5 bg-white border border-[#E8ECEF] rounded-full px-3 py-1.5">
+              <div className="hidden sm:flex items-center gap-1.5 bg-white border border-line rounded-full px-3 py-1.5">
                 {["❤️", "😍", "😊", "😮", "😤", "😱"].map((e) => (
                   <button key={e} className="text-lg leading-none cursor-pointer">
                     {e}
                   </button>
                 ))}
               </div>
-              <button className="h-11 px-5 bg-[#1C1C1C] text-white text-sm rounded-lg hover:bg-[#B88E2F] transition-colors cursor-pointer whitespace-nowrap">
+              <button className="h-11 px-5 bg-ink text-white text-sm rounded-lg hover:bg-gold transition-colors cursor-pointer whitespace-nowrap">
                 Write Review
               </button>
             </div>
 
             {/* Review count + sort */}
-            <div className="flex items-center justify-between py-4 border-y border-[#E8ECEF] mb-6">
-              <span className="text-sm font-semibold text-[#1C1C1C]">{product.reviewCount} Reviews</span>
-              <select className="text-sm text-[#1C1C1C] bg-transparent border-none outline-none cursor-pointer">
+            <div className="flex items-center justify-between py-4 border-y border-line mb-6">
+              <span className="text-sm font-semibold text-ink">{product.reviewCount} Reviews</span>
+              <select className="text-sm text-ink bg-transparent border-none outline-none cursor-pointer">
                 <option>Newest</option>
                 <option>Oldest</option>
                 <option>Highest Rating</option>
@@ -132,7 +132,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
             <div className="space-y-8">
               {MOCK_REVIEWS.map((review) => (
                 <div key={review.id} className="flex gap-4">
-                  <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 relative bg-[#F3F5F7]">
+                  <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 relative bg-mist">
                     <Image
                       src={review.avatar}
                       alt={review.author}
@@ -142,18 +142,18 @@ export function ProductTabs({ product }: ProductTabsProps) {
                     />
                   </div>
                   <div className="flex-1">
-                    <p className="font-semibold text-[#1C1C1C] text-sm">{review.author}</p>
+                    <p className="font-semibold text-ink text-sm">{review.author}</p>
                     <div className="flex gap-0.5 mt-1">
                       {[1, 2, 3, 4, 5].map((s) => (
                         <StarIcon key={s} filled={s <= review.rating} size={12} />
                       ))}
                     </div>
-                    <p className="text-sm text-[#807D7E] leading-relaxed mt-2">{review.comment}</p>
+                    <p className="text-sm text-subtle leading-relaxed mt-2">{review.comment}</p>
                     <div className="flex items-center gap-4 mt-3">
-                      <button className="text-xs text-[#807D7E] hover:text-[#1C1C1C] cursor-pointer">
+                      <button className="text-xs text-subtle hover:text-ink cursor-pointer">
                         Like
                       </button>
-                      <button className="text-xs text-[#807D7E] hover:text-[#1C1C1C] cursor-pointer">
+                      <button className="text-xs text-subtle hover:text-ink cursor-pointer">
                         Reply
                       </button>
                     </div>
@@ -164,7 +164,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
 
             {/* Load more */}
             <div className="flex justify-center mt-10">
-              <button className="border border-[#1C1C1C] text-[#1C1C1C] px-12 py-3 rounded-full text-sm hover:bg-[#1C1C1C] hover:text-white transition-colors cursor-pointer">
+              <button className="border border-ink text-ink px-12 py-3 rounded-full text-sm hover:bg-ink hover:text-white transition-colors cursor-pointer">
                 Load more
               </button>
             </div>

@@ -40,16 +40,16 @@ export default function WishlistPage() {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold text-[#1C1C1C] mb-6">Your Wishlist</h2>
+      <h2 className="text-xl font-semibold text-ink mb-6">Your Wishlist</h2>
 
       {/* Column headers — desktop */}
-      <div className="hidden md:grid grid-cols-[1fr_auto_160px] gap-4 border-b border-[#E8ECEF] pb-3 text-sm font-medium text-[#1C1C1C]">
+      <div className="hidden md:grid grid-cols-[1fr_auto_160px] gap-4 border-b border-line pb-3 text-sm font-medium text-ink">
         <span>Product</span>
         <span className="text-right w-24">Price</span>
         <span className="text-right">Action</span>
       </div>
 
-      <div className="divide-y divide-[#E8ECEF]">
+      <div className="divide-y divide-line">
         {items.map(({ product }) => (
           <div
             key={product.id}
@@ -60,11 +60,11 @@ export default function WishlistPage() {
               <button
                 onClick={() => removeItem(product.id)}
                 aria-label="Remove"
-                className="text-[#807D7E] hover:text-[#1C1C1C] transition-colors cursor-pointer text-lg leading-none shrink-0"
+                className="text-subtle hover:text-ink transition-colors cursor-pointer text-lg leading-none shrink-0"
               >
                 ×
               </button>
-              <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-[#F3F5F7] shrink-0">
+              <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-mist shrink-0">
                 <SafeImage
                   src={product.images[0]}
                   alt={product.name}
@@ -76,23 +76,23 @@ export default function WishlistPage() {
               <div className="min-w-0">
                 <Link
                   href={`/shop/${product.slug}`}
-                  className="font-semibold text-sm text-[#1C1C1C] hover:text-[#B88E2F] transition-colors line-clamp-1"
+                  className="font-semibold text-sm text-ink hover:text-gold transition-colors line-clamp-1"
                 >
                   {product.name}
                 </Link>
-                <p className="text-xs text-[#807D7E] mt-0.5">{product.category.name}</p>
+                <p className="text-xs text-subtle mt-0.5">{product.category.name}</p>
               </div>
             </div>
 
             {/* Price */}
-            <div className="text-sm font-semibold text-[#1C1C1C] text-right md:w-24 md:justify-self-end">
+            <div className="text-sm font-semibold text-ink text-right md:w-24 md:justify-self-end">
               {formatPrice(product.price)}
             </div>
 
             {/* Action */}
             <button
               onClick={() => addToCart(product)}
-              className="col-span-3 md:col-span-1 h-11 px-6 bg-[#1C1C1C] text-white text-sm font-medium rounded-lg hover:bg-[#B88E2F] transition-colors cursor-pointer"
+              className="col-span-3 md:col-span-1 h-11 px-6 bg-ink text-white text-sm font-medium rounded-lg hover:bg-gold transition-colors cursor-pointer"
             >
               Add to cart
             </button>

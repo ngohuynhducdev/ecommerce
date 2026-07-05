@@ -66,7 +66,7 @@ export function HeroCarousel() {
 
   return (
     <div className="px-5 lg:px-20 pt-6">
-      <div className="relative w-full h-[45vh] md:h-[62vh] overflow-hidden bg-[#F3F5F7]">
+      <div className="relative w-full h-[45vh] md:h-[62vh] overflow-hidden bg-mist">
         {slides.map((slide, i) => (
           <div
             key={i}

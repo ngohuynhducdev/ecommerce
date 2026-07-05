@@ -43,23 +43,23 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="bg-[#1C1C1C]">
+    <footer className="bg-ink">
       {/* Main row */}
       <div className="px-5 lg:px-20 pt-10 pb-8">
         {/* Desktop: single row — Logo | divider | tagline | nav links */}
         <div className="hidden lg:flex items-center gap-8">
           <Link href="/" className="flex items-baseline gap-0.5 shrink-0">
             <span className="text-xl font-semibold tracking-tight text-white">3legant</span>
-            <span className="text-[#B88E2F] text-xl font-semibold">.</span>
+            <span className="text-gold text-xl font-semibold">.</span>
           </Link>
-          <div className="w-px h-6 bg-[#6C7275] shrink-0" />
-          <span className="text-sm text-[#6C7275] shrink-0">Gift &amp; Decoration Store</span>
+          <div className="w-px h-6 bg-subtle-dark shrink-0" />
+          <span className="text-sm text-subtle-dark shrink-0">Gift &amp; Decoration Store</span>
           <nav className="flex items-center gap-8 ml-auto">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                className="text-sm text-white hover:text-[#B88E2F] transition-colors"
+                className="text-sm text-white hover:text-gold transition-colors"
               >
                 {link.label}
               </Link>
@@ -71,16 +71,16 @@ export function Footer() {
         <div className="lg:hidden flex flex-col items-center text-center gap-6">
           <Link href="/" className="flex items-baseline gap-0.5">
             <span className="text-2xl font-semibold tracking-tight text-white">3legant</span>
-            <span className="text-[#B88E2F] text-2xl font-semibold">.</span>
+            <span className="text-gold text-2xl font-semibold">.</span>
           </Link>
-          <div className="w-8 h-px bg-[#6C7275]" />
-          <span className="text-sm text-[#6C7275]">Gift &amp; Decoration Store</span>
+          <div className="w-8 h-px bg-subtle-dark" />
+          <span className="text-sm text-subtle-dark">Gift &amp; Decoration Store</span>
           <nav className="flex flex-col items-center gap-5 mt-2">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                className="text-base text-white hover:text-[#B88E2F] transition-colors"
+                className="text-base text-white hover:text-gold transition-colors"
               >
                 {link.label}
               </Link>
@@ -90,17 +90,17 @@ export function Footer() {
       </div>
 
       {/* Bottom bar — extra bottom padding on mobile clears the fixed bottom nav */}
-      <div className="border-t border-[#6C7275]/30 px-5 lg:px-20 pt-5 pb-24 lg:pb-5">
+      <div className="border-t border-subtle-dark/30 px-5 lg:px-20 pt-5 pb-24 lg:pb-5">
         {/* Desktop */}
         <div className="hidden lg:flex items-center justify-between">
           <div className="flex items-center gap-8">
-            <p className="text-sm text-[#6C7275]">
+            <p className="text-sm text-subtle-dark">
               Copyright © 2023 3legant. All rights reserved
             </p>
-            <Link href="/privacy" className="text-sm font-semibold text-white hover:text-[#B88E2F] transition-colors">
+            <Link href="/privacy" className="text-sm font-semibold text-white hover:text-gold transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="text-sm font-semibold text-white hover:text-[#B88E2F] transition-colors">
+            <Link href="/terms" className="text-sm font-semibold text-white hover:text-gold transition-colors">
               Terms of Use
             </Link>
           </div>
@@ -110,7 +110,7 @@ export function Footer() {
                 key={label}
                 href={href}
                 aria-label={label}
-                className="w-9 h-9 flex items-center justify-center border border-[#6C7275]/60 rounded-md text-white hover:text-[#B88E2F] hover:border-[#B88E2F] transition-colors"
+                className="w-9 h-9 flex items-center justify-center border border-subtle-dark/60 rounded-md text-white hover:text-gold hover:border-gold transition-colors"
               >
                 {icon}
               </Link>
@@ -120,28 +120,28 @@ export function Footer() {
 
         {/* Mobile */}
         <div className="lg:hidden flex flex-col items-center gap-5">
-          <div className="w-full h-px bg-[#6C7275]/30" />
+          <div className="w-full h-px bg-subtle-dark/30" />
           <div className="flex items-center gap-4">
             {socialLinks.map(({ icon, href, label }) => (
               <Link
                 key={label}
                 href={href}
                 aria-label={label}
-                className="w-9 h-9 flex items-center justify-center border border-[#6C7275]/60 rounded-md text-white hover:text-[#B88E2F] hover:border-[#B88E2F] transition-colors"
+                className="w-9 h-9 flex items-center justify-center border border-subtle-dark/60 rounded-md text-white hover:text-gold hover:border-gold transition-colors"
               >
                 {icon}
               </Link>
             ))}
           </div>
           <div className="flex items-center gap-6">
-            <Link href="/privacy" className="text-sm font-semibold text-white hover:text-[#B88E2F] transition-colors">
+            <Link href="/privacy" className="text-sm font-semibold text-white hover:text-gold transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="text-sm font-semibold text-white hover:text-[#B88E2F] transition-colors">
+            <Link href="/terms" className="text-sm font-semibold text-white hover:text-gold transition-colors">
               Terms of Use
             </Link>
           </div>
-          <p className="text-sm text-[#6C7275]">
+          <p className="text-sm text-subtle-dark">
             Copyright © 2023 3legant. All rights reserved
           </p>
         </div>

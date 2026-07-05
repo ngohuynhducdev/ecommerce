@@ -62,7 +62,7 @@ function UserIcon({ size = 20 }: { size?: number }) {
 function CountBadge({ count }: { count: number }) {
   if (count === 0) return null;
   return (
-    <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-[#1C1C1C] text-white text-[10px] rounded-full flex items-center justify-center leading-none font-medium">
+    <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-ink text-white text-[10px] rounded-full flex items-center justify-center leading-none font-medium">
       {count > 9 ? "9+" : count}
     </span>
   );
@@ -151,11 +151,11 @@ export function Navbar() {
   return (
     <>
       {/* ── Desktop navbar ── */}
-      <nav className="relative hidden lg:block h-20 bg-white border-b border-[#E8ECEF]">
+      <nav className="relative hidden lg:block h-20 bg-white border-b border-line">
         <div className="px-8 lg:px-20 h-full flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="font-semibold text-xl tracking-tight text-[#1C1C1C] select-none">
-            3legant<span className="text-[#B88E2F]">.</span>
+          <Link href="/" className="font-semibold text-xl tracking-tight text-ink select-none">
+            3legant<span className="text-gold">.</span>
           </Link>
 
           {/* Nav links */}
@@ -175,8 +175,8 @@ export function Navbar() {
                     href={href}
                     className={`text-sm transition-colors ${
                       isActive
-                        ? "text-[#1C1C1C] font-semibold"
-                        : "text-[#807D7E] hover:text-[#1C1C1C]"
+                        ? "text-ink font-semibold"
+                        : "text-subtle hover:text-ink"
                     }`}
                   >
                     {label}
@@ -199,7 +199,7 @@ export function Navbar() {
                   if (e.key === "Escape") setSearchOpen(false);
                 }}
                 placeholder="Search products…"
-                className="w-56 h-9 border-b border-[#1C1C1C] bg-transparent text-sm outline-none placeholder:text-[#807D7E] animate-fade-in"
+                className="w-56 h-9 border-b border-ink bg-transparent text-sm outline-none placeholder:text-subtle animate-fade-in"
               />
             )}
             <button
@@ -209,19 +209,19 @@ export function Navbar() {
                 // focus after the input mounts
                 setTimeout(() => searchInputRef.current?.focus(), 0);
               }}
-              className="text-[#1C1C1C] hover:text-[#807D7E] transition-colors cursor-pointer"
+              className="text-ink hover:text-subtle transition-colors cursor-pointer"
             >
               <Search size={20} strokeWidth={1.5} />
             </button>
 
-            <button onClick={openSignIn} aria-label="Sign in" className="text-[#1C1C1C] hover:text-[#807D7E] transition-colors cursor-pointer">
+            <button onClick={openSignIn} aria-label="Sign in" className="text-ink hover:text-subtle transition-colors cursor-pointer">
               <UserIcon size={20} />
             </button>
 
             <button
               onClick={() => setCartOpen(true)}
               aria-label="Cart"
-              className="relative text-[#1C1C1C] hover:text-[#807D7E] transition-colors cursor-pointer"
+              className="relative text-ink hover:text-subtle transition-colors cursor-pointer"
             >
               <BagIcon size={20} />
               {mounted && <CountBadge count={cartCount} />}
@@ -235,18 +235,18 @@ export function Navbar() {
       </nav>
 
       {/* ── Mobile navbar bar ── */}
-      <div className="lg:hidden h-16 flex items-center justify-between px-5 bg-white border-b border-[#E8ECEF]">
+      <div className="lg:hidden h-16 flex items-center justify-between px-5 bg-white border-b border-line">
         {/* Left: hamburger + logo */}
         <div className="flex items-center gap-3">
           <button
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Open menu"
-            className="text-[#1C1C1C] cursor-pointer"
+            className="text-ink cursor-pointer"
           >
             <Menu size={22} strokeWidth={1.5} />
           </button>
-          <Link href="/" className="font-semibold text-xl tracking-tight text-[#1C1C1C] select-none">
-            3legant<span className="text-[#B88E2F]">.</span>
+          <Link href="/" className="font-semibold text-xl tracking-tight text-ink select-none">
+            3legant<span className="text-gold">.</span>
           </Link>
         </div>
 
@@ -254,7 +254,7 @@ export function Navbar() {
         <button
           onClick={() => setCartOpen(true)}
           aria-label="Cart"
-          className="relative text-[#1C1C1C] cursor-pointer"
+          className="relative text-ink cursor-pointer"
         >
           <BagIcon size={22} />
           {mounted && <CountBadge count={cartCount} />}
@@ -269,14 +269,14 @@ export function Navbar() {
             <Link
               href="/"
               onClick={() => setMobileMenuOpen(false)}
-              className="font-semibold text-xl tracking-tight text-[#1C1C1C] select-none"
+              className="font-semibold text-xl tracking-tight text-ink select-none"
             >
-              3legant<span className="text-[#B88E2F]">.</span>
+              3legant<span className="text-gold">.</span>
             </Link>
             <button
               onClick={() => setMobileMenuOpen(false)}
               aria-label="Close menu"
-              className="text-[#807D7E] hover:text-[#1C1C1C] transition-colors cursor-pointer"
+              className="text-subtle hover:text-ink transition-colors cursor-pointer"
             >
               <X size={20} />
             </button>
@@ -284,8 +284,8 @@ export function Navbar() {
 
           {/* Search */}
           <div className="px-5 pb-4">
-            <div className="flex items-center gap-3 border border-[#E8ECEF] rounded-lg px-4 h-12">
-              <Search size={18} strokeWidth={1.5} className="text-[#807D7E] shrink-0" />
+            <div className="flex items-center gap-3 border border-line rounded-lg px-4 h-12">
+              <Search size={18} strokeWidth={1.5} className="text-subtle shrink-0" />
               <input
                 type="text"
                 value={searchTerm}
@@ -294,7 +294,7 @@ export function Navbar() {
                   if (e.key === "Enter") submitSearch(searchTerm);
                 }}
                 placeholder="Search"
-                className="flex-1 text-sm outline-none bg-transparent placeholder:text-[#807D7E]"
+                className="flex-1 text-sm outline-none bg-transparent placeholder:text-subtle"
               />
             </div>
           </div>
@@ -308,11 +308,11 @@ export function Navbar() {
                   key={label}
                   href={href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between px-5 py-4 border-b border-[#E8ECEF] text-sm font-semibold text-[#1C1C1C] hover:text-[#B88E2F] transition-colors"
+                  className="flex items-center justify-between px-5 py-4 border-b border-line text-sm font-semibold text-ink hover:text-gold transition-colors"
                 >
                   {label}
                   {hasDropdown && (
-                    <ChevronDown size={18} className="text-[#807D7E]" />
+                    <ChevronDown size={18} className="text-subtle" />
                   )}
                 </Link>
               );
@@ -327,13 +327,13 @@ export function Navbar() {
                 setMobileMenuOpen(false);
                 setCartOpen(true);
               }}
-              className="w-full flex items-center justify-between py-4 border-b border-[#E8ECEF] cursor-pointer"
+              className="w-full flex items-center justify-between py-4 border-b border-line cursor-pointer"
             >
-              <span className="text-sm text-[#807D7E]">Cart</span>
+              <span className="text-sm text-subtle">Cart</span>
               <div className="flex items-center gap-2">
                 <BagIcon size={20} />
                 {mounted && cartCount > 0 && (
-                  <span className="w-6 h-6 bg-[#1C1C1C] text-white text-xs rounded-full flex items-center justify-center font-medium">
+                  <span className="w-6 h-6 bg-ink text-white text-xs rounded-full flex items-center justify-center font-medium">
                     {cartCount > 9 ? "9+" : cartCount}
                   </span>
                 )}
@@ -344,13 +344,13 @@ export function Navbar() {
             <Link
               href="/account/wishlist"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between py-4 border-b border-[#E8ECEF]"
+              className="flex items-center justify-between py-4 border-b border-line"
             >
-              <span className="text-sm text-[#807D7E]">Wishlist</span>
+              <span className="text-sm text-subtle">Wishlist</span>
               <div className="flex items-center gap-2">
                 <HeartIcon size={20} />
                 {mounted && wishlistCount > 0 && (
-                  <span className="w-6 h-6 bg-[#1C1C1C] text-white text-xs rounded-full flex items-center justify-center font-medium">
+                  <span className="w-6 h-6 bg-ink text-white text-xs rounded-full flex items-center justify-center font-medium">
                     {wishlistCount > 9 ? "9+" : wishlistCount}
                   </span>
                 )}
@@ -363,20 +363,20 @@ export function Navbar() {
                 setMobileMenuOpen(false);
                 openSignIn();
               }}
-              className="w-full h-14 bg-[#1C1C1C] text-white flex items-center justify-center rounded-lg text-sm font-medium hover:bg-[#B88E2F] transition-colors mt-5 cursor-pointer"
+              className="w-full h-14 bg-ink text-white flex items-center justify-center rounded-lg text-sm font-medium hover:bg-gold transition-colors mt-5 cursor-pointer"
             >
               Sign In
             </button>
 
             {/* Social icons */}
             <div className="flex items-center gap-5 mt-5">
-              <a href="#" aria-label="Instagram" className="text-[#1C1C1C] hover:text-[#807D7E] transition-colors">
+              <a href="#" aria-label="Instagram" className="text-ink hover:text-subtle transition-colors">
                 <InstagramIcon />
               </a>
-              <a href="#" aria-label="Facebook" className="text-[#1C1C1C] hover:text-[#807D7E] transition-colors">
+              <a href="#" aria-label="Facebook" className="text-ink hover:text-subtle transition-colors">
                 <FacebookIcon />
               </a>
-              <a href="#" aria-label="YouTube" className="text-[#1C1C1C] hover:text-[#807D7E] transition-colors">
+              <a href="#" aria-label="YouTube" className="text-ink hover:text-subtle transition-colors">
                 <YouTubeIcon />
               </a>
             </div>

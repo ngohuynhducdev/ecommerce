@@ -34,7 +34,7 @@ export function AccountSidebar({ name }: Props) {
   return (
     <aside className="lg:sticky lg:top-28 mb-10 lg:mb-0">
       {/* Avatar card */}
-      <div className="bg-[#F3F5F7] rounded-2xl p-6 flex flex-col items-center text-center">
+      <div className="bg-mist rounded-2xl p-6 flex flex-col items-center text-center">
         <div className="relative w-24 h-24 rounded-full overflow-hidden">
           <Image
             src={AVATAR}
@@ -44,13 +44,13 @@ export function AccountSidebar({ name }: Props) {
             className="object-cover"
           />
         </div>
-        <p className="font-semibold mt-3 text-[#1C1C1C]">{name ?? "Sofia Havertz"}</p>
+        <p className="font-semibold mt-3 text-ink">{name ?? "Sofia Havertz"}</p>
 
         {/* Mobile section selector */}
         <select
           value={navItems.some((n) => n.href === pathname) ? pathname : "/account"}
           onChange={(e) => handleMobileNav(e.target.value)}
-          className="lg:hidden mt-4 w-full h-11 border border-[#E8ECEF] rounded-lg px-3 text-sm bg-white cursor-pointer outline-none"
+          className="lg:hidden mt-4 w-full h-11 border border-line rounded-lg px-3 text-sm bg-white cursor-pointer outline-none"
         >
           {navItems.map((n) => (
             <option key={n.href} value={n.href}>
@@ -72,8 +72,8 @@ export function AccountSidebar({ name }: Props) {
                   href={href}
                   className={`text-sm transition-colors ${
                     isActive
-                      ? "font-semibold text-[#1C1C1C] underline underline-offset-8 decoration-2"
-                      : "text-[#807D7E] hover:text-[#1C1C1C]"
+                      ? "font-semibold text-ink underline underline-offset-8 decoration-2"
+                      : "text-subtle hover:text-ink"
                   }`}
                 >
                   {label}
@@ -84,7 +84,7 @@ export function AccountSidebar({ name }: Props) {
           <li>
             <button
               onClick={() => signOut({ callbackUrl: "/" })}
-              className="text-sm text-[#807D7E] hover:text-[#1C1C1C] transition-colors cursor-pointer"
+              className="text-sm text-subtle hover:text-ink transition-colors cursor-pointer"
             >
               Log Out
             </button>

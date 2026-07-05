@@ -23,25 +23,25 @@ export function AnnouncementBar() {
         visible ? "h-11 opacity-100" : "h-0 opacity-0 pointer-events-none"
       }`}
     >
-      <div className="h-11 bg-[#F3F5F7] flex items-center justify-center relative px-10">
+      <div className="h-11 bg-mist flex items-center justify-center relative px-10">
         <div className="flex items-center gap-2.5">
-          <span className="text-[#1C1C1C]">
+          <span className="text-ink">
             <CouponIcon />
           </span>
-          <p className="text-sm font-medium text-[#1C1C1C]">
+          <p className="text-sm font-medium text-ink">
             30% off storewide —{" "}
             <span className="font-semibold">Limited time!</span>
           </p>
           <Link
             href="/shop"
-            className="hidden sm:inline text-sm font-medium text-[#2563EB] underline underline-offset-2 hover:text-[#1d4ed8] transition-colors ml-1"
+            className="hidden sm:inline text-sm font-medium text-blue-600 underline underline-offset-2 hover:text-blue-700 transition-colors ml-1"
           >
             Shop Now →
           </Link>
         </div>
         <button
           onClick={() => setVisible(false)}
-          className="absolute right-4 top-1/2 -translate-y-1/2 text-[#807D7E] hover:text-[#1C1C1C] transition-colors cursor-pointer"
+          className="absolute right-4 top-1/2 -translate-y-1/2 text-subtle hover:text-ink transition-colors cursor-pointer"
           aria-label="Dismiss announcement"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>

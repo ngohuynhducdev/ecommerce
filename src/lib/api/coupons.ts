@@ -1,10 +1,4 @@
-const USE_STRAPI = process.env.NEXT_PUBLIC_USE_STRAPI === "true";
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? "";
-
-const strapiHeaders = {
-  Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
-  "Content-Type": "application/json",
-};
+import { USE_STRAPI, STRAPI_URL, strapiHeaders } from "./strapi";
 
 export type CouponType = "percent" | "fixed";
 

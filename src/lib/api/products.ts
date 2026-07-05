@@ -1,17 +1,13 @@
 import type { Product, Variant } from "@/features/products/types";
 import { mockProducts } from "@/features/products/mock-data";
 import { type StrapiCategoryItem, mapStrapiCategory } from "./categories";
-
-const USE_STRAPI = process.env.NEXT_PUBLIC_USE_STRAPI === "true";
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? "";
-
-const strapiHeaders = {
-  Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
-  "Content-Type": "application/json",
-};
-
-// Product data changes rarely — cache Strapi responses for 1h (same as blog)
-const REVALIDATE = 3600;
+import {
+  USE_STRAPI,
+  STRAPI_URL,
+  STRAPI_REVALIDATE as REVALIDATE,
+  strapiHeaders,
+  resolveStrapiImage,
+} from "./strapi";
 
 export interface ProductFilters {
   category?: string;
@@ -57,11 +53,6 @@ interface StrapiProductItem {
   reviewCount?: number;
 }
 
-function resolveImageUrl(url: string | undefined): string {
-  if (!url) return "";
-  return url.startsWith("http") ? url : `${STRAPI_URL}${url}`;
-}
-
 const SORT_MAP: Record<NonNullable<ProductFilters["sort"]>, string> = {
   "price-asc": "price:asc",
   "price-desc": "price:desc",
@@ -77,7 +68,7 @@ function mapStrapiProduct(item: StrapiProductItem): Product {
     description: item.description ?? "",
     price: item.price,
     comparePrice: item.comparePrice,
-    images: (item.images ?? []).map((img: StrapiImage) => resolveImageUrl(img.url)),
+    images: (item.images ?? []).map((img: StrapiImage) => resolveStrapiImage(img.url)),
     category: mapStrapiCategory(item.category),
     tags: item.tags ?? [],
     variants: (item.variants ?? []).map(

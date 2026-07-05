@@ -116,26 +116,26 @@ export default async function ProductDetailPage({ params }: PageProps) {
               </div>
               <a
                 href="#reviews"
-                className="text-sm text-[#807D7E] underline cursor-pointer hover:text-[#1C1C1C] transition-colors"
+                className="text-sm text-subtle underline cursor-pointer hover:text-ink transition-colors"
               >
                 {product.reviewCount} Reviews
               </a>
             </div>
 
-            <h1 className="text-3xl font-semibold text-[#1C1C1C] mt-2">
+            <h1 className="text-3xl font-semibold text-ink mt-2">
               {product.name}
             </h1>
 
-            <p className="text-[#807D7E] leading-relaxed mt-4">
+            <p className="text-subtle leading-relaxed mt-4">
               {product.description}
             </p>
 
-            <div className="flex items-center gap-3 mt-4 pb-6 border-b border-[#E8ECEF]">
-              <span className="text-2xl font-semibold text-[#1C1C1C]">
+            <div className="flex items-center gap-3 mt-4 pb-6 border-b border-line">
+              <span className="text-2xl font-semibold text-ink">
                 {formatPrice(product.price)}
               </span>
               {product.comparePrice && (
-                <span className="text-lg text-[#807D7E] line-through">
+                <span className="text-lg text-subtle line-through">
                   {formatPrice(product.comparePrice)}
                 </span>
               )}

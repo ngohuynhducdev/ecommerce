@@ -15,12 +15,12 @@ export default async function AccountLayout({
       {/* Mobile back link */}
       <Link
         href="/"
-        className="lg:hidden flex items-center gap-1 text-sm text-[#807D7E] hover:text-[#1C1C1C] transition-colors mb-4"
+        className="lg:hidden flex items-center gap-1 text-sm text-subtle hover:text-ink transition-colors mb-4"
       >
         ‹ back
       </Link>
 
-      <h1 className="text-4xl font-bold text-[#1C1C1C] text-center mb-10">
+      <h1 className="text-4xl font-bold text-ink text-center mb-10">
         My Account
       </h1>
 

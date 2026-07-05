@@ -10,7 +10,7 @@ export function RelatedProducts({ products }: RelatedProductsProps) {
 
   return (
     <section className="mt-20">
-      <h2 className="text-2xl font-semibold text-[#1C1C1C] mb-8">
+      <h2 className="text-2xl font-semibold text-ink mb-8">
         You Might Also Like
       </h2>
       <div className="flex gap-6 overflow-x-auto pb-4 -mx-8 lg:-mx-20 px-8 lg:px-20 snap-x snap-mandatory">

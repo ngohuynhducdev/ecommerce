@@ -30,15 +30,15 @@ export default async function BlogPage() {
           />
           <div className="absolute inset-0 bg-white/60" />
           <div className="relative h-full flex flex-col items-center justify-center text-center px-8">
-            <nav className="flex items-center gap-2 text-sm text-[#807D7E] mb-4">
-              <Link href="/" className="hover:text-[#1C1C1C] transition-colors">
+            <nav className="flex items-center gap-2 text-sm text-subtle mb-4">
+              <Link href="/" className="hover:text-ink transition-colors">
                 Home
               </Link>
               <span>›</span>
-              <span className="text-[#1C1C1C] font-medium">Blog</span>
+              <span className="text-ink font-medium">Blog</span>
             </nav>
-            <h1 className="text-4xl lg:text-5xl font-bold text-[#1C1C1C]">Our Blog</h1>
-            <p className="mt-3 text-[#807D7E] text-sm lg:text-base">
+            <h1 className="text-4xl lg:text-5xl font-bold text-ink">Our Blog</h1>
+            <p className="mt-3 text-subtle text-sm lg:text-base">
               Home ideas and design inspiration
             </p>
           </div>

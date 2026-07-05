@@ -17,7 +17,7 @@ interface Props {
 export function BlogCard({ post }: Props) {
   return (
     <Link href={`/blog/${post.slug}`} className="group block">
-      <div className="aspect-4/3 relative overflow-hidden bg-[#F3F5F7]">
+      <div className="aspect-4/3 relative overflow-hidden bg-mist">
         <SafeImage
           src={post.coverImage}
           alt={post.title}
@@ -26,10 +26,10 @@ export function BlogCard({ post }: Props) {
           className="object-cover group-hover:scale-105 transition-transform duration-500"
         />
       </div>
-      <h3 className="font-semibold text-base text-[#1C1C1C] mt-3 leading-snug line-clamp-2 group-hover:text-[#B88E2F] transition-colors">
+      <h3 className="font-semibold text-base text-ink mt-3 leading-snug line-clamp-2 group-hover:text-gold transition-colors">
         {post.title}
       </h3>
-      <p className="text-sm text-[#807D7E] mt-1.5">{formatDate(post.publishedAt)}</p>
+      <p className="text-sm text-subtle mt-1.5">{formatDate(post.publishedAt)}</p>
     </Link>
   );
 }

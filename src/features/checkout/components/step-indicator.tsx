@@ -33,26 +33,26 @@ export function StepIndicator({ step }: Props) {
               <div className="flex items-center gap-2 pb-2">
                 <div className={cn(
                   "w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold shrink-0",
-                  isDone ? "bg-[#23A18C] text-white" :
-                  isActive ? "bg-[#1C1C1C] text-white" :
-                  "bg-[#D9D9D9] text-white"
+                  isDone ? "bg-success text-white" :
+                  isActive ? "bg-ink text-white" :
+                  "bg-smoke text-white"
                 )}>
                   {isDone ? <CheckIcon /> : s.num}
                 </div>
                 <span className={cn(
                   "text-sm",
                   isActive ? "block" : "hidden sm:block",
-                  isDone ? "text-[#23A18C] font-medium" :
-                  isActive ? "text-[#1C1C1C] font-semibold" :
-                  "text-[#807D7E]"
+                  isDone ? "text-success font-medium" :
+                  isActive ? "text-ink font-semibold" :
+                  "text-subtle"
                 )}>
                   {s.label}
                 </span>
               </div>
               <div className={cn(
                 "h-0.5 rounded-full",
-                isDone ? "bg-[#23A18C]" :
-                isActive ? "bg-[#1C1C1C]" :
+                isDone ? "bg-success" :
+                isActive ? "bg-ink" :
                 "bg-transparent"
               )} />
             </div>
