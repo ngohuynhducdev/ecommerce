@@ -130,10 +130,11 @@ zero UI changes** — the components don't know where data comes from.
 
 **The CMS is optional by design.** The live demo runs on mock data for
 speed and stability (no cold starts, nothing to keep alive). The Strapi
-project — schema, controllers, seed content — lives in a separate repo
-(`ecommerce-cms`). Flip `NEXT_PUBLIC_USE_STRAPI=true` and point
-`NEXT_PUBLIC_STRAPI_URL` at a running instance to source content from the
-CMS instead.
+project — content types, controllers, seed content — lives in a separate
+repo:
+[`ecommerce-cms`](https://github.com/ngohuynhducdev/ecommerce-cms). Flip
+`NEXT_PUBLIC_USE_STRAPI=true` and point `NEXT_PUBLIC_STRAPI_URL` at a
+running instance to source content from the CMS instead.
 
 ## Deploy
 
