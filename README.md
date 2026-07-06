@@ -2,7 +2,13 @@
 
 [![CI](https://github.com/ngohuynhducdev/ecommerce/actions/workflows/ci.yml/badge.svg)](https://github.com/ngohuynhducdev/ecommerce/actions/workflows/ci.yml)
 
+**🔗 Live demo: [ecommerce-dexr.vercel.app](https://ecommerce-dexr.vercel.app)**
+
 A full-featured e-commerce storefront for a minimalist furniture brand, built with Next.js 16 App Router. Based on the [3legant Figma community design](https://www.figma.com/design/4wdIrC2NdJVK6VVFuWxtX7/).
+
+> The live demo runs on mock data (`NEXT_PUBLIC_USE_STRAPI=false`) — sign in with any email + a 6+ character password; card payments are simulated.
+
+![3legant storefront](docs/screenshots/home.png)
 
 ## Tech Stack
 
@@ -135,6 +141,14 @@ repo:
 [`ecommerce-cms`](https://github.com/ngohuynhducdev/ecommerce-cms). Flip
 `NEXT_PUBLIC_USE_STRAPI=true` and point `NEXT_PUBLIC_STRAPI_URL` at a
 running instance to source content from the CMS instead.
+
+## Screenshots
+
+| Shop | Product detail |
+|---|---|
+| ![Shop](docs/screenshots/shop.png) | ![Product detail](docs/screenshots/product.png) |
+
+<p align="center"><img src="docs/screenshots/mobile.png" width="300" alt="Mobile" /></p>
 
 ## Deploy
 
