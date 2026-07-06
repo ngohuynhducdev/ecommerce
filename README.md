@@ -113,24 +113,44 @@ yarn test        # run once
 yarn test:watch  # watch mode
 ```
 
-## Strapi CMS Integration
+## Data layer (mock ⇄ CMS)
 
-All data functions in `src/lib/api/` check `NEXT_PUBLIC_USE_STRAPI`:
+The UI never talks to a data source directly — every read goes through
+`src/lib/api/`, which switches on `NEXT_PUBLIC_USE_STRAPI`:
 
-- `false` (default) — returns mock data, no network calls
-- `true` — fetches from Strapi REST API at `NEXT_PUBLIC_STRAPI_URL`
+- **`false` (default)** — resolves from typed mock data in the repo. No
+  network, no backend, instant. Every fetch also falls back to mock if a
+  Strapi request fails, so the app never hard-breaks.
+- **`true`** — fetches from a Strapi v5 REST API at
+  `NEXT_PUBLIC_STRAPI_URL`, mapping Strapi's response shapes to the same
+  domain types.
 
-Switching to Strapi requires zero UI changes.
+Because both paths return identical types, **switching sources requires
+zero UI changes** — the components don't know where data comes from.
 
-## Screenshots
-
-> _Add screenshots here_
+**The CMS is optional by design.** The live demo runs on mock data for
+speed and stability (no cold starts, nothing to keep alive). The Strapi
+project — content types, controllers, seed content — lives in a separate
+repo:
+[`ecommerce-cms`](https://github.com/ngohuynhducdev/ecommerce-cms). Flip
+`NEXT_PUBLIC_USE_STRAPI=true` and point `NEXT_PUBLIC_STRAPI_URL` at a
+running instance to source content from the CMS instead.
 
 ## Deploy
 
 ### Vercel (recommended)
 
-Push to GitHub and import the repository at [vercel.com](https://vercel.com). Add the environment variables from `.env.local` in the Vercel project settings.
+Import the repo at [vercel.com](https://vercel.com) — Next.js is
+detected automatically. Set these environment variables:
+
+| Variable | Value |
+|---|---|
+| `NEXT_PUBLIC_USE_STRAPI` | `false` |
+| `NEXT_PUBLIC_SITE_URL` | your Vercel URL (for `metadataBase` / sitemap) |
+| `AUTH_SECRET` | `openssl rand -hex 32` |
+
+`GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` are only needed for Google
+sign-in. See `.env.example` for the full list.
 
 ### Self-hosted
 

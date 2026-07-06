@@ -148,8 +148,7 @@ export async function getProducts(
   if (USE_STRAPI) {
     try {
       const queryParts: string[] = [
-        "populate[0]=images",
-        "populate[1]=category",
+        "populate=*",
       ];
       if (filters.sort) queryParts.push(`sort=${SORT_MAP[filters.sort]}`);
       if (filters.search) queryParts.push(`filters[name][$containsi]=${encodeURIComponent(filters.search)}`);
@@ -180,9 +179,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     try {
       const queryParts = [
         `filters[slug][$eq]=${encodeURIComponent(slug)}`,
-        "populate[0]=images",
-        "populate[1]=category",
-        "populate[2]=category.image",
+        "populate=*",
       ];
 
       const res = await fetch(`${STRAPI_URL}/api/products?${queryParts.join("&")}`, {
@@ -205,8 +202,7 @@ export async function getFeaturedProducts(): Promise<Product[]> {
     try {
       const queryParts = [
         "filters[isFeatured][$eq]=true",
-        "populate[0]=images",
-        "populate[1]=category",
+        "populate=*",
         "pagination[limit]=8",
       ];
 
@@ -230,8 +226,7 @@ export async function getBestsellers(): Promise<Product[]> {
     try {
       const queryParts = [
         "filters[isBestseller][$eq]=true",
-        "populate[0]=images",
-        "populate[1]=category",
+        "populate=*",
         "pagination[limit]=8",
       ];
 
@@ -268,8 +263,7 @@ export async function getRelatedProducts(
     try {
       const queryParts = [
         `filters[id][$ne]=${encodeURIComponent(productId)}`,
-        "populate[0]=images",
-        "populate[1]=category",
+        "populate=*",
         "pagination[limit]=4",
       ];
       if (categorySlug) {
