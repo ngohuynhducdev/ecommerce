@@ -147,6 +147,25 @@ The UI never talks to a data source directly — every read goes through
 Because both paths return identical types, **switching sources requires
 zero UI changes** — the components don't know where data comes from.
 
+```mermaid
+flowchart LR
+    subgraph Vercel
+        UI["Next.js 16 App Router<br/>(Server Components)"]
+        API["Data layer<br/>src/lib/api/"]
+        UI --> API
+    end
+
+    API -- "NEXT_PUBLIC_USE_STRAPI=false" --> MOCK["Typed mock data<br/>(in repo)"]
+    API -- "NEXT_PUBLIC_USE_STRAPI=true" --> STRAPI["Strapi v5 REST API<br/>(Render)"]
+
+    subgraph CMS backing services
+        STRAPI --> PG[("PostgreSQL<br/>Neon")]
+        STRAPI --> CLD["Media<br/>Cloudinary"]
+    end
+
+    STRAPI -. "request fails → fallback" .-> MOCK
+```
+
 **The CMS is optional by design.** The live demo runs on mock data for
 speed and stability (no cold starts, nothing to keep alive). The Strapi
 project — content types, controllers, seed content — lives in a separate
