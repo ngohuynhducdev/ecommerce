@@ -112,12 +112,25 @@ src/
 
 Unit tests run on [Vitest](https://vitest.dev) and cover the data layer
 (`lib/api` filtering/sorting/fallbacks), Jotai atoms (cart totals,
-localStorage persistence), and utilities.
+localStorage persistence), and utilities. End-to-end tests run on
+[Playwright](https://playwright.dev) and drive the full purchase flow —
+browse → product → cart with coupon → checkout → order confirmation.
+Both suites run in CI on every PR.
 
 ```bash
-yarn test        # run once
-yarn test:watch  # watch mode
+yarn test        # unit tests, run once
+yarn test:watch  # unit tests, watch mode
+yarn test:e2e    # e2e suite (builds and serves the app itself)
 ```
+
+## Lighthouse
+
+Scores for the production build (mobile emulation, `next start` locally):
+
+| Page | Performance | Accessibility | Best Practices | SEO |
+|---|---|---|---|---|
+| Home | 86 | 100 | 100 | 100 |
+| Product detail | 86 | 100 | 100 | 100 |
 
 ## Data layer (mock ⇄ CMS)
 

@@ -103,7 +103,7 @@ export function ProductCard({ product }: ProductCardProps) {
             NEW
           </span>
           {discountPct && (
-            <span className="bg-mint text-white text-xs font-semibold px-2.5 py-1 rounded">
+            <span className="bg-mint-dark text-white text-xs font-semibold px-2.5 py-1 rounded">
               -{discountPct}%
             </span>
           )}

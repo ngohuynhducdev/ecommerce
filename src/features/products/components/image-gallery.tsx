@@ -43,7 +43,7 @@ export function ImageGallery({ images, name, isNew, discountPercent }: ImageGall
             </span>
           )}
           {discountPercent && discountPercent > 0 ? (
-            <span className="bg-mint text-white text-xs font-medium px-2.5 py-1 rounded">
+            <span className="bg-mint-dark text-white text-xs font-medium px-2.5 py-1 rounded">
               -{discountPercent}%
             </span>
           ) : null}
