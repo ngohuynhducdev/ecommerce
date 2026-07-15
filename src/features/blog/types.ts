@@ -9,6 +9,8 @@ export interface ArticleSection {
   type: ArticleSectionType;
   id?: string;
   content: string;
+  /** Alt text for "img" sections; empty/absent renders as decorative. */
+  alt?: string;
 }
 
 export interface BlogPost {

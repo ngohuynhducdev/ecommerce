@@ -42,6 +42,7 @@ export const MOCK_POSTS: BlogPost[] = [
       {
         type: "img",
         content: U("1586023492125-27b2c045efd7", 1200, 600),
+        alt: "Three-seater sofa with clean lines in a bright living room",
       },
       {
         type: "h2",
@@ -110,6 +111,7 @@ export const MOCK_POSTS: BlogPost[] = [
       {
         type: "img",
         content: U("1616486338812-3dadae4b4ace", 1200, 600),
+        alt: "Minimalist living room in a neutral color palette",
       },
       {
         type: "h2",
@@ -168,6 +170,7 @@ export const MOCK_POSTS: BlogPost[] = [
       {
         type: "img",
         content: U("1549187774-b4e9b0445b41", 1200, 600),
+        alt: "Living room blending mid-century and traditional furniture",
       },
       {
         type: "h2",
@@ -226,6 +229,7 @@ export const MOCK_POSTS: BlogPost[] = [
       {
         type: "img",
         content: U("1519710164239-da123dc03ef4", 1200, 600),
+        alt: "Home office desk setup with an ergonomic chair",
       },
       {
         type: "h2",
@@ -284,6 +288,7 @@ export const MOCK_POSTS: BlogPost[] = [
       {
         type: "img",
         content: U("1558618666-fcd25c85cd64", 1200, 600),
+        alt: "Wooden furniture made from sustainably sourced materials",
       },
       {
         type: "h2",
@@ -342,6 +347,7 @@ export const MOCK_POSTS: BlogPost[] = [
       {
         type: "img",
         content: U("1527859978995-4f1e78f5a7de", 1200, 600),
+        alt: "Compact apartment interior with space-saving furniture",
       },
       {
         type: "h2",
