@@ -120,7 +120,10 @@ export function ProductTabs({ product }: ProductTabsProps) {
             {/* Review count + sort */}
             <div className="flex items-center justify-between py-4 border-y border-line mb-6">
               <span className="text-sm font-semibold text-ink">{product.reviewCount} Reviews</span>
-              <select className="text-sm text-ink bg-transparent border-none outline-none cursor-pointer">
+              <select
+                aria-label="Sort reviews"
+                className="text-sm text-ink bg-transparent border-none outline-none cursor-pointer"
+              >
                 <option>Newest</option>
                 <option>Oldest</option>
                 <option>Highest Rating</option>

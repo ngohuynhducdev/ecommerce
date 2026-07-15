@@ -45,6 +45,7 @@ export default async function HomePage() {
 
       {/* ── Category Showcase ── */}
       <section className="px-5 lg:px-20 pb-16 lg:pb-24">
+        <h2 className="sr-only">Shop by category</h2>
         <div className="grid gap-6 md:grid-cols-2 md:h-155">
           {showcaseCategories[0] && (
             <div className="h-96 md:h-full">

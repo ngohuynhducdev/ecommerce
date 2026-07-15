@@ -53,7 +53,7 @@ export function Footer() {
             <span className="text-gold text-xl font-semibold">.</span>
           </Link>
           <div className="w-px h-6 bg-subtle-dark shrink-0" />
-          <span className="text-sm text-subtle-dark shrink-0">Gift &amp; Decoration Store</span>
+          <span className="text-sm text-subtle-light shrink-0">Gift &amp; Decoration Store</span>
           <nav className="flex items-center gap-8 ml-auto">
             {navLinks.map((link) => (
               <Link
@@ -74,7 +74,7 @@ export function Footer() {
             <span className="text-gold text-2xl font-semibold">.</span>
           </Link>
           <div className="w-8 h-px bg-subtle-dark" />
-          <span className="text-sm text-subtle-dark">Gift &amp; Decoration Store</span>
+          <span className="text-sm text-subtle-light">Gift &amp; Decoration Store</span>
           <nav className="flex flex-col items-center gap-5 mt-2">
             {navLinks.map((link) => (
               <Link
@@ -94,7 +94,7 @@ export function Footer() {
         {/* Desktop */}
         <div className="hidden lg:flex items-center justify-between">
           <div className="flex items-center gap-8">
-            <p className="text-sm text-subtle-dark">
+            <p className="text-sm text-subtle-light">
               Copyright © 2023 3legant. All rights reserved
             </p>
             <Link href="/privacy" className="text-sm font-semibold text-white hover:text-gold transition-colors">
@@ -141,7 +141,7 @@ export function Footer() {
               Terms of Use
             </Link>
           </div>
-          <p className="text-sm text-subtle-dark">
+          <p className="text-sm text-subtle-light">
             Copyright © 2023 3legant. All rights reserved
           </p>
         </div>

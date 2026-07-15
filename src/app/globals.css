@@ -16,13 +16,14 @@
   --color-cloud: #fafafa; /* card surface */
   --color-line: #e8ecef; /* borders / dividers */
   --color-smoke: #d9d9d9; /* inactive/neutral */
-  --color-subtle: #807d7e; /* muted text */
+  --color-subtle: #6f6c6d; /* muted text — darkened from Figma's #807d7e for 4.5:1 contrast on white (WCAG AA) */
   --color-subtle-light: #c1c4c9;
   --color-subtle-dark: #6c7275;
   --color-success: #23a18c;
   --color-teal: #2ec1ac;
   --color-mint: #38cb89;
-  --color-sky: #377dff;
+  --color-mint-dark: #0c7a52; /* badge bg — 4.5:1 with white text (WCAG AA); mint itself fails */
+  --color-sky: #2563eb; /* darkened from #377dff for 4.5:1 contrast on mist (WCAG AA) */
 
   --radius-sm: 8px;
   --radius-md: 12px;

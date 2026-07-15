@@ -80,7 +80,7 @@ export function HeroCarousel() {
               fill
               sizes="(max-width: 1024px) 100vw, calc(100vw - 10rem)"
               className="object-cover"
-              fetchPriority={i === 0 ? "high" : "auto"}
+              priority={i === 0}
             />
           </div>
         ))}
@@ -110,10 +110,14 @@ export function HeroCarousel() {
               key={i}
               onClick={() => setCurrent(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === current ? "w-8 bg-white" : "w-2 bg-white/50 hover:bg-white/80"
-              }`}
-            />
+              className="py-2.5 px-1 flex items-center"
+            >
+              <span
+                className={`block h-1.5 rounded-full transition-all duration-300 ${
+                  i === current ? "w-8 bg-white" : "w-2 bg-white/50 hover:bg-white/80"
+                }`}
+              />
+            </button>
           ))}
         </div>
       </div>

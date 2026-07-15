@@ -278,6 +278,7 @@ export function AddToCartSection({ product }: AddToCartSectionProps) {
           <input
             type="text"
             inputMode="numeric"
+            aria-label="Quantity"
             value={quantity}
             onChange={(e) => {
               const next = Number(e.target.value);
