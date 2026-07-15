@@ -70,10 +70,10 @@ function ArticleSections({ sections }: { sections: ArticleSection[] }) {
         result.push(
           <div key={i} className="grid grid-cols-2 gap-4 my-6">
             <div className="relative aspect-4/3 overflow-hidden">
-              <Image src={section.content} alt="" fill sizes="50vw" className="object-cover" />
+              <Image src={section.content} alt={section.alt ?? ""} fill sizes="50vw" className="object-cover" />
             </div>
             <div className="relative aspect-4/3 overflow-hidden">
-              <Image src={next.content} alt="" fill sizes="50vw" className="object-cover" />
+              <Image src={next.content} alt={next.alt ?? ""} fill sizes="50vw" className="object-cover" />
             </div>
           </div>
         );
@@ -82,7 +82,7 @@ function ArticleSections({ sections }: { sections: ArticleSection[] }) {
       }
       result.push(
         <div key={i} className="relative w-full aspect-video overflow-hidden my-6">
-          <Image src={section.content} alt="" fill sizes="(max-width: 768px) 100vw, 800px" className="object-cover" />
+          <Image src={section.content} alt={section.alt ?? ""} fill sizes="(max-width: 768px) 100vw, 800px" className="object-cover" />
         </div>
       );
     } else if (section.type === "h2") {

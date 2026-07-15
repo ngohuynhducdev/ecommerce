@@ -62,7 +62,11 @@ function blocksToSections(blocks: StrapiBlock[] | null | undefined): ArticleSect
     } else if (block.type === "paragraph" && text) {
       sections.push({ type: "p", content: text });
     } else if (block.type === "image" && block.image?.url) {
-      sections.push({ type: "img", content: resolveUrl(block.image.url) });
+      sections.push({
+        type: "img",
+        content: resolveUrl(block.image.url),
+        alt: block.image.alternativeText ?? "",
+      });
     } else if ((block.type === "list" || block.type === "quote") && text) {
       sections.push({ type: "p", content: text });
     }
