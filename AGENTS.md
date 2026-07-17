@@ -6,8 +6,8 @@ Figma reference: https://www.figma.com/design/4wdIrC2NdJVK6VVFuWxtX7/3legant-E-C
 
 ## Repositories
 
-- Frontend: github.com/<your-username>/ecommerce
-- CMS: github.com/<your-username>/ecommerce-cms
+- Frontend: github.com/ngohuynhducdev/ecommerce — live at https://ecommerce-dexr.vercel.app (Vercel)
+- CMS: github.com/ngohuynhducdev/ecommerce-cms — live at https://ecommerce-cms-7kba.onrender.com (Render + Neon Postgres + Cloudinary)
 
 ## Tech Stack
 
@@ -18,6 +18,8 @@ Figma reference: https://www.figma.com/design/4wdIrC2NdJVK6VVFuWxtX7/3legant-E-C
 - React Hook Form + Zod (all form validation)
 - next-auth v5 (credentials + Google OAuth)
 - Strapi v5 CMS (toggled via NEXT_PUBLIC_USE_STRAPI env var)
+- Vitest + happy-dom (unit) · Playwright (e2e purchase flow)
+- GitHub Actions CI (lint/test/build + e2e jobs) · Dependabot weekly · MIT license
 
 ## Design System
 
@@ -27,9 +29,10 @@ Accent/Gold : #B88E2F (CTA hover, badges, Place Order button)
 Background : #FFFFFF (main) / #F3F5F7 (secondary surfaces)
 Surface : #FAFAFA (cards)
 Border : #E8ECEF
-Text muted : #807D7E
+Text muted : #6F6C6D (darkened from Figma's #807D7E for WCAG AA contrast)
 Radius : 8px (sm) · 12px (md) · 16px (lg)
 All tokens : CSS variables in src/app/globals.css
+A11y bar : Lighthouse accessibility 100 on home + product — keep contrast ≥ 4.5:1, touch targets ≥ 24px, labels on form controls
 
 ## Coding Rules
 
@@ -44,6 +47,8 @@ All tokens : CSS variables in src/app/globals.css
 8. Forms always use React Hook Form + Zod schema validation
 9. Persist cart and wishlist with atomWithStorage (jotai/utils)
 10. URL search params for shop filters — NOT Jotai (makes filters shareable)
+11. Keep the Playwright purchase-flow suite green (e2e/shopping-flow.spec.ts) — it runs in CI on every PR
+12. New remote image hosts must be whitelisted in next.config.ts (currently: unsplash, picsum, res.cloudinary.com, localhost:1337)
 
 ## Project Structure
 
@@ -81,10 +86,13 @@ src/
 ## Data Layer Pattern
 
 All data functions in lib/api/ check USE_STRAPI env var:
-NEXT_PUBLIC_USE_STRAPI=false → return filtered mock data (default)
-NEXT_PUBLIC_USE_STRAPI=true → fetch from Strapi REST API
+NEXT_PUBLIC_USE_STRAPI=false → return filtered mock data (local default)
+NEXT_PUBLIC_USE_STRAPI=true → fetch from Strapi REST API (production since Jul 2026)
 UI components NEVER know where data comes from.
-This pattern means Strapi integration requires ZERO UI changes.
+Every Strapi fetch falls back to mock on error — the app never hard-breaks.
+Strapi calls are server-side only (token stays out of the browser); coupons
+are validated through the internal route /api/coupons/validate.
+ISR revalidate 3600 masks Render free-tier cold starts (~50s).
 
 ## Jotai Atoms Reference
 
@@ -133,8 +141,9 @@ NEXT_PUBLIC_SITE_URL=          # canonical URL for metadataBase / sitemap / robo
 
 ## Current Phase
 
-✅ All phases (00–17) complete — project in maintenance/polish mode
-(Update this after completing each phase)
+✅ All phases (00–17) complete + post-launch hardening (Jul 2026) done.
+Maintenance mode: merge green Dependabot PRs weekly, keep CI green.
+Project is a portfolio piece — prefer small reviewed PRs over bulk changes.
 
 ## Phase Progress
 
@@ -157,10 +166,27 @@ NEXT_PUBLIC_SITE_URL=          # canonical URL for metadataBase / sitemap / robo
 [x] Phase 16 — Strapi CMS Setup branch: feat/strapi-setup
 [x] Phase 17 — Strapi Integration branch: feat/strapi-integration
 
+Post-launch hardening (Jul 2026):
+[x] Dependency update (vulns 7→1) branch: chore/deps-update
+[x] Dependabot (npm + github-actions) branch: chore/dependabot
+[x] Playwright e2e + CI job branch: feat/e2e-tests
+[x] Lighthouse fixes — a11y 100 branch: fix/lighthouse
+[x] MIT LICENSE + engines branch: chore/license-engines
+[x] Blog image alt text branch: fix/blog-alt-text
+[x] Architecture diagram + workflow docs branch: docs/*
+[x] Cloudinary image host whitelist branch: fix/cloudinary-image-domain
+[x] Production switched to live Strapi (Vercel env, no code change)
+CMS side: Strapi 5.43→5.50.1 (vulns 100→17), coupon token lockdown,
+CORS whitelist, CI build check, seed-media backfill to Cloudinary.
+
 ## Notes
 
-- Images: use picsum.photos/seed/{slug}/800/800 for mock product images
+- Images: mock data uses images.unsplash.com; Strapi media lives on Cloudinary
+  (auto-seeded by the CMS's seedMedia bootstrap — see ecommerce-cms src/index.ts)
 - Coupon codes for testing: SAVE10 (10% off), FURNITURE20 (20% off)
+  (coupons need the API token in Strapi mode — public read is revoked)
 - Mock auth: any email + password >= 6 characters = login success
 - Place Order button uses accent gold #B88E2F (NOT primary black)
 - Shop filter uses URL params: /shop?category=living-room&maxPrice=500
+- Vercel project is named "ecommerce" but keeps the ecommerce-dexr.vercel.app domain
+- Production env (Vercel): NEXT_PUBLIC_USE_STRAPI=true + Render URL + read-only token
