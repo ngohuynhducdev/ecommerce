@@ -204,3 +204,13 @@ sign-in. See `.env.example` for the full list.
 yarn build
 yarn start
 ```
+
+## Development workflow
+
+Built with an AI-assisted workflow, run with discipline: the project is
+spec'd into phases with explicit coding rules (see `AGENTS.md`), each
+phase is implemented on its own branch, and nothing merges without
+review, tests (34 unit + 3 e2e), and green CI. AI accelerates the
+typing — the architecture decisions (mock ⇄ CMS data layer, server-side
+CMS calls to keep tokens out of the browser, token-gated coupon reads)
+are deliberate and documented in this README.
