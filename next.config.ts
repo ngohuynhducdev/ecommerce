@@ -12,8 +12,15 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
       },
       {
+        // Strapi media uploads live on Cloudinary in production.
         protocol: "https",
-        hostname: "*.up.railway.app",
+        hostname: "res.cloudinary.com",
+      },
+      {
+        // Local Strapi dev serves uploads from its own disk.
+        protocol: "http",
+        hostname: "localhost",
+        port: "1337",
       },
     ],
   },
