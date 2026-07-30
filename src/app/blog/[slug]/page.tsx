@@ -4,6 +4,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SafeImage } from "@/components/ui/safe-image";
 import { BlogCard } from "@/features/blog/components/blog-card";
+import { ShareButtons } from "@/features/blog/components/share-buttons";
+import { TableOfContents } from "@/features/blog/components/table-of-contents";
 import { NewsletterSection } from "@/features/shared/components/newsletter-section";
 import { getPostBySlug, getPosts } from "@/lib/api/blog";
 import type { ArticleSection } from "@/features/blog/types";
@@ -87,7 +89,8 @@ function ArticleSections({ sections }: { sections: ArticleSection[] }) {
       );
     } else if (section.type === "h2") {
       result.push(
-        <h2 key={i} id={section.id} className="text-2xl font-semibold text-ink mt-10 mb-4">
+        // scroll-mt-36 keeps anchor jumps from landing behind the sticky header.
+        <h2 key={i} id={section.id} className="text-2xl font-semibold text-ink mt-10 mb-4 scroll-mt-36">
           {section.content}
         </h2>
       );
@@ -116,10 +119,21 @@ export default async function BlogPostPage({ params }: Props) {
   const allPosts = await getPosts();
   const related = allPosts.filter((p) => p.slug !== slug).slice(0, 3);
 
+  // Headings carry their own anchor ids, so the outline comes straight from
+  // the sections — no parsing of rendered markup.
+  const tocItems = post.sections
+    .filter((s) => s.type === "h2" && s.id)
+    .map((s) => ({ id: s.id as string, label: s.content }));
+
   return (
     <div>
       <div className="px-5 lg:px-20 py-8">
-        <div className="max-w-4xl mx-auto">
+        {/* Article column stays 896px (max-w-6xl - 13rem sidebar - 3rem gap),
+            so widening the shell for the outline leaves the body untouched. */}
+        {/* No items-start here: the outline column has to stretch the full row
+            height, otherwise its sticky child has no room to travel. */}
+        <div className="max-w-6xl mx-auto lg:grid lg:grid-cols-[minmax(0,1fr)_13rem] lg:gap-12">
+        <div className="min-w-0">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-subtle mb-6 flex-wrap">
           <Link href="/" className="hover:text-ink transition-colors">Home</Link>
@@ -173,6 +187,7 @@ export default async function BlogPostPage({ params }: Props) {
             <p className="text-subtle leading-8 mb-4">{post.excerpt}</p>
           )}
           <ArticleSections sections={post.sections} />
+          <ShareButtons />
         </article>
 
         {/* You might also like */}
@@ -192,6 +207,15 @@ export default async function BlogPostPage({ params }: Props) {
             ))}
           </div>
         </div>
+        </div>
+
+        {/* Outline — desktop only; on narrow screens the headings are close
+            enough together that a sticky sidebar earns nothing. */}
+        {tocItems.length > 0 && (
+          <div className="hidden lg:block">
+            <TableOfContents items={tocItems} />
+          </div>
+        )}
         </div>
       </div>
 
