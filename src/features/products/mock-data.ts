@@ -71,8 +71,8 @@ export const mockProducts: Product[] = [
       "Solid walnut coffee table with a minimalist Scandinavian silhouette. The slatted lower shelf provides convenient storage while keeping the look light and airy.",
     price: 349,
     images: [
-      U("1549187774-b4e9b0445b41"),
-      U("1616486338812-3dadae4b4ace"),
+      U("1583847268964-b28dc8f51f92"),
+      U("1610307540583-7472788642d6"),
     ],
     category: livingRoom,
     tags: ["coffee-table", "walnut", "scandinavian"],
@@ -97,7 +97,6 @@ export const mockProducts: Product[] = [
     images: [
       U("1586023492125-27b2c045efd7"),
       U("1567538096630-e0c55bd6374c"),
-      U("1493663284031-b7e3aefcae8e"),
     ],
     category: livingRoom,
     tags: ["armchair", "accent", "reading"],
@@ -123,7 +122,7 @@ export const mockProducts: Product[] = [
     images: [
       U("1540518614846-7eded433c457"),
       U("1505693416388-ac5ce068fe85"),
-      U("1585412727339-54e4bae3bbf9"),
+      U("1560184897-502a475f7a0d"),
     ],
     category: bedroom,
     tags: ["bed", "king", "upholstered"],
@@ -170,8 +169,8 @@ export const mockProducts: Product[] = [
     price: 599,
     comparePrice: 749,
     images: [
-      U("1595526051245-4506e0005bd0"),
-      U("1631049307264-da0ec9d70304"),
+      U("1690310588492-fc8f92bff323"),
+      U("1568506758676-94f1a4e9b4fc"),
     ],
     category: bedroom,
     tags: ["dresser", "storage", "drawers"],
@@ -196,9 +195,8 @@ export const mockProducts: Product[] = [
       "Solid marble-top dining table on a geometric brushed-steel base. Seats six comfortably and becomes the natural focal point of any dining room.",
     price: 1499,
     images: [
-      U("1577140917170-285929fb55b7"),
-      U("1533779283741-c4f04f5cd7a2"),
-      U("1559539463-7b282c0e2c3a"),
+      U("1730104231026-46e3cf7c3141"),
+      U("1540177656454-3f6c4547bed1"),
     ],
     category: dining,
     tags: ["dining-table", "marble", "six-seater"],
@@ -222,7 +220,7 @@ export const mockProducts: Product[] = [
     comparePrice: 229,
     images: [
       U("1592078615290-033ee584e267"),
-      U("1581539250439-c96689b516dd"),
+      U("1577140917170-285929fb55b7"),
     ],
     category: dining,
     tags: ["chair", "dining", "ergonomic"],
@@ -246,8 +244,8 @@ export const mockProducts: Product[] = [
     price: 179,
     comparePrice: 219,
     images: [
-      U("1530018607912-eff968941de0"),
-      U("1592078615290-033ee584e267"),
+      U("1612372603963-403340a8942b"),
+      U("1622986339425-7f92e62dab42"),
     ],
     category: dining,
     tags: ["stool", "bar", "adjustable"],
@@ -273,7 +271,6 @@ export const mockProducts: Product[] = [
     images: [
       U("1593642632559-0c6d3fc62b89"),
       U("1519710164239-da123dc03ef4"),
-      U("1524758631624-e2822e304c36"),
     ],
     category: office,
     tags: ["desk", "home-office", "cable-management"],
@@ -297,7 +294,7 @@ export const mockProducts: Product[] = [
     comparePrice: 699,
     images: [
       U("1518455027359-f3f8164ba6bd"),
-      U("1593642632559-0c6d3fc62b89"),
+      U("1657757996603-acec063f1d9b"),
     ],
     category: office,
     tags: ["chair", "ergonomic", "mesh"],
@@ -319,8 +316,8 @@ export const mockProducts: Product[] = [
       "Versatile open shelving unit that can be stacked and configured to your space. Each module is crafted from FSC-certified pine with a white lacquer finish.",
     price: 299,
     images: [
-      U("1558618666-fcd25c85cd64"),
-      U("1527859978995-4f1e78f5a7de"),
+      U("1593589281510-c0de02549a96"),
+      U("1594620302200-9a762244a156"),
     ],
     category: office,
     tags: ["shelf", "modular", "storage"],

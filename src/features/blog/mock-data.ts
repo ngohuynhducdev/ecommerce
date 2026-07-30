@@ -287,7 +287,7 @@ export const MOCK_POSTS: BlogPost[] = [
       },
       {
         type: "img",
-        content: U("1558618666-fcd25c85cd64", 1200, 600),
+        content: U("1589271243979-3153ef0dcbd7", 1200, 600),
         alt: "Wooden furniture made from sustainably sourced materials",
       },
       {
@@ -346,7 +346,7 @@ export const MOCK_POSTS: BlogPost[] = [
       },
       {
         type: "img",
-        content: U("1527859978995-4f1e78f5a7de", 1200, 600),
+        content: U("1585128792103-0b591f96512e", 1200, 600),
         alt: "Compact apartment interior with space-saving furniture",
       },
       {
