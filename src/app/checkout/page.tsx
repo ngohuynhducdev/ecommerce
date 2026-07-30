@@ -504,7 +504,7 @@ export default function CheckoutPage() {
                     <button
                       type="button"
                       onClick={applyCoupon}
-                      className="px-4 bg-ink text-white text-sm font-medium hover:bg-[#333] transition-colors cursor-pointer shrink-0"
+                      className="px-4 bg-ink text-white text-sm font-medium hover:bg-ink-hover transition-colors cursor-pointer shrink-0"
                     >
                       Apply
                     </button>

@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+const COPYRIGHT_YEAR = new Date().getFullYear();
+
 function InstagramIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
@@ -95,7 +97,7 @@ export function Footer() {
         <div className="hidden lg:flex items-center justify-between">
           <div className="flex items-center gap-8">
             <p className="text-sm text-subtle-light">
-              Copyright © 2023 3legant. All rights reserved
+              Copyright © {COPYRIGHT_YEAR} 3legant. All rights reserved
             </p>
             <Link href="/privacy" className="text-sm font-semibold text-white hover:text-gold transition-colors">
               Privacy Policy
@@ -142,7 +144,7 @@ export function Footer() {
             </Link>
           </div>
           <p className="text-sm text-subtle-light">
-            Copyright © 2023 3legant. All rights reserved
+            Copyright © {COPYRIGHT_YEAR} 3legant. All rights reserved
           </p>
         </div>
       </div>
