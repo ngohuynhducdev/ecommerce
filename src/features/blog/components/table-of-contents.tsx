@@ -35,7 +35,9 @@ export function TableOfContents({ items }: Props) {
   }, [items]);
 
   return (
-    <aside className="sticky top-8 h-fit">
+    // top-36 (144px) clears the sticky site chrome — announcement bar (44px)
+    // plus navbar (80px) — so the outline is never pinned underneath it.
+    <aside className="sticky top-36 h-fit">
       <p className="text-sm font-semibold mb-3">Table of Contents</p>
       <ul className="space-y-0.5">
         {items.map(({ id, label }) => (

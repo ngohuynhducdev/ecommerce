@@ -24,8 +24,8 @@ export async function generateStaticParams() {
     const products = await getProducts();
     return products.map((p) => ({ slug: p.slug }));
   } catch (error) {
-    // Nếu Strapi fail lúc build, trả về mảng rỗng
-    // Next.js sẽ render dynamic thay vì static
+    // Returning an empty list makes Next.js render these routes on demand
+    // instead of failing the build when Strapi is unreachable.
     console.error("Failed to fetch products for static params:", error);
     return [];
   }

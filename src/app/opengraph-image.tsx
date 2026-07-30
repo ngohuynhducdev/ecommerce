@@ -27,7 +27,7 @@ export default function OpengraphImage() {
         <div style={{ marginTop: 24, fontSize: 44, fontWeight: 700, color: "#1c1c1c" }}>
           Simply Unique / Simply Better.
         </div>
-        <div style={{ marginTop: 20, fontSize: 28, color: "#807d7e" }}>
+        <div style={{ marginTop: 20, fontSize: 28, color: "#6f6c6d" }}>
           Modern furniture &amp; decorations
         </div>
         <div style={{ marginTop: 48, width: 80, height: 6, background: "#b88e2f", borderRadius: 3 }} />
