@@ -6,7 +6,7 @@
 
 A full-featured e-commerce storefront for a minimalist furniture brand, built with Next.js 16 App Router. Based on the [3legant Figma community design](https://www.figma.com/design/4wdIrC2NdJVK6VVFuWxtX7/).
 
-> The live demo runs on mock data (`NEXT_PUBLIC_USE_STRAPI=false`) — sign in with any email + a 6+ character password; card payments are simulated.
+> The live demo is served from the Strapi CMS (`NEXT_PUBLIC_USE_STRAPI=true`), with product content in Postgres and media on Cloudinary. Sign in with any email + a 6+ character password; card payments are simulated.
 
 ![3legant storefront](docs/screenshots/home.png)
 
@@ -78,9 +78,9 @@ src/
 │   ├── cart/             # CartFlyout, atoms
 │   ├── wishlist/         # atoms
 │   ├── checkout/         # multi-step form, atoms
-│   ├── blog/             # BlogCard, TableOfContents, ShareButtons, mock data
+│   ├── blog/             # BlogCard, BlogContent, TableOfContents, ShareButtons, mock data
 │   ├── contact/          # ContactForm
-│   ├── account/          # AccountSidebar, WishlistCard
+│   ├── account/          # AccountSidebar
 │   └── shared/           # Navbar, Footer, Breadcrumb, AnnouncementBar
 └── lib/
     ├── api/              # products.ts, categories.ts, blog.ts (Strapi-ready)
@@ -166,13 +166,17 @@ flowchart LR
     STRAPI -. "request fails → fallback" .-> MOCK
 ```
 
-**The CMS is optional by design.** The live demo runs on mock data for
-speed and stability (no cold starts, nothing to keep alive). The Strapi
-project — content types, controllers, seed content — lives in a separate
-repo:
-[`ecommerce-cms`](https://github.com/ngohuynhducdev/ecommerce-cms). Flip
-`NEXT_PUBLIC_USE_STRAPI=true` and point `NEXT_PUBLIC_STRAPI_URL` at a
-running instance to source content from the CMS instead.
+**The CMS is optional by design.** The live demo runs against Strapi, so
+what you see at [ecommerce-dexr.vercel.app](https://ecommerce-dexr.vercel.app)
+is real CMS content: products from Postgres (Neon), media from Cloudinary.
+`revalidate = 3600` keeps pages served from the ISR cache, which also
+masks Render's free-tier cold starts. The Strapi project — content types,
+controllers, seed content — lives in a separate repo:
+[`ecommerce-cms`](https://github.com/ngohuynhducdev/ecommerce-cms).
+
+Local development needs none of that: with `NEXT_PUBLIC_USE_STRAPI=false`
+(the default) the app resolves everything from in-repo mock data, so
+`yarn dev` works with no backend and no network.
 
 ## Screenshots
 
@@ -191,12 +195,14 @@ detected automatically. Set these environment variables:
 
 | Variable | Value |
 |---|---|
-| `NEXT_PUBLIC_USE_STRAPI` | `false` |
+| `NEXT_PUBLIC_USE_STRAPI` | `false` to deploy on mock data, `true` to read from Strapi |
 | `NEXT_PUBLIC_SITE_URL` | your Vercel URL (for `metadataBase` / sitemap) |
 | `AUTH_SECRET` | `openssl rand -hex 32` |
 
-`GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` are only needed for Google
-sign-in. See `.env.example` for the full list.
+With `NEXT_PUBLIC_USE_STRAPI=true` you also need `NEXT_PUBLIC_STRAPI_URL`
+and a read-only `STRAPI_API_TOKEN` — that is how this project's own
+deployment is configured. `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` are
+only needed for Google sign-in. See `.env.example` for the full list.
 
 ### Self-hosted
 
