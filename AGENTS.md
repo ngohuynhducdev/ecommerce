@@ -19,7 +19,7 @@ Figma reference: https://www.figma.com/design/4wdIrC2NdJVK6VVFuWxtX7/3legant-E-C
 - next-auth v5 (credentials + Google OAuth)
 - Strapi v5 CMS (toggled via NEXT_PUBLIC_USE_STRAPI env var)
 - Vitest + happy-dom (unit) · Playwright (e2e purchase flow)
-- GitHub Actions CI (lint/test/build + e2e jobs) · Dependabot weekly · MIT license
+- GitHub Actions CI (lint/test/build + e2e jobs) · Dependabot security-only · MIT license
 
 ## Design System
 
@@ -142,8 +142,16 @@ NEXT_PUBLIC_SITE_URL=          # canonical URL for metadataBase / sitemap / robo
 ## Current Phase
 
 ✅ All phases (00–17) complete + post-launch hardening (Jul 2026) done.
-Maintenance mode: merge green Dependabot PRs weekly, keep CI green.
+Maintenance mode: keep CI green; upgrade dependencies deliberately rather
+than on a weekly bot cadence.
 Project is a portfolio piece — prefer small reviewed PRs over bulk changes.
+
+Dependency policy (since Jul 2026): scheduled version-update PRs are OFF —
+.github/dependabot.yml was removed on purpose, not forgotten. Dependabot
+security updates stay ON (a repo setting, independent of that file), so
+CVE fixes still arrive as PRs. Routine bumps are done by hand, which means
+pinned GitHub Actions versions in .github/workflows/ci.yml no longer get
+bumped for you — check them when touching CI.
 
 ## Phase Progress
 
@@ -169,6 +177,7 @@ Project is a portfolio piece — prefer small reviewed PRs over bulk changes.
 Post-launch hardening (Jul 2026):
 [x] Dependency update (vulns 7→1) branch: chore/deps-update
 [x] Dependabot (npm + github-actions) branch: chore/dependabot
+    (version updates later switched off — see Dependency policy above)
 [x] Playwright e2e + CI job branch: feat/e2e-tests
 [x] Lighthouse fixes — a11y 100 branch: fix/lighthouse
 [x] MIT LICENSE + engines branch: chore/license-engines
