@@ -13,7 +13,11 @@ export interface Coupon {
   type: "percent" | "fixed";
 }
 
-export const couponAtom = atom<Coupon | null>(null);
+// Persisted like the cart it discounts: a reload on /cart or /checkout used to
+// drop the coupon while the items stayed, so the total silently went back up.
+export const couponAtom = atomWithStorage<Coupon | null>("coupon", null, undefined, {
+  getOnInit: true,
+});
 
 export type ShippingMethod = "standard" | "express" | "nextday";
 

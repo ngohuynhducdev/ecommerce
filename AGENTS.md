@@ -45,7 +45,7 @@ A11y bar : Lighthouse accessibility 100 on home + product — keep contrast ≥ 
 6. One feature per branch → one PR per branch → merge to main
 7. No hardcoded colors — always use CSS variables or Tailwind with design tokens
 8. Forms always use React Hook Form + Zod schema validation
-9. Persist cart and wishlist with atomWithStorage (jotai/utils)
+9. Persist cart, wishlist and coupon with atomWithStorage (jotai/utils)
 10. URL search params for shop filters — NOT Jotai (makes filters shareable)
 11. Keep the Playwright purchase-flow suite green (e2e/shopping-flow.spec.ts) — it runs in CI on every PR
 12. New remote image hosts must be whitelisted in next.config.ts (currently: unsplash, picsum, res.cloudinary.com, localhost:1337)
@@ -98,7 +98,7 @@ ISR revalidate 3600 masks Render free-tier cold starts (~50s).
 
 Cart : cartItemsAtom (CartItem[], persisted) · cartOpenAtom (bool) · cartCountAtom (derived) · cartSubtotalAtom (derived)
 Wishlist : wishlistAtom (WishlistItem[], persisted) · wishlistCountAtom (derived)
-Coupon : couponAtom ({ code, discount, type } | null)
+Coupon : couponAtom ({ code, discount, type } | null, persisted)
 Checkout : checkoutStepAtom (1 | 2 | 3) · shippingDataAtom · ordersAtom (persisted)
 UI : announcementVisibleAtom (bool)
 
