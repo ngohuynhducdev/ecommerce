@@ -22,7 +22,9 @@ export const mockCategories: Category[] = [
     id: "cat-3",
     slug: "dining",
     name: "Dining",
-    image: U("1577140917170-285929fb55b7"),
+    // A full dining scene — the previous photo was mostly bare wall, which the
+    // card's cover crop reduced to an empty band.
+    image: U("1730104231026-46e3cf7c3141"),
     description: "Elegant dining sets for memorable meals together.",
   },
   {

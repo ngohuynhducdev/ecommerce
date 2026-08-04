@@ -13,6 +13,9 @@ export function CategoryCard({ category, large = false }: CategoryCardProps) {
       href={`/shop?category=${category.slug}`}
       className="group relative flex h-full overflow-hidden rounded-2xl bg-mist"
     >
+      {/* Scrim — keeps the ink text readable over whatever photo the CMS serves */}
+      <div className="absolute inset-0 z-[5] bg-gradient-to-br from-white/95 from-0% via-white/45 via-20% to-transparent to-45%" />
+
       {/* Text — top left */}
       <div className="absolute top-6 left-6 z-10 md:top-8 md:left-8">
         <h3
@@ -38,11 +41,7 @@ export function CategoryCard({ category, large = false }: CategoryCardProps) {
               ? "(max-width: 768px) 100vw, 50vw"
               : "(max-width: 768px) 100vw, 25vw"
           }
-          className={`object-contain transition-transform duration-500 group-hover:scale-105 ${
-            large
-              ? "object-bottom px-6 pt-24 pb-4"
-              : "object-bottom-right px-4 pt-20 pb-2"
-          }`}
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
     </Link>
