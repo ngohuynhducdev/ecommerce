@@ -184,6 +184,10 @@ Local development needs none of that: with `NEXT_PUBLIC_USE_STRAPI=false`
 |---|---|
 | ![Shop](docs/screenshots/shop.png) | ![Product detail](docs/screenshots/product.png) |
 
+| Cart (coupon applied) | Checkout |
+|---|---|
+| ![Cart](docs/screenshots/cart.png) | ![Checkout](docs/screenshots/checkout.png) |
+
 <p align="center"><img src="docs/screenshots/mobile.png" width="300" alt="Mobile" /></p>
 
 ## Deploy
@@ -216,7 +220,7 @@ yarn start
 Built with an AI-assisted workflow, run with discipline: the project is
 spec'd into phases with explicit coding rules (see `AGENTS.md`), each
 phase is implemented on its own branch, and nothing merges without
-review, tests (34 unit + 3 e2e), and green CI. AI accelerates the
+review, tests (42 unit + 3 e2e), and green CI. AI accelerates the
 typing — the architecture decisions (mock ⇄ CMS data layer, server-side
 CMS calls to keep tokens out of the browser, token-gated coupon reads)
 are deliberate and documented in this README.
