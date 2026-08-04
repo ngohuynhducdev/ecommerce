@@ -3,7 +3,9 @@
 /*
  * Brand design tokens (3legant).
  * Named distinctly from shadcn/ui's semantic tokens (primary, accent,
- * muted, secondary, border…) so the two systems never collide.
+ * muted, secondary, border…) so the two systems never collide; the shadcn
+ * names are then defined below in terms of these, since the primitives in
+ * components/ui are written against them.
  * Tailwind v4 generates utilities from these: bg-ink, text-subtle,
  * border-line, bg-gold, etc.
  */
@@ -24,6 +26,30 @@
   --color-mint: #38cb89;
   --color-mint-dark: #0c7a52; /* badge bg — 4.5:1 with white text (WCAG AA); mint itself fails */
   --color-sky: #2563eb; /* darkened from #377dff for 4.5:1 contrast on mist (WCAG AA) */
+
+  /*
+   * shadcn/ui's semantic tokens, mapped onto the brand palette above. The
+   * primitives in components/ui reference these names; leaving them undefined
+   * compiles classes like `bg-background` to nothing, which is how the cart
+   * flyout ended up transparent with the page showing through it.
+   */
+  --color-background: #ffffff;
+  --color-foreground: var(--color-ink);
+  --color-card: #ffffff;
+  --color-card-foreground: var(--color-ink);
+  --color-popover: #ffffff;
+  --color-popover-foreground: var(--color-ink);
+  --color-primary: var(--color-ink);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--color-mist);
+  --color-secondary-foreground: var(--color-ink);
+  --color-muted: var(--color-mist);
+  --color-muted-foreground: var(--color-subtle);
+  --color-accent: var(--color-mist);
+  --color-accent-foreground: var(--color-ink);
+  --color-border: var(--color-line);
+  --color-input: var(--color-line);
+  --color-ring: var(--color-ink);
 
   --radius-sm: 8px;
   --radius-md: 12px;
