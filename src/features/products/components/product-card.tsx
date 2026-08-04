@@ -130,7 +130,7 @@ export function ProductCard({ product }: ProductCardProps) {
               alt={product.name}
               fill
               sizes="(max-width: 768px) 50vw, 25vw"
-              className="object-contain p-4"
+              className="object-cover"
             />
           </div>
         </Link>
