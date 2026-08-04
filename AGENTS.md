@@ -32,7 +32,7 @@ Border : #E8ECEF
 Text muted : #6F6C6D (darkened from Figma's #807D7E for WCAG AA contrast)
 Radius : 8px (sm) · 12px (md) · 16px (lg)
 All tokens : CSS variables in src/app/globals.css
-A11y bar : Lighthouse accessibility 100 on home + product — keep contrast ≥ 4.5:1, touch targets ≥ 24px, labels on form controls
+A11y bar : Lighthouse accessibility 100 on every public page — keep contrast ≥ 4.5:1, touch targets ≥ 24px, an aria-label on every select, heading levels never skipped
 
 ## Coding Rules
 

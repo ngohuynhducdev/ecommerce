@@ -48,6 +48,7 @@ export function AccountSidebar({ name }: Props) {
 
         {/* Mobile section selector */}
         <select
+          aria-label="Account section"
           value={navItems.some((n) => n.href === pathname) ? pathname : "/account"}
           onChange={(e) => handleMobileNav(e.target.value)}
           className="lg:hidden mt-4 w-full h-11 border border-line rounded-lg px-3 text-sm bg-white cursor-pointer outline-none"

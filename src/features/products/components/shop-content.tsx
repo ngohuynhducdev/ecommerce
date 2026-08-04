@@ -128,6 +128,7 @@ export function ShopContent({
     <div className="flex items-center gap-1">
       <span className="text-sm text-ink">Sort by</span>
       <select
+        aria-label="Sort products"
         value={currentSort ?? "default"}
         onChange={(e) => handleSort(e.target.value)}
         className="text-sm text-ink bg-transparent border-none outline-none cursor-pointer"
