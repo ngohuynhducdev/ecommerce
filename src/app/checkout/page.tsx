@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useSyncExternalStore } from "react";
+import { useState, useEffect, useSyncExternalStore, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +18,7 @@ import {
 } from "@/features/checkout/atoms";
 import { calculateDiscount, calculateTotal } from "@/features/checkout/totals";
 import { StepIndicator } from "@/features/checkout/components/step-indicator";
+import { validateCouponClient } from "@/lib/api/coupons-client";
 import { formatPrice, generateOrderId, cn } from "@/lib/utils";
 import type { CartItem, Order } from "@/features/products/types";
 
@@ -25,11 +26,6 @@ const COUNTRIES = [
   "United States", "Canada", "United Kingdom", "Germany", "France",
   "Italy", "Spain", "Australia", "Japan", "Vietnam",
 ];
-
-const COUPONS: Record<string, { discount: number; type: "percent" }> = {
-  SAVE10: { discount: 10, type: "percent" },
-  FURNITURE20: { discount: 20, type: "percent" },
-};
 
 const schema = z.object({
   firstName: z.string().min(1, "Required"),
@@ -127,6 +123,7 @@ export default function CheckoutPage() {
   const [cvc, setCvc] = useState("");
   const [couponInput, setCouponInput] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isApplyingCoupon, startTransition] = useTransition();
   const mounted = useSyncExternalStore(
     () => () => {},
     () => true,
@@ -169,14 +166,19 @@ export default function CheckoutPage() {
   function applyCoupon() {
     const code = couponInput.trim().toUpperCase();
     if (!code) return;
-    const match = COUPONS[code];
-    if (match) {
-      setCoupon({ code, discount: match.discount, type: match.type });
+
+    startTransition(async () => {
+      const data = await validateCouponClient(code);
+      if (!data) {
+        toast.error("Invalid coupon code");
+        return;
+      }
+      setCoupon({ code: data.code, discount: data.discount, type: data.type });
       setCouponInput("");
-      toast.success(`${code} applied — ${match.discount}% off`);
-    } else {
-      toast.error("Invalid coupon code");
-    }
+      toast.success(
+        `${data.code} applied — ${data.discount}${data.type === "percent" ? "%" : "$"} off`,
+      );
+    });
   }
 
   function onSubmit(data: FormData) {
@@ -501,9 +503,10 @@ export default function CheckoutPage() {
                     <button
                       type="button"
                       onClick={applyCoupon}
-                      className="px-4 bg-ink text-white text-sm font-medium hover:bg-ink-hover transition-colors cursor-pointer shrink-0"
+                      disabled={isApplyingCoupon}
+                      className="px-4 bg-ink text-white text-sm font-medium hover:bg-ink-hover transition-colors cursor-pointer shrink-0 disabled:opacity-50"
                     >
-                      Apply
+                      {isApplyingCoupon ? "…" : "Apply"}
                     </button>
                   </div>
                 )}

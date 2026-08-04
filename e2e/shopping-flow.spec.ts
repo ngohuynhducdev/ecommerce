@@ -39,6 +39,11 @@ test("complete purchase flow", async ({ page }) => {
   // Free shipping is the default, so 10% off must land on the total exactly.
   expect(total).toBeCloseTo(subtotalBefore * 0.9, 2);
 
+  // A reload must not silently drop the coupon while the items stay
+  await page.reload();
+  await expect(summary.getByText("Discount (SAVE10)")).toBeVisible();
+  expect(await amountNextTo("Total")).toBeCloseTo(subtotalBefore * 0.9, 2);
+
   // Proceed to checkout
   await page.getByRole("link", { name: "Checkout" }).click();
   await expect(page.getByRole("heading", { name: "Check Out" })).toBeVisible();
@@ -83,4 +88,26 @@ test("invalid coupon shows an error", async ({ page }) => {
   await page.getByPlaceholder("Coupon Code").fill("NOTACODE");
   await page.getByRole("button", { name: "Apply" }).click();
   await expect(page.getByText("Invalid coupon code")).toBeVisible();
+});
+
+// Checkout used to match coupons against a hardcoded map, so it accepted codes
+// the cart's server-side validation would have rejected. Both go through
+// /api/coupons/validate now.
+test("checkout validates coupons through the API", async ({ page }) => {
+  await page.goto("/shop");
+  await page.locator('a[href^="/shop/"]').first().click();
+  await page.getByRole("button", { name: "Add to Cart", exact: true }).click();
+
+  await page.goto("/checkout");
+  const removeCoupon = page.getByRole("button", { name: "[Remove]" });
+
+  await page.getByPlaceholder("Coupon code").fill("NOTACODE");
+  await page.getByRole("button", { name: "Apply" }).click();
+  await expect(page.getByText("Invalid coupon code")).toBeVisible();
+  await expect(removeCoupon).toHaveCount(0);
+
+  await page.getByPlaceholder("Coupon code").fill("FURNITURE20");
+  await page.getByRole("button", { name: "Apply" }).click();
+  await expect(removeCoupon).toBeVisible();
+  await expect(page.getByText("FURNITURE20", { exact: true })).toBeVisible();
 });
