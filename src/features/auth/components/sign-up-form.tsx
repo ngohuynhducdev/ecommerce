@@ -150,14 +150,9 @@ export function SignUpForm({ onSwitch, onSuccess }: SignUpFormProps) {
               className="mt-0.5 w-4 h-4 border border-line rounded-sm accent-ink cursor-pointer shrink-0"
             />
             <span className="text-sm text-subtle leading-relaxed">
-              I agree with{" "}
-              <a href="#" className="font-bold text-ink hover:underline">
-                Privacy Policy
-              </a>{" "}
-              and{" "}
-              <a href="#" className="font-bold text-ink hover:underline">
-                Terms of Use
-              </a>
+              I agree with the{" "}
+              <span className="font-bold text-ink">Privacy Policy</span> and{" "}
+              <span className="font-bold text-ink">Terms of Use</span>
             </span>
           </label>
           {errors.terms && (

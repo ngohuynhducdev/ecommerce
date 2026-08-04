@@ -16,7 +16,7 @@ Figma reference: https://www.figma.com/design/4wdIrC2NdJVK6VVFuWxtX7/3legant-E-C
 - Tailwind CSS v4 + shadcn/ui
 - Jotai + atomWithStorage (state management, persisted to localStorage)
 - React Hook Form + Zod (all form validation)
-- next-auth v5 (credentials + Google OAuth)
+- next-auth v5 (credentials only — mock authorize, no OAuth provider)
 - Strapi v5 CMS (toggled via NEXT_PUBLIC_USE_STRAPI env var)
 - Vitest + happy-dom (unit) · Playwright (e2e purchase flow)
 - GitHub Actions CI (lint/test/build + e2e jobs) · Dependabot security-only · MIT license
@@ -118,8 +118,6 @@ NEXT_PUBLIC_USE_STRAPI=false
 NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
 STRAPI_API_TOKEN=
 AUTH_SECRET=
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
 NEXT_PUBLIC_SITE_URL=          # canonical URL for metadataBase / sitemap / robots
 
 ## Sitemap
