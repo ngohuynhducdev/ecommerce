@@ -19,7 +19,7 @@ A full-featured e-commerce storefront for a minimalist furniture brand, built wi
 | Styling | Tailwind CSS v4 + shadcn/ui |
 | State | Jotai + `atomWithStorage` (persisted to localStorage) |
 | Forms | React Hook Form + Zod |
-| Auth | NextAuth v5 (Credentials + Google OAuth ready) |
+| Auth | NextAuth v5 (Credentials, mock authorize) |
 | CMS | Strapi v5 (toggled via `NEXT_PUBLIC_USE_STRAPI`) |
 | Font | Poppins (Google Fonts) |
 
@@ -48,9 +48,6 @@ NEXT_PUBLIC_USE_STRAPI=false
 NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
 STRAPI_API_TOKEN=
 
-# Google OAuth (optional)
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
 ```
 
 Generate `AUTH_SECRET` with:
@@ -93,7 +90,7 @@ src/
 - **Product Detail** — image gallery with thumbnails, variant selector, quantity picker, Add to Cart, wishlist toggle, related products, tabbed reviews
 - **Cart** — quantity controls, coupon codes (`SAVE10`, `FURNITURE20`), order summary, persistent via localStorage
 - **Checkout** — 3-step flow: shipping → payment → review → animated order success page
-- **Auth** — NextAuth v5 with mock credentials (any email + password ≥ 6 chars); protected `/account` routes via middleware
+- **Auth** — NextAuth v5 with a Credentials provider whose `authorize` accepts any email + password ≥ 6 chars (no user store, no OAuth provider); protected `/account` routes via middleware
 - **Account** — profile editor, order history with status filters, wishlist management
 - **Blog** — featured post, article grid, full post with scroll-tracked table of contents, social share, related posts
 - **Contact** — info cards, validated contact form, map placeholder
@@ -205,8 +202,7 @@ detected automatically. Set these environment variables:
 
 With `NEXT_PUBLIC_USE_STRAPI=true` you also need `NEXT_PUBLIC_STRAPI_URL`
 and a read-only `STRAPI_API_TOKEN` — that is how this project's own
-deployment is configured. `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` are
-only needed for Google sign-in. See `.env.example` for the full list.
+deployment is configured. See `.env.example` for the full list.
 
 ### Self-hosted
 

@@ -99,12 +99,6 @@ export function Footer() {
             <p className="text-sm text-subtle-light">
               Copyright © {COPYRIGHT_YEAR} 3legant. All rights reserved
             </p>
-            <Link href="/privacy" className="text-sm font-semibold text-white hover:text-gold transition-colors">
-              Privacy Policy
-            </Link>
-            <Link href="/terms" className="text-sm font-semibold text-white hover:text-gold transition-colors">
-              Terms of Use
-            </Link>
           </div>
           <div className="flex items-center gap-3">
             {socialLinks.map(({ icon, href, label }) => (
@@ -134,14 +128,6 @@ export function Footer() {
                 {icon}
               </Link>
             ))}
-          </div>
-          <div className="flex items-center gap-6">
-            <Link href="/privacy" className="text-sm font-semibold text-white hover:text-gold transition-colors">
-              Privacy Policy
-            </Link>
-            <Link href="/terms" className="text-sm font-semibold text-white hover:text-gold transition-colors">
-              Terms of Use
-            </Link>
           </div>
           <p className="text-sm text-subtle-light">
             Copyright © {COPYRIGHT_YEAR} 3legant. All rights reserved
