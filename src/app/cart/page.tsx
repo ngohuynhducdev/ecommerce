@@ -13,6 +13,7 @@ import {
   SHIPPING_COSTS,
   type ShippingMethod,
 } from "@/features/checkout/atoms";
+import { calculateDiscount, calculateTotal } from "@/features/checkout/totals";
 import { StepIndicator } from "@/features/checkout/components/step-indicator";
 import type { CartItem } from "@/features/products/types";
 import { validateCouponClient } from "@/lib/api/coupons-client";
@@ -100,7 +101,8 @@ export default function CartPage() {
   }
 
   const shippingCost = SHIPPING_COSTS[shippingMethod];
-  const total = subtotal + shippingCost;
+  const discountAmount = calculateDiscount(subtotal, coupon);
+  const total = calculateTotal(subtotal, shippingCost, coupon);
 
   return (
     <div className="px-5 lg:px-20 py-8 lg:py-12">
@@ -333,6 +335,14 @@ export default function CartPage() {
                   <span className="text-subtle">Subtotal</span>
                   <span className="text-ink font-medium">{formatPrice(subtotal)}</span>
                 </div>
+                {coupon && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-subtle">Discount ({coupon.code})</span>
+                    <span className="text-success font-medium">
+                      -{formatPrice(discountAmount)}
+                    </span>
+                  </div>
+                )}
                 <div className="flex justify-between pt-2 border-t border-line">
                   <span className="font-bold text-ink">Total</span>
                   <span className="font-bold text-ink">{formatPrice(total)}</span>

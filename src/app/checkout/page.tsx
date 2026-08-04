@@ -16,6 +16,7 @@ import {
   ordersAtom,
   SHIPPING_COSTS,
 } from "@/features/checkout/atoms";
+import { calculateDiscount, calculateTotal } from "@/features/checkout/totals";
 import { StepIndicator } from "@/features/checkout/components/step-indicator";
 import { formatPrice, generateOrderId, cn } from "@/lib/utils";
 import type { CartItem, Order } from "@/features/products/types";
@@ -151,12 +152,8 @@ export default function CheckoutPage() {
   if (!mounted || (items.length === 0 && !isProcessing)) return null;
 
   const shippingCost = SHIPPING_COSTS[shippingMethod];
-  const discountAmount = coupon
-    ? coupon.type === "percent"
-      ? (subtotal * coupon.discount) / 100
-      : coupon.discount
-    : 0;
-  const total = Math.max(0, subtotal + shippingCost - discountAmount);
+  const discountAmount = calculateDiscount(subtotal, coupon);
+  const total = calculateTotal(subtotal, shippingCost, coupon);
 
   function updateQuantity(item: CartItem, qty: number) {
     if (qty < 1) return;
