@@ -19,10 +19,25 @@ test("complete purchase flow", async ({ page }) => {
   await page.goto("/cart");
   await expect(page.getByRole("heading", { name: "Cart", exact: true })).toBeVisible();
 
-  // Apply a coupon
+  // Apply a coupon — the summary must show the discount and a smaller total
+  const summary = page.locator("aside");
+  const amountNextTo = async (label: string) => {
+    const text = await summary
+      .getByText(label, { exact: true })
+      .locator("xpath=following-sibling::*[1]")
+      .textContent();
+    return Number((text ?? "").replace(/[^0-9.]/g, ""));
+  };
+  const subtotalBefore = await amountNextTo("Subtotal");
+
   await page.getByPlaceholder("Coupon Code").fill("SAVE10");
   await page.getByRole("button", { name: "Apply" }).click();
   await expect(page.getByText("SAVE10 applied ✓")).toBeVisible();
+
+  await expect(summary.getByText("Discount (SAVE10)")).toBeVisible();
+  const total = await amountNextTo("Total");
+  // Free shipping is the default, so 10% off must land on the total exactly.
+  expect(total).toBeCloseTo(subtotalBefore * 0.9, 2);
 
   // Proceed to checkout
   await page.getByRole("link", { name: "Checkout" }).click();

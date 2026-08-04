@@ -7,11 +7,13 @@ export const shippingDataAtom = atom<ShippingAddress | null>(null);
 export const ordersAtom = atomWithStorage<Order[]>("orders", [], undefined, {
   getOnInit: true,
 });
-export const couponAtom = atom<{
+export interface Coupon {
   code: string;
   discount: number;
   type: "percent" | "fixed";
-} | null>(null);
+}
+
+export const couponAtom = atom<Coupon | null>(null);
 
 export type ShippingMethod = "standard" | "express" | "nextday";
 
