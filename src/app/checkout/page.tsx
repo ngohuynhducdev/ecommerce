@@ -289,6 +289,7 @@ export default function CheckoutPage() {
                   control={control}
                   render={({ field }) => (
                     <select
+                      aria-label="Country"
                       value={field.value}
                       onChange={field.onChange}
                       className="w-full h-11 border border-line rounded-sm px-3 text-sm outline-none focus:border-ink transition-colors bg-white"

@@ -122,12 +122,27 @@ yarn test:e2e    # e2e suite (builds and serves the app itself)
 
 ## Lighthouse
 
-Scores for the production build (mobile emulation, `next start` locally):
+Production build, mobile emulation, `next start` on localhost. Three runs
+per page; performance is given as the range across those runs, because it
+moves a few points run to run.
 
 | Page | Performance | Accessibility | Best Practices | SEO |
 |---|---|---|---|---|
-| Home | 86 | 100 | 100 | 100 |
-| Product detail | 86 | 100 | 100 | 100 |
+| Home | 83–87 | 100 | 100 | 100 |
+| Shop | 84–88 | 100 | 100 | 100 |
+| Product detail | 88 | 100 | 100 | 100 |
+| Blog | 85–87 | 100 | 100 | 100 |
+| Contact | 90–93 | 100 | 100 | 100 |
+
+Accessibility, best practices and SEO sit at 100 on every public page.
+Performance lands in the mid-to-high 80s; the limiting factor is LCP
+(~4 s under Lighthouse's mobile throttling), since product and category
+photography is hotlinked from Unsplash and Cloudinary rather than served
+from the app's own origin.
+
+Cart, checkout, order confirmation and account are deliberately excluded:
+`robots.ts` disallows them, so Lighthouse scores their SEO as blocked —
+which is the intended behaviour for transactional pages, not a defect.
 
 ## Data layer (mock ⇄ CMS)
 

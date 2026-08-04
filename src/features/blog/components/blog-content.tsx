@@ -132,6 +132,7 @@ export function BlogContent({ posts }: BlogContentProps) {
         {/* Mobile tab select */}
         <div className="md:hidden">
           <select
+            aria-label="Filter posts by category"
             value={activeTab}
             onChange={(e) => handleTabChange(e.target.value as Tab)}
             className="text-sm font-medium text-ink bg-transparent border border-line rounded px-3 py-1.5 cursor-pointer outline-none"
@@ -147,6 +148,7 @@ export function BlogContent({ posts }: BlogContentProps) {
         <div className="hidden md:flex items-center gap-1 text-sm text-ink">
           <span>Sort by</span>
           <select
+            aria-label="Sort posts"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as SortBy)}
             className="text-sm text-ink bg-transparent border-none outline-none cursor-pointer"
@@ -166,7 +168,9 @@ export function BlogContent({ posts }: BlogContentProps) {
         </div>
       </div>
 
-      {/* Grid */}
+      {/* Grid. The cards are h3, so the listing needs an h2 between them and
+          the page's h1 — the toolbar above carries no visible title. */}
+      <h2 className="sr-only">All articles</h2>
       <div className={gridClass[gridCols]}>
         {shown.map((post) => (
           <BlogCard key={post.id} post={post} />
