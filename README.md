@@ -21,6 +21,7 @@ A full-featured e-commerce storefront for a minimalist furniture brand, built wi
 | Forms | React Hook Form + Zod |
 | Auth | NextAuth v5 (Credentials, mock authorize) |
 | CMS | Strapi v5 (toggled via `NEXT_PUBLIC_USE_STRAPI`) |
+| Testing | Vitest + happy-dom (unit) · Playwright (e2e) |
 | Font | Poppins (Google Fonts) |
 
 ## Getting Started
@@ -33,7 +34,8 @@ yarn install
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000) in your browser. No backend
+is required — the app runs on in-repo mock data by default.
 
 ## Environment Variables
 
@@ -48,6 +50,8 @@ NEXT_PUBLIC_USE_STRAPI=false
 NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
 STRAPI_API_TOKEN=
 
+# SEO (optional) — canonical origin for metadataBase / sitemap / robots
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
 Generate `AUTH_SECRET` with:
@@ -55,6 +59,8 @@ Generate `AUTH_SECRET` with:
 ```bash
 openssl rand -hex 32
 ```
+
+See `.env.example` for the annotated list.
 
 ## Project Structure
 
@@ -66,35 +72,42 @@ src/
 │   ├── cart/             # Cart page
 │   ├── checkout/         # Multi-step checkout (3 steps)
 │   ├── order-success/    # Order confirmation
-│   ├── account/          # Profile, orders, wishlist (protected)
+│   ├── account/          # Profile, addresses, orders, wishlist (protected)
 │   ├── auth/             # Sign in / Sign up
 │   ├── blog/             # Blog listing + post detail
-│   └── contact/          # Contact page
+│   ├── contact/          # Contact page
+│   ├── api/              # NextAuth handler + coupon validation route
+│   └── sitemap.ts, robots.ts, opengraph-image.tsx, error.tsx, not-found.tsx
+├── components/ui/        # shadcn primitives (button, dialog, select, sheet, tabs…)
 ├── features/
 │   ├── products/         # ProductCard, ImageGallery, FilterSidebar, types, mock data
 │   ├── cart/             # CartFlyout, atoms
 │   ├── wishlist/         # atoms
-│   ├── checkout/         # multi-step form, atoms
+│   ├── checkout/         # step indicator, atoms, totals
 │   ├── blog/             # BlogCard, BlogContent, TableOfContents, ShareButtons, mock data
 │   ├── contact/          # ContactForm
 │   ├── account/          # AccountSidebar
-│   └── shared/           # Navbar, Footer, Breadcrumb, AnnouncementBar
-└── lib/
-    ├── api/              # products.ts, categories.ts, blog.ts (Strapi-ready)
-    └── utils.ts          # cn(), formatPrice(), generateOrderId()
+│   ├── auth/             # SignInForm, SignUpForm, AuthModal
+│   └── shared/           # Navbar, Footer, Breadcrumb, AnnouncementBar, HeroCarousel
+├── lib/
+│   ├── api/              # products, categories, blog, coupons, strapi client
+│   ├── site.ts           # canonical site config
+│   └── utils.ts          # cn(), formatPrice(), generateOrderId()
+├── auth.ts               # NextAuth config
+└── middleware.ts         # protects /account/*
 ```
 
 ## Features
 
-- **Shop** — product grid with filter sidebar (category, price range, color, material, rating), URL-param filters, sort, load more
-- **Product Detail** — image gallery with thumbnails, variant selector, quantity picker, Add to Cart, wishlist toggle, related products, tabbed reviews
-- **Cart** — quantity controls, coupon codes (`SAVE10`, `FURNITURE20`), order summary, persistent via localStorage
+- **Shop** — product grid with a filter sidebar (category and price range), URL-param filters, sort, grid/list view toggle, show-more pagination
+- **Product Detail** — image gallery with thumbnails, color and size variant selectors, quantity picker, Add to Cart, wishlist toggle, related products, tabbed Additional Info / Questions / Reviews
+- **Cart** — quantity controls, coupon codes (`SAVE10`, `FURNITURE20`), order summary, persisted to localStorage
 - **Checkout** — 3-step flow: shipping → payment → review → animated order success page
-- **Auth** — NextAuth v5 with a Credentials provider whose `authorize` accepts any email + password ≥ 6 chars (no user store, no OAuth provider); protected `/account` routes via middleware
-- **Account** — profile editor, order history with status filters, wishlist management
+- **Auth** — NextAuth v5 with a Credentials provider whose `authorize` accepts any email + password ≥ 6 chars (no user store, no OAuth provider); `/account` routes protected by middleware
+- **Account** — profile and password form, saved billing/shipping addresses, order history (real orders from checkout, with sample rows until you place one), wishlist management
 - **Blog** — featured post, article grid, full post with scroll-tracked table of contents, social share, related posts
-- **Contact** — info cards, validated contact form, map placeholder
-- **SEO** — `generateMetadata` on every page, `og:image` for product and blog pages, `generateStaticParams` for static generation
+- **Contact** — info cards, validated contact form, embedded Google map
+- **SEO** — `generateMetadata` on every page, `og:image` for product and blog pages, `generateStaticParams` for static generation, `sitemap.ts` + `robots.ts`
 - **Performance** — `revalidate = 3600` on listing pages, skeleton loading states, fade-in page transitions
 - **Error handling** — global 404 / error pages, product-specific not-found
 
@@ -105,14 +118,18 @@ src/
 | `SAVE10` | 10% off |
 | `FURNITURE20` | 20% off |
 
+Coupons are validated server-side through `/api/coupons/validate`, so in Strapi
+mode the codes are never readable from the browser.
+
 ## Testing
 
-Unit tests run on [Vitest](https://vitest.dev) and cover the data layer
-(`lib/api` filtering/sorting/fallbacks), Jotai atoms (cart totals,
-localStorage persistence), and utilities. End-to-end tests run on
-[Playwright](https://playwright.dev) and drive the full purchase flow —
-browse → product → cart with coupon → checkout → order confirmation.
-Both suites run in CI on every PR.
+Unit tests run on [Vitest](https://vitest.dev) — **46 tests across 7 files**
+covering the data layer (`lib/api` filtering, sorting, coupon validation),
+Jotai atoms (cart totals, coupon and wishlist persistence), checkout totals,
+and utilities. End-to-end tests run on [Playwright](https://playwright.dev) —
+**4 specs** driving the full purchase flow (browse → product → cart with
+coupon → checkout → order confirmation) plus empty-cart redirect and coupon
+error paths. Both suites run in CI on every PR.
 
 ```bash
 yarn test        # unit tests, run once
@@ -122,23 +139,24 @@ yarn test:e2e    # e2e suite (builds and serves the app itself)
 
 ## Lighthouse
 
-Production build, mobile emulation, `next start` on localhost. Three runs
-per page; performance is given as the range across those runs, because it
-moves a few points run to run.
+Production build (`next start`) on localhost, mobile emulation, default
+Lighthouse throttling, running on mock data. Three runs per page; scores are
+given as the range across those runs, because they move a few points run to
+run.
 
 | Page | Performance | Accessibility | Best Practices | SEO |
 |---|---|---|---|---|
-| Home | 83–87 | 100 | 100 | 100 |
-| Shop | 84–88 | 100 | 100 | 100 |
-| Product detail | 88 | 100 | 100 | 100 |
-| Blog | 85–87 | 100 | 100 | 100 |
-| Contact | 90–93 | 100 | 100 | 100 |
+| Home | 81–83 | 100 | 100 | 100 |
+| Shop | 80–86 | 100 | 100 | 100 |
+| Product detail | 89–97 | 100 | 100 | 100 |
+| Blog | 83–88 | 100 | 100 | 100 |
+| Contact | 90–92 | 100 | 100 | 100 |
 
 Accessibility, best practices and SEO sit at 100 on every public page.
-Performance lands in the mid-to-high 80s; the limiting factor is LCP
-(~4 s under Lighthouse's mobile throttling), since product and category
-photography is hotlinked from Unsplash and Cloudinary rather than served
-from the app's own origin.
+Performance lands in the 80s–90s; the limiting factor is LCP under
+Lighthouse's mobile throttling, since product and category photography is
+hotlinked from Unsplash and Cloudinary rather than served from the app's own
+origin.
 
 Cart, checkout, order confirmation and account are deliberately excluded:
 `robots.ts` disallows them, so Lighthouse scores their SEO as blocked —
@@ -181,9 +199,10 @@ flowchart LR
 **The CMS is optional by design.** The live demo runs against Strapi, so
 what you see at [ecommerce-dexr.vercel.app](https://ecommerce-dexr.vercel.app)
 is real CMS content: products from Postgres (Neon), media from Cloudinary.
-`revalidate = 3600` keeps pages served from the ISR cache, which also
-masks Render's free-tier cold starts. The Strapi project — content types,
-controllers, seed content — lives in a separate repo:
+Strapi is called server-side only, so the API token never reaches the browser,
+and `revalidate = 3600` keeps pages served from the ISR cache — which also
+masks Render's free-tier cold start (measured at ~80 s from sleep). The Strapi
+project — content types, controllers, seed content — lives in a separate repo:
 [`ecommerce-cms`](https://github.com/ngohuynhducdev/ecommerce-cms).
 
 Local development needs none of that: with `NEXT_PUBLIC_USE_STRAPI=false`
@@ -231,7 +250,11 @@ yarn start
 Built with an AI-assisted workflow, run with discipline: the project is
 spec'd into phases with explicit coding rules (see `AGENTS.md`), each
 phase is implemented on its own branch, and nothing merges without
-review, tests (42 unit + 3 e2e), and green CI. AI accelerates the
+review, tests (46 unit + 4 e2e), and green CI. AI accelerates the
 typing — the architecture decisions (mock ⇄ CMS data layer, server-side
 CMS calls to keep tokens out of the browser, token-gated coupon reads)
 are deliberate and documented in this README.
+
+Dependency policy: scheduled version-update PRs are off by choice;
+Dependabot **security** updates stay on, and routine bumps are made by
+hand so upgrades are reviewed rather than merged on a bot cadence.

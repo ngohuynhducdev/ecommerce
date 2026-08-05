@@ -129,6 +129,7 @@ NEXT_PUBLIC_SITE_URL=          # canonical URL for metadataBase / sitemap / robo
 /checkout Multi-step checkout (3 steps)
 /order-success Order confirmation
 /account Profile (protected)
+/account/addresses Billing + shipping addresses (protected)
 /account/orders Order history (protected)
 /account/wishlist Wishlist (protected)
 /auth/sign-in Sign in
