@@ -78,9 +78,9 @@ export function FilterSidebar({ categories, currentFilters }: FilterSidebarProps
     <aside className="space-y-8">
       {/* Categories */}
       <div>
-        <h3 className="text-xs font-semibold uppercase tracking-widest text-ink mb-4">
+        <h2 className="text-xs font-semibold uppercase tracking-widest text-ink mb-4">
           Categories
-        </h3>
+        </h2>
         <ul className="space-y-3">
           <li>
             <button
@@ -116,9 +116,9 @@ export function FilterSidebar({ categories, currentFilters }: FilterSidebarProps
 
       {/* Price */}
       <div>
-        <h3 className="text-xs font-semibold uppercase tracking-widest text-ink mb-4">
+        <h2 className="text-xs font-semibold uppercase tracking-widest text-ink mb-4">
           Price
-        </h3>
+        </h2>
         <ul className="space-y-3">
           {PRICE_RANGES.map(({ label, min, max }) => {
             const active = isRangeActive(min, max, currentFilters.minPrice, currentFilters.maxPrice);
