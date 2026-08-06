@@ -45,8 +45,14 @@ export function ShopProductGrid({ products, gridCols = 3 }: ShopProductGridProps
   return (
     <div>
       <div className={gridClass}>
-        {shown.map((product) => (
-          <ProductCard key={product.id} product={product} />
+        {shown.map((product, i) => (
+          // The first row is above the fold — preload it rather than waiting for
+          // the lazy-load intersection to fire after layout.
+          <ProductCard
+            key={product.id}
+            product={product}
+            priority={i < gridCols}
+          />
         ))}
       </div>
       {hasMore && (

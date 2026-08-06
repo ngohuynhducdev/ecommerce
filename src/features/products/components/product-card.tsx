@@ -52,9 +52,11 @@ function StarIcon({ filled }: { filled: boolean }) {
 
 interface ProductCardProps {
   product: Product;
+  /** Set on above-the-fold cards so the image preloads instead of lazy-loading. */
+  priority?: boolean;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, priority = false }: ProductCardProps) {
   const setCartItems = useSetAtom(cartItemsAtom);
   const [wishlist, setWishlist] = useAtom(wishlistAtom);
   const [justAdded, setJustAdded] = useState(false);
@@ -131,6 +133,7 @@ export function ProductCard({ product }: ProductCardProps) {
               fill
               sizes="(max-width: 768px) 50vw, 25vw"
               className="object-cover"
+              priority={priority}
             />
           </div>
         </Link>
