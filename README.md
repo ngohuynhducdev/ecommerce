@@ -78,7 +78,7 @@ src/
 │   ├── contact/          # Contact page
 │   ├── api/              # NextAuth handler + coupon validation route
 │   └── sitemap.ts, robots.ts, opengraph-image.tsx, error.tsx, not-found.tsx
-├── components/ui/        # shadcn primitives (button, dialog, select, sheet, tabs…)
+├── components/ui/        # shadcn primitives (dialog, sheet, tabs, skeleton, sonner) + SafeImage
 ├── features/
 │   ├── products/         # ProductCard, ImageGallery, FilterSidebar, types, mock data
 │   ├── cart/             # CartFlyout, atoms
