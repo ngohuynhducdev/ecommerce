@@ -57,7 +57,7 @@ src/
 │ ├── page.tsx Homepage
 │ ├── shop/ Shop listing + product detail
 │ ├── cart/ Cart page
-│ ├── checkout/ Multi-step checkout
+│ ├── checkout/ Checkout form (contact, shipping, payment)
 │ ├── order-success/ Order confirmation
 │ ├── account/ My Account (profile, orders, wishlist)
 │ ├── auth/ Sign In / Sign Up
@@ -69,18 +69,37 @@ src/
 │ │ ├── types.ts Product, Category, Variant, CartItem, WishlistItem, Order
 │ │ └── mock-data.ts 12 mock products across 4 categories
 │ ├── cart/
-│ │ ├── components/ CartFlyout, CartItem...
-│ │ └── atoms.ts cartItemsAtom, cartOpenAtom, cartCountAtom, cartSubtotalAtom, couponAtom
+│ │ ├── components/ CartFlyout
+│ │ └── atoms.ts cartItemsAtom, cartOpenAtom, cartCountAtom, cartSubtotalAtom
 │ ├── wishlist/
 │ │ └── atoms.ts wishlistAtom, wishlistCountAtom
+│ ├── checkout/
+│ │ ├── components/ StepIndicator
+│ │ ├── atoms.ts couponAtom, shippingMethodAtom, paymentDataAtom, ordersAtom
+│ │ └── totals.ts calculateDiscount(), calculateTotal()
+│ ├── blog/
+│ │ ├── components/ BlogCard, BlogContent, TableOfContents, ShareButtons
+│ │ ├── types.ts BlogPost, BlogAuthor, ArticleSection
+│ │ └── mock-data.ts 6 mock posts
+│ ├── contact/
+│ │ └── components/ ContactForm
+│ ├── account/
+│ │ └── components/ AccountSidebar
 │ ├── auth/
-│ │ └── components/ SignInForm, SignUpForm
+│ │ ├── components/ SignInForm, SignUpForm, AuthModal
+│ │ └── atoms.ts authModalOpenAtom, authModalViewAtom
 │ └── shared/
-│ └── components/ Navbar, Footer, AnnouncementBar, Breadcrumb
+│ ├── components/ Navbar, MegaMenu, BottomNav, Footer, AnnouncementBar, Breadcrumb, HeroCarousel, FeaturesStrip, NewsletterSection, SiteChrome
+│ └── atoms.ts announcementVisibleAtom, mobileMenuOpenAtom
 └── lib/
 ├── api/
 │ ├── products.ts getProducts, getProductBySlug, getFeaturedProducts, getBestsellers, getRelatedProducts
-│ └── categories.ts getCategories
+│ ├── categories.ts getCategories
+│ ├── blog.ts getPosts, getPostBySlug
+│ ├── coupons.ts validateCoupon() — server-side only, holds the Strapi token
+│ ├── coupons-client.ts validateCouponClient() — calls /api/coupons/validate
+│ └── strapi.ts USE_STRAPI, STRAPI_URL, strapiHeaders, resolveStrapiImage()
+├── site.ts SITE_URL — canonical origin
 └── utils.ts cn(), formatPrice(), generateOrderId()...
 
 ## Data Layer Pattern
@@ -92,15 +111,16 @@ UI components NEVER know where data comes from.
 Every Strapi fetch falls back to mock on error — the app never hard-breaks.
 Strapi calls are server-side only (token stays out of the browser); coupons
 are validated through the internal route /api/coupons/validate.
-ISR revalidate 3600 masks Render free-tier cold starts (~50s).
+ISR revalidate 3600 masks Render free-tier cold starts (~80s — same figure
+the README quotes; re-measure before citing it elsewhere).
 
 ## Jotai Atoms Reference
 
-Cart : cartItemsAtom (CartItem[], persisted) · cartOpenAtom (bool) · cartCountAtom (derived) · cartSubtotalAtom (derived)
-Wishlist : wishlistAtom (WishlistItem[], persisted) · wishlistCountAtom (derived)
-Coupon : couponAtom ({ code, discount, type } | null, persisted)
-Checkout : checkoutStepAtom (1 | 2 | 3) · shippingDataAtom · ordersAtom (persisted)
-UI : announcementVisibleAtom (bool)
+Cart features/cart/atoms.ts : cartItemsAtom (CartItem[], persisted) · cartOpenAtom (bool) · cartCountAtom (derived) · cartSubtotalAtom (derived)
+Wishlist features/wishlist/atoms.ts : wishlistAtom (WishlistItem[], persisted) · wishlistCountAtom (derived)
+Checkout features/checkout/atoms.ts : couponAtom ({ code, discount, type } | null, persisted) · shippingMethodAtom · paymentDataAtom · ordersAtom (persisted) · checkoutStepAtom (1 | 2 | 3) · shippingDataAtom
+UI features/shared/atoms.ts : announcementVisibleAtom (bool) · mobileMenuOpenAtom (bool)
+Auth features/auth/atoms.ts : authModalOpenAtom (bool) · authModalViewAtom ("sign-in" | "sign-up")
 
 ## Key Components (update as built)
 
