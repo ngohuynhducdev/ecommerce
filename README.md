@@ -134,8 +134,12 @@ error paths. Both suites run in CI on every PR.
 ```bash
 yarn test        # unit tests, run once
 yarn test:watch  # unit tests, watch mode
-yarn test:e2e    # e2e suite (builds and serves the app itself)
+yarn test:e2e    # e2e suite (builds and serves the app itself, on port 3100)
 ```
+
+The e2e suite always starts its own production build on port 3100, so it
+runs alongside `yarn dev` without either one disturbing the other. Set
+`E2E_PORT` if that port is taken too.
 
 ## Lighthouse
 
