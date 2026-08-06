@@ -118,7 +118,7 @@ the README quotes; re-measure before citing it elsewhere).
 
 Cart features/cart/atoms.ts : cartItemsAtom (CartItem[], persisted) · cartOpenAtom (bool) · cartCountAtom (derived) · cartSubtotalAtom (derived)
 Wishlist features/wishlist/atoms.ts : wishlistAtom (WishlistItem[], persisted) · wishlistCountAtom (derived)
-Checkout features/checkout/atoms.ts : couponAtom ({ code, discount, type } | null, persisted) · shippingMethodAtom · paymentDataAtom · ordersAtom (persisted) · checkoutStepAtom (1 | 2 | 3) · shippingDataAtom
+Checkout features/checkout/atoms.ts : couponAtom ({ code, discount, type } | null, persisted) · shippingMethodAtom · paymentDataAtom · ordersAtom (persisted)
 UI features/shared/atoms.ts : announcementVisibleAtom (bool) · mobileMenuOpenAtom (bool)
 Auth features/auth/atoms.ts : authModalOpenAtom (bool) · authModalViewAtom ("sign-in" | "sign-up")
 

@@ -1,4 +1,3 @@
-export const dynamicParams = true;
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -18,6 +17,10 @@ import { NewsletterSection } from "@/features/shared/components/newsletter-secti
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
+
+// Slugs missing from generateStaticParams still render on demand — which is
+// what keeps the build alive when Strapi is unreachable and the list is empty.
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
   try {
