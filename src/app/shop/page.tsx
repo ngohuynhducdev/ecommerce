@@ -50,7 +50,11 @@ export default function ShopPage({
             fill
             sizes="(max-width: 1024px) 100vw, calc(100vw - 10rem)"
             className="object-cover"
+            // `priority` emits the preload link and drops loading="lazy";
+            // fetchPriority is what puts fetchpriority="high" *on* that link.
+            // Lighthouse's LCP-discovery audit wants both — neither alone.
             priority
+            fetchPriority="high"
           />
           <div className="absolute inset-0 bg-white/45" />
           <div className="relative h-full flex flex-col items-center justify-center text-center px-8">
