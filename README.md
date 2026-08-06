@@ -123,7 +123,7 @@ mode the codes are never readable from the browser.
 
 ## Testing
 
-Unit tests run on [Vitest](https://vitest.dev) — **46 tests across 7 files**
+Unit tests run on [Vitest](https://vitest.dev) — **48 tests across 7 files**
 covering the data layer (`lib/api` filtering, sorting, coupon validation),
 Jotai atoms (cart totals, coupon and wishlist persistence), checkout totals,
 and utilities. End-to-end tests run on [Playwright](https://playwright.dev) —
@@ -250,7 +250,7 @@ yarn start
 Built with an AI-assisted workflow, run with discipline: the project is
 spec'd into phases with explicit coding rules (see `AGENTS.md`), each
 phase is implemented on its own branch, and nothing merges without
-review, tests (46 unit + 4 e2e), and green CI. AI accelerates the
+review, tests (48 unit + 4 e2e), and green CI. AI accelerates the
 typing — the architecture decisions (mock ⇄ CMS data layer, server-side
 CMS calls to keep tokens out of the browser, token-gated coupon reads)
 are deliberate and documented in this README.

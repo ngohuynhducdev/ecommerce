@@ -160,9 +160,12 @@ NEXT_PUBLIC_SITE_URL=          # canonical URL for metadataBase / sitemap / robo
 
 ## Current Phase
 
-✅ All phases (00–17) complete + post-launch hardening (Jul 2026) done.
+✅ All phases (00–17) complete + post-launch hardening (Jul 2026) and a
+docs/code audit (Aug 2026) done.
 Maintenance mode: keep CI green; upgrade dependencies deliberately rather
-than on a weekly bot cadence.
+than on a weekly bot cadence. When you change behaviour, re-read the
+README claim that covers it — the Aug 2026 audit existed because four of
+them had quietly drifted away from the code.
 Project is a portfolio piece — prefer small reviewed PRs over bulk changes.
 
 Dependency policy (since Jul 2026): scheduled version-update PRs are OFF —
@@ -206,6 +209,22 @@ Post-launch hardening (Jul 2026):
 [x] Production switched to live Strapi (Vercel env, no code change)
 CMS side: Strapi 5.43→5.50.1 (vulns 100→17), coupon token lockdown,
 CORS whitelist, CI build check, seed-media backfill to Cloudinary.
+
+Docs/code audit (Aug 2026) — checked every doc claim against the code:
+[x] README + AGENTS.md accuracy fixes  PR #60  branch: fix/readme-accuracy
+    Checkout was never a 3-step flow, generateMetadata was on 2 pages not
+    all of them, revalidate is inert on /shop (it reads searchParams).
+[x] Dead UI primitives + unused atoms  PR #61  branch: chore/remove-dead-code
+    ui/button + ui/select had zero importers; dropped @radix-ui/react-slot
+    and @radix-ui/react-select with them. checkoutStepAtom and
+    shippingDataAtom were declared but never read — the source of the
+    "3-step checkout" claim.
+[x] Wishlist first-render hydration    PR #62  branch: fix/wishlist-hydration
+    wishlistAtom was the only persisted atom missing getOnInit.
+[x] E2E server isolation               branch: fix/e2e-server-isolation
+    Suite now serves its own build on port 3100 and never reuses a server
+    it did not start.
+Verified at each step: lint, unit tests, build, e2e, yarn audit (0 vulns).
 
 ## Notes
 
