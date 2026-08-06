@@ -70,7 +70,7 @@ src/
 │   ├── page.tsx          # Homepage
 │   ├── shop/             # Shop listing + product detail
 │   ├── cart/             # Cart page
-│   ├── checkout/         # Multi-step checkout (3 steps)
+│   ├── checkout/         # Checkout form (contact, shipping, payment)
 │   ├── order-success/    # Order confirmation
 │   ├── account/          # Profile, addresses, orders, wishlist (protected)
 │   ├── auth/             # Sign in / Sign up
@@ -102,13 +102,13 @@ src/
 - **Shop** — product grid with a filter sidebar (category and price range), URL-param filters, sort, grid/list view toggle, show-more pagination
 - **Product Detail** — image gallery with thumbnails, color and size variant selectors, quantity picker, Add to Cart, wishlist toggle, related products, tabbed Additional Info / Questions / Reviews
 - **Cart** — quantity controls, coupon codes (`SAVE10`, `FURNITURE20`), order summary, persisted to localStorage
-- **Checkout** — 3-step flow: shipping → payment → review → animated order success page
+- **Checkout** — single page: contact details, shipping address and payment method on one validated form, with a sticky order summary carrying the cart's coupon and shipping method. A progress indicator runs across the three pages of the purchase journey — cart → checkout → order complete — ending on an animated order success page
 - **Auth** — NextAuth v5 with a Credentials provider whose `authorize` accepts any email + password ≥ 6 chars (no user store, no OAuth provider); `/account` routes protected by middleware
 - **Account** — profile and password form, saved billing/shipping addresses, order history (real orders from checkout, with sample rows until you place one), wishlist management
 - **Blog** — featured post, article grid, full post with scroll-tracked table of contents, social share, related posts
 - **Contact** — info cards, validated contact form, embedded Google map
-- **SEO** — `generateMetadata` on every page, `og:image` for product and blog pages, `generateStaticParams` for static generation, `sitemap.ts` + `robots.ts`
-- **Performance** — `revalidate = 3600` on listing pages, skeleton loading states, fade-in page transitions
+- **SEO** — `generateMetadata` on product and blog detail pages (title, description and `og:image` from the content itself), static `metadata` on the other indexed routes, `generateStaticParams` for static generation, `sitemap.ts` + `robots.ts`. Transactional pages inherit the root metadata — `robots.ts` keeps them out of the index anyway
+- **Performance** — ISR (`revalidate = 3600`) on the blog listing and posts; `/shop` renders on demand because it reads filter params, but its data fetches are cached for the same hour. Skeleton loading states and fade-in page transitions
 - **Error handling** — global 404 / error pages, product-specific not-found
 
 ## Coupon Codes
